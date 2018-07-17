@@ -18,14 +18,15 @@ const Dashboard = Loadable({
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: DefaultLayout
-  },
-  {
     title: 'Login',
     path: '/login',
     component: Login,
+    exact: true
+  },
+  {
+    title: 'Register',
+    path: '/register',
+    component: Register,
     exact: true
   },
   {
@@ -39,7 +40,12 @@ const routes = [
     path: '/next-page',
     component: AsyncNextPage,
     exact: true
-  }
+  },
+  {
+    path: '/',
+    name: 'Home',
+    component: DefaultLayout,
+  },
 ]
 
 export default routes
