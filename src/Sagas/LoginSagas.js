@@ -4,10 +4,10 @@ import LoginActions from '../Redux/LoginRedux'
 export function * login (loginAPI, { username, password }) {
   try {
     const res = yield call(loginAPI, {username, password})
-    if (res.data && res.data.success) {
-      yield put(LoginActions.loginSuccess({data: res.data.token}))
+    if (res && res.success) {
+      yield put(LoginActions.loginSuccess({token: res.token}))
     } else {
-      yield put(LoginActions.loginFailure(res.data.msg))
+      yield put(LoginActions.loginFailure(res.msg))
     }
   } catch (error) {
     yield put(LoginActions.loginFailure(error.message))

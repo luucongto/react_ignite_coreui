@@ -172,6 +172,19 @@ const Widgets = Loadable({
   loading: Loading,
 });
 
+//Custom
+const AccountInfo = Loadable({
+  loader: () => import ('./views/Binance/AccountInfo'),
+  loading: Loading,
+})
+const OpenOrders = Loadable({
+  loader: () => import ('./views/Binance/Components/OpenOrders'),
+  loading: Loading,
+})
+const Trade = Loadable({
+  loader: () => import ('./views/Binance/Trade'),
+  loading: Loading,
+})
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -213,6 +226,8 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/charts', name: 'Charts', component: Charts },
+  { path: '/accountInfo', name: 'Account Info', component: AccountInfo},
+  { path: '/trade', name: 'Open Orders', component: Trade}
 ];
 
 export default routes;

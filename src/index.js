@@ -1,4 +1,4 @@
-import 'normalize.css'
+// import 'normalize.css'
 import './index.css'
 
 import React from 'react'
@@ -6,7 +6,9 @@ import { render } from 'react-snapshot'
 import registerServiceWorker from './registerServiceWorker'
 import DevConfig from './Config/DevConfig'
 import App from './App'
+require('dotenv').load();
 
+console.log('process.env' && process.env)
 /**
  * Why did you update is a function that monkey patches React and
  * notifies you in the console when potentially unnecessary re-renders occur.

@@ -31,7 +31,7 @@ class DefaultLayout extends Component {
           <DefaultHeader />
         </AppHeader>
         <div className='app-body'>
-          <AppSidebar fixed display='lg'>
+          <AppSidebar minimized display='lg'>
             <AppSidebarHeader />
             <AppSidebarForm />
             <AppSidebarNav navConfig={navigation} {...this.props} />
@@ -46,7 +46,7 @@ class DefaultLayout extends Component {
                   return route.component ? (<PrivateRoute key={idx} {...route} />) : (null)
                 }
                 )}
-                <Redirect from='/' to='/dashboard' />
+                <Redirect from='/' to='/trade' />
               </Switch>
             </Container>
           </main>

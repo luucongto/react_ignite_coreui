@@ -8,7 +8,7 @@ const REDUX_PERSIST = {
     storage,
     debounce: 500,
     // blacklist: [], // reducer keys that you do NOT want stored to persistence here
-    whitelist: ['login'], // Optionally, just specify the keys you DO want stored to
+    whitelist: ['login', 'livePrice'], // Optionally, just specify the keys you DO want stored to
     // persistence. An empty array means 'don't store any reducers' -> infinitered/ignite#409
     transforms: [immutablePersistenceTransform]
   }

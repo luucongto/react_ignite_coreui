@@ -11,7 +11,7 @@ export default {
     },
     {
       title: true,
-      name: 'Theme',
+      name: 'Account',
       wrapper: { // optional wrapper object
         element: '', // required valid HTML5 element tag
         attributes: {} // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
@@ -19,13 +19,13 @@ export default {
       class: '' // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Colors',
-      url: '/theme/colors',
+      name: 'Info',
+      url: '/accountInfo',
       icon: 'icon-drop'
     },
     {
-      name: 'Typography',
-      url: '/theme/typography',
+      name: 'Api',
+      url: '/accountApi',
       icon: 'icon-pencil'
     },
     {
@@ -37,15 +37,27 @@ export default {
       }
     },
     {
-      name: 'Base',
-      url: '/base',
-      icon: 'icon-puzzle',
+      name: 'Trades',
+      url: '/',
+      icon: 'icon-basket',
       children: [
         {
-          name: 'Breadcrumbs',
-          url: '/base/breadcrumbs',
-          icon: 'icon-puzzle'
+          name: 'Trade',
+          url: '/trade',
+          icon: 'icon-basket'
         },
+        {
+          name: 'History',
+          url: '/tradeHistory',
+          icon: 'icon-list'
+        }
+      ]
+    },
+    {
+      name: 'Components',
+      url: '/components',
+      icon: 'icon-basket',
+      children: [
         {
           name: 'Cards',
           url: '/base/cards',

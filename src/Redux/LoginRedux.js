@@ -15,7 +15,8 @@ const { Types, Creators } = createActions({
 
 export const LoginTypes = Types
 export default Creators
-
+// selector
+export const loginTokenSelector = state => state.login.data
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
