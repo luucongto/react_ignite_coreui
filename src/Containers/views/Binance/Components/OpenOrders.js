@@ -59,8 +59,8 @@ class OpenOrders extends Component {
     let doneOrders = []
     if(props.openOrders){
       let orders = JSON.parse(JSON.stringify(props.openOrders))
-      openOrders = orders.filter(e => (e.status !== 'done' && e.status !== 'cancel') ).sort((a, b) => a.pair > b.pair).sort((a,b) => a.updatedAt > b.updatedAt)
-      doneOrders = orders.filter(e => (e.status === 'done')).sort((a,b) => a.updatedAt > b.updatedAt).sort((a, b) => a.pair < b.pair)
+      openOrders = orders.filter(e => (e.status !== 'done' && e.status !== 'cancel') )
+      doneOrders = orders.filter(e => (e.status === 'done'))
       this.setState({openOrders, doneOrders})
     }
   }
@@ -192,6 +192,8 @@ class OpenOrders extends Component {
       openOrders = openOrders.filter(order => order.type !== 'TEST')
       doneOrders = doneOrders.filter(order => order.type !== 'TEST')
     }
+    openOrders = openOrders.sort((a,b) => a.updatedAt < b.updatedAt).sort((a, b) => a.pair < b.pair)
+    doneOrders = doneOrders.sort((a,b) => a.updatedAt < b.updatedAt).sort((a, b) => a.pair < b.pair)
     return (
       <div className='animated fadeIn'>
         <Row>

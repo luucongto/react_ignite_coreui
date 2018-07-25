@@ -7,6 +7,7 @@
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
     "@coreui/icons": "^0.2.0",
     "@coreui/react": "^2.0.0",
+    "@mars/heroku-js-runtime-env": "^3.0.2",
     "apisauce": "^0.15.2",
     "axios": "^0.18.0",
     "binance-api-node": "^0.8.2",
@@ -14,7 +15,6 @@
     "chart.js": "^2.7.2",
     "classnames": "^2.2.5",
     "core-js": "^2.5.6",
-    "dotenv": "^6.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "flag-icon-css": "^3.0.0",
@@ -51,8 +51,8 @@
     "why-did-you-update": "^0.1.1"
   },
   "scripts": {
-    "heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=; NPM_CONFIG_PRODUCTION=false NODE_ENV=development yarn install --only=dev --dev",
-    "heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;",
+    "_heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=; NPM_CONFIG_PRODUCTION=false NODE_ENV=development yarn install --only=dev --dev",
+    "_heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

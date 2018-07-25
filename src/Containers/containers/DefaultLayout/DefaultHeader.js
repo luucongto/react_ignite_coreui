@@ -19,7 +19,6 @@ class DefaultHeader extends Component {
     this.props.logout()
   }
   render() {
-    console.log(this.props.user)
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
