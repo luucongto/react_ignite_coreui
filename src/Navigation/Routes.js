@@ -11,11 +11,6 @@ const AsyncNextPage = Loadable({
   loading: Loading
 });
 
-const Dashboard = Loadable({
-  loader: () =>import ('../Containers/views/Dashboard/Dashboard'),
-  loading: Loading
-});
-
 const routes = [
   {
     title: 'Login',

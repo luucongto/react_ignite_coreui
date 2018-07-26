@@ -5,7 +5,7 @@ export function * login (loginAPI, { username, password }) {
   try {
     const res = yield call(loginAPI, {username, password})
     if (res && res.success) {
-      yield put(LoginActions.loginSuccess({token: res.token}))
+      yield put(LoginActions.loginSuccess(res))
     } else {
       yield put(LoginActions.loginFailure(res.msg))
     }

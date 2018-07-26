@@ -1,4 +1,3 @@
-import apisauce from 'apisauce'
 import ApiConfig from '../Config/ApiConfig'
 import io from 'socket.io-client'
 class SocketApi {
@@ -6,6 +5,8 @@ class SocketApi {
     this.socket = null
     this.handlers = []
     this.connectionStatus = 'disconnect'
+    this.serverTime = '...'
+    this.serverRealApi = true
   }
 
   setup (loginToken) {
@@ -14,6 +15,10 @@ class SocketApi {
     if(loginToken === 'empty') return
     console.log("Setup socket ", loginToken)
     this.socket = io(ApiConfig.baseURL, {query: `auth_token=${loginToken}`})
+    this.socket.on('server_setting', data => {
+      this.serverTime = data.time
+      this.serverRealApi = data.type
+    })
     this.socket.on('connect', () => {
       self.connectionStatus = 'connect'
     })

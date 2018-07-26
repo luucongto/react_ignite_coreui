@@ -1,26 +1,33 @@
 
 import React, { Component } from 'react'
-import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table, Progress, Collapse } from 'reactstrap'
+import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table, Collapse } from 'reactstrap'
 import { connect } from 'react-redux'
 import AutoOrdersActions from '../../../../Redux/AutoOrdersRedux'
-import moment from 'moment'
-import ApiConfig from '../../../../Config/ApiConfig'
 import SocketApi from '../../../../Services/SocketApi'
+import ConfirmButton from './ConfirmButton'
+import Binance from 'binance-api-node'
+import Utils from '../../../../Utils/Utils'
+import api from '../../../../Services/Api'
+import underscore from 'underscore'
 class AutoOrders extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      orders:[],
       showOrder: false
     }
     this._setupSocket()
+    
   }
-
+  refresh(){
+    SocketApi.emit('auto_order', {command: 'refresh'})
+  }
   _setupSocket () {
     let self = this
     SocketApi.on('auto_order', data => {
       self.props.updateOrder(data)
     })
-    SocketApi.emit('auto_order', {command: 'refresh'})
+    this.refresh()
   }
 
   
@@ -40,6 +47,12 @@ class AutoOrders extends Component {
         return 'warning'
       case 'done':
         return 'info'
+      case 'REAL': 
+        return 'danger'
+      case 'TEST':
+        return 'success'
+      default:
+        return 'light'
     }
   }
   _renderTable(orders){
@@ -51,7 +64,7 @@ class AutoOrders extends Component {
             <th> currency </th>
             <th> asset </th>
             <th> offset </th>
-            <th> strategy </th>
+            <th> Estimate </th>
             <th> status </th>
           </tr>
         </thead>
@@ -71,20 +84,23 @@ class AutoOrders extends Component {
                     <Badge color={'dark'}> {element.asset} </Badge>
                   </td>
                   <td>
-                  <Badge color={'light'}> {element.offset} </Badge>
+                  <Badge color={'dark'}> {element.offset} </Badge>
                   </td>
                   <td>
-                    <Badge color={'primary'}> {element.strategy} </Badge>
+                  <Badge color={'light'}> {element.estimate}<img src={'https://tether.to/wp-content/uploads/2015/02/TetherIcon.png'} width='15' className='fa'/> </Badge>
                   </td>
                   <td>
                     <Row>
-                      <Col xs='12' lg='4'>
-                        <Badge color={this._color(element.status)}> {element.status} </Badge>
+                      <Col xs='6' lg='auto'>
+                      <Badge color={this._color(element.strategy)}> {element.strategy} </Badge>
+                      </Col>
+                      <Col xs='6' lg='auto'>
+                      <Badge color={this._color(element.status)}> {element.status} </Badge>
                       </Col>
                       {
                         element.status === 'watching' ?
                       (<Col xs='12' lg='4'>
-                        <Button onClick={() => this.cancelOrder(element.id)} active> Cancel </Button>
+                        <ConfirmButton color='danger' size='sm' onClick={() => this.cancelOrder(element.id)} > <i className='fa fa-ban'/> </ConfirmButton>
                       </Col>) : ''
                       }
                     </Row>
@@ -97,21 +113,41 @@ class AutoOrders extends Component {
       </Table>
     )
   }
+
+  _update(props){
+  let orders = Utils.clone(props.autoOrders)
+  api.getPrices().then(prices => {
+    orders.forEach(order => {
+      let currency_num = parseFloat(prices[order.asset+order.currency] || 0) * order.asset_num + order.currency_num
+      order.estimate = parseFloat(prices[order.currency+'USDT'] || 1) * currency_num
+      order.estimate = Utils.formatNumber(order.estimate)
+    })
+    orders = underscore.sortBy(orders, a => - new Date(a.updatedAt).getTime())
+    this.setState({orders})
+  }).catch(e => console.log(e))
+  }
+  componentDidMount(){
+    this._update(this.props)
+  }
+  componentWillReceiveProps(props){
+    this._update(props)
+  }
+  
   render () {
-    let autoOrders = JSON.parse(JSON.stringify(this.props.autoOrders)).sort((a, b) => a.updatedAt < b.updatedAt)
+    let orders = this.state.orders
     return (
       <div className='animated fadeIn'>
         <Row>
           <Col>
             <Card>
-              <CardHeader onClick={() => this.setState({showOrder: !this.state.showOrder})}>
+              <CardHeader>
                 <i className='fa fa-align-justify' /> Auto Order
-                Connection: <Badge color={SocketApi.connectionStatus === 'connect' ? 'success' : 'danger'}> {SocketApi.connectionStatus}</Badge>
-                <a className=" float-right mb-0 card-header-action btn btn-minimize"><i className={this.state.showOrder ? "icon-arrow-up" : "icon-arrow-down"}></i></a>
+                <a className=" float-right mb-0 card-header-action btn btn-minimize"  onClick={() => this.setState({showOrder: !this.state.showOrder})}><i className={this.state.showOrder ? "icon-arrow-up" : "icon-arrow-down"}></i></a>
+                <a className=" float-right mb-0 card-header-action btn btn-minimize" onClick={() => this.refresh()}><i className='fa fa-refresh'></i></a>
               </CardHeader>
               <Collapse isOpen={this.state.showOrder}>
                 <CardBody>
-                  {this._renderTable(autoOrders)}
+                  {this._renderTable(orders)}
                 </CardBody>
               </Collapse>
             </Card>

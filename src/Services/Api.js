@@ -39,8 +39,11 @@ class API {
   }
 
   logout () {
-    this.authenticated('empty')
-    return this.api.get('logout')
+    
+    return this.api.get('logout').then(result => {
+      this.authenticated('empty')
+      return result
+    })
   }
 
   accountInfo () {
@@ -68,6 +71,13 @@ class API {
   apiSetting (params) {
     return this.api.post('binance/apiSetting', params).then(result => {
       return result ? result.data : null
+    })
+  }
+
+  getPrices(){
+    return this.api.get('binance/allPrices').then(data => {
+      let result = data.data
+      return result && result.success ? result.data : null
     })
   }
 }

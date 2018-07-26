@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
-import { Badge, Button, Card, CardBody, CardHeader, CardFooter, Form, InputGroup, InputGroupAddon, InputGroupText, Col, Row, Table, Progress, FormGroup, Label, Input } from 'reactstrap'
+import { Badge, Button, Card, CardBody, CardHeader, InputGroup, InputGroupAddon, InputGroupText, Col, Row, Progress, FormGroup, Input } from 'reactstrap'
 import { connect } from 'react-redux'
 import Binance from 'binance-api-node'
 import underscore from 'underscore'
 import LivePriceActions from '../../../../Redux/LivePriceRedux'
 
 import {PAIRS} from '../../../../Config/Const'
-
+import Utils from '../../../../Utils/Utils'
+import SocketApi from '../../../../Services/SocketApi'
 class LivePrice extends Component {
   constructor (props) {
     super(props)
     this.state = {
       marketPrices: {
       },
-      watchingIds: {},
       pairs: [],
       currency: 'USDT',
       asset: this.assets('USDT')[0]
@@ -27,7 +27,10 @@ class LivePrice extends Component {
   currencies () {
     return Object.values(PAIRS)
   }
-
+  componentDidMount(){
+    if(this.props.livePricePairs)
+    this._setupWatchingEnpoint(this.props.livePricePairs)
+  }
   addPair () {
     let pair = this.state.asset + this.state.currency
     let currentPairs = Object.keys(this.state.marketPrices)
@@ -70,7 +73,7 @@ class LivePrice extends Component {
   }
 
   componentWillReceiveProps (props) {
-    let openOrders = JSON.parse(JSON.stringify(props.openOrders ? props.openOrders.filter(e => (e.status !== 'done' && e.status !== 'cancel')) : [])).sort((a, b) => a.updatedAt < b.updatedAt)
+    let openOrders = Utils.clone(props.openOrders ? props.openOrders.filter(e => (e.status !== 'done' && e.status !== 'cancel')) : [])
     let pairs = openOrders.map(e => e.pair)
     let savedPairs = props.livePricePairs
     pairs = pairs.concat(savedPairs)
@@ -90,10 +93,17 @@ class LivePrice extends Component {
               <Card>
                 <CardHeader >
                   Live Prices
+                  <Badge className="ml-3" color='primary'> {SocketApi.serverTime} </Badge>
+                  <Badge className="ml-1" color={SocketApi.connectionStatus === 'connect' ? 'success' : 'danger'}> 
+                    <i className='fa fa-wifi'/>
+                  </Badge>
+                  <Badge className="ml-1" color={SocketApi.serverRealApi ? 'success' : 'danger'}> 
+                    {SocketApi.serverRealApi ? 'REAL' : 'TEST'}
+                  </Badge>
                   </CardHeader>
                 <CardBody>
                   <Row>
-                    <Col xl='4'>
+                    <Col className='ml-3'>
                       <FormGroup row>
                           <InputGroup>
                             <InputGroupAddon addonType='prepend'>
@@ -109,8 +119,7 @@ class LivePrice extends Component {
                           </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col xl='1'></Col>
-                    <Col xl='4'>
+                    <Col className='ml-3'>
                     <FormGroup row>
                       
                         <InputGroup>
@@ -128,8 +137,7 @@ class LivePrice extends Component {
                       
                     </FormGroup>
                     </Col>
-                    <Col xl='1'></Col>
-                    <Col xl='2'>
+                    <Col className='ml-3'>
                     <FormGroup row>
                         <InputGroup>
                           <Button size='l' color='success' onClick={() => this.addPair()} > Add </Button>
@@ -141,8 +149,9 @@ class LivePrice extends Component {
                     {
                       pairs.map(pair => (
                         <Col xs='12' lg='4' xl='4' md='6' key={pair}>
-                          <Button size='sm' color='danger' onClick={() => this.removePair(pair)} active><i className='fa fa-ban' /></Button>
-                          {pair} 
+                          <Badge color='danger' onClick={() => this.removePair(pair)}><i className='fa fa-ban' /></Badge>
+                          <Badge color='light'>{pair} </Badge>
+                          {/* <Badge color='dark'>{this.state.marketPrices[pair].currency} </Badge> */}
                           <Badge color={this.state.marketPrices[pair].maker ? 'success' : 'danger'}>{this.state.marketPrices[pair].price}</Badge>
                           
                         </Col>

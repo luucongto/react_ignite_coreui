@@ -8,13 +8,17 @@ import { Button, Card, CardBody, CardHeader, Col, Row,
   InputGroupAddon,
   InputGroupText,
   Progress,
+  Badge,
   Collapse
 } from 'reactstrap'
+import ConfirmButton from './ConfirmButton'
+import {AppSwitch} from '@coreui/react'
 import { connect } from 'react-redux'
 import OpenOrdersActions from '../../../../Redux/OpenOrdersRedux'
 import {PAIRS} from '../../../../Config/Const'
 import SocketApi from '../../../../Services/SocketApi'
 import Alert from 'react-s-alert'
+import api from '../../../../Services/Api'
 class PlaceBotOrder extends Component {
   constructor (props) {
     super(props)
@@ -31,7 +35,8 @@ class PlaceBotOrder extends Component {
     }
   }
   strategys () {
-    return [{value: 'TRAILING', label: 'TRAILING'}]
+    return [{value: 'TEST', label: 'TEST'},
+    {value: 'REAL', label: 'REAL'}]
   }
   assets (currency) {
     return PAIRS[currency].assets
@@ -68,6 +73,28 @@ class PlaceBotOrder extends Component {
       asset_num: 0
     })
   }
+  _renderInputItem(prependText, middle, append){
+    return (
+      <FormGroup row>
+        <Col xl='12'>
+          <InputGroup>
+            <InputGroupAddon addonType='prepend'>
+              <InputGroupText>
+                {prependText}
+              </InputGroupText>
+            </InputGroupAddon>
+            {middle}
+            { append ? 
+              (<InputGroupAddon addonType='append'>
+                {append}
+              </InputGroupAddon>) : ('')
+            }
+          </InputGroup>
+        </Col>
+      </FormGroup>
+    )
+  }
+
   render () {
     let assets = this.assets(this.state.currency)
 
@@ -85,130 +112,87 @@ class PlaceBotOrder extends Component {
           <CardBody>
             <Row>
               <Col lg='12' md='12' xl='6'>
+                {
+                  this._renderInputItem(
+                    'Balance',
+                    (<Input type='number' id='currency_num' placeholder='Enter currency num' required value={this.state.currency_num} onChange={(event) => {
+                      let currency_num = parseFloat(event.target.value)
+                      this.setState({currency_num})
+                    }} />),
+                    (<Input type='select' name='currency' id='currency' onChange={(event) => {
+                      this.setState({currency: event.target.value, asset: this.assets(event.target.value)[0]})
+                    }}>
+                      {
+                        currencies.map(e => <option key={e.value} value={e.value} >{e.label}</option>)
+                      }
+                    </Input>)
+                  )
+                }
+                {
+                  this._renderInputItem(
+                    'Offset',
+                    (<Input type='number' id='price' placeholder='0' required value={this.state.offset} onChange={(event) => {
+                      this.setState({offset: event.target.value})
+                    }} />),
+                    (<InputGroupText>
+                      {this.state.currency}
+                    </InputGroupText>)
+                  )
+                }
+                
+                
                 <FormGroup row>
                   <Col xl='12'>
                     <InputGroup>
+                      <Row>
+                        {
+                          offsetButtons.map(offsetButton => (<Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => {
+                            api.getPrices().then(prices => {
+                              let livePrice = parseFloat( prices[this.state.asset + this.state.currency] || 0)
+                              this.setState({offset: livePrice * offsetButton / 100})
+                            }).catch(e => console.log(e))
 
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                                Balance
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='number' id='currency_num' placeholder='Enter currency num' required value={this.state.currency_num} onChange={(event) => {
-                        let currency_num = parseFloat(event.target.value)
-                        this.setState({currency_num})
-                      }} />
-                      <InputGroupAddon addonType='append'>
-                        <InputGroupText>
-                          {this.state.currency}
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Asset
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='number' id='price' placeholder='0' required value={this.state.asset_num} onChange={(event) => {
-                        let asset_num = parseFloat(event.target.value)
-                        this.setState({asset_num})
-                      }} />
-                      <InputGroupAddon addonType='append'>
-                        <InputGroupText>
-                          {this.state.asset}
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Offset
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='number' id='price' placeholder='0' required value={this.state.offset} onChange={(event) => {
-                        this.setState({offset: event.target.value})
-                      }} />
-                      <InputGroupAddon addonType='append'>
-                        <InputGroupText>
-                          {this.state.currency}
-                        </InputGroupText>
-                      </InputGroupAddon>
+                            
+                          }
+                          }> {offsetButton}%  </Button></Col>))
+                        }
+                      </Row>
                     </InputGroup>
                   </Col>
                 </FormGroup>
               </Col>
 
               <Col>
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Type
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='select' name='strategy' id='strategy' value={this.state.strategy} onChange={(event) => this.setState({strategy: event.target.value})}>
-                        {
-                          strategys.map(e => <option key={e.value} value={e.value} >{e.label}</option>)
-                        }
-                      </Input>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Asset
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='select' name='asset' id='asset' value={this.state.asset} onChange={(event) => this.setState({asset: event.target.value})}>
-                        {
-                          assets.map(e => <option key={e} value={e} >{e}</option>)
-                        }
-                      </Input>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Currency
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='select' name='currency' id='currency' onChange={(event) => {
-                        this.setState({currency: event.target.value, asset: this.assets(event.target.value)[0]})
-                      }}>
-                        {
-                          currencies.map(e => <option key={e.value} value={e.value} >{e.label}</option>)
-                        }
-                      </Input>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-
+                {
+                  this._renderInputItem(
+                    'Asset',
+                    (<Input type='number' id='price' placeholder='0' required value={this.state.asset_num} onChange={(event) => {
+                      let asset_num = parseFloat(event.target.value)
+                      this.setState({asset_num})
+                    }} />),
+                    (<Input type='select' name='asset' id='asset' value={this.state.asset} onChange={(event) => this.setState({asset: event.target.value})}>
+                    {
+                      assets.map(e => <option key={e} value={e} >{e}</option>)
+                    }
+                  </Input>)
+                  )
+                }
+                {
+                  this._renderInputItem(
+                    'REAL API',
+                    (
+                    <AppSwitch className={'ml-1 mr-3 mb-0 mt-1'} label color={'success'} defaultChecked={this.state.strategy === 'REAL'} size={'sm'} onClick={() => this.setState({strategy: this.state.strategy === 'REAL' ? 'TEST' : 'REAL'})} />
+                    ),
+                    null
+                  )
+                }
               </Col>
             </Row>
           </CardBody>
           <CardFooter>
             <Row>
-              <Col xs='6' xl='2'><Button size='l' color='success' onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> Add </Button></Col>
-              <Col xs='6' xl='2'><Button size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button></Col>
+              <ConfirmButton className='ml-3' size='l' color='success' onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> Add </ConfirmButton>
+              <Button className='ml-3' size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button>
             </Row>
           </CardFooter>
           </Collapse>
@@ -219,6 +203,7 @@ class PlaceBotOrder extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+    livePricePairs: state.livePrice.data
   }
 }
 

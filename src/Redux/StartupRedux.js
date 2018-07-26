@@ -1,5 +1,4 @@
-import { createReducer, createActions } from 'reduxsauce'
-import Immutable from 'seamless-immutable'
+import { createActions } from 'reduxsauce'
 
 /* ------------- Types and Action Creators ------------- */
 

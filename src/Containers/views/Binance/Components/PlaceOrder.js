@@ -7,13 +7,18 @@ import { Button, Card, CardBody, CardHeader, Col, Row,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  Badge,
   Progress,
   Collapse
 } from 'reactstrap'
+import ConfirmButton from './ConfirmButton'
+import {AppSwitch} from '@coreui/react'
 import { connect } from 'react-redux'
 import OpenOrdersActions from '../../../../Redux/OpenOrdersRedux'
+import AccountInfoActions from '../../../../Redux/AccountInfoRedux'
 import {PAIRS} from '../../../../Config/Const'
 import SocketApi from '../../../../Services/SocketApi'
+import Utils from '../../../../Utils/Utils'
 import Alert from 'react-s-alert'
 class PlaceOrder extends Component {
   constructor (props) {
@@ -30,6 +35,7 @@ class PlaceOrder extends Component {
       price: 0,
       total: 0
     }
+    this.props.requestAccount()
   }
   types () {
     return [{value: 'TEST', label: 'TEST'},
@@ -74,12 +80,42 @@ class PlaceOrder extends Component {
       total: 0
     })
   }
+
+  _renderInputItem(prependText, middle, append){
+    return (
+      <FormGroup row>
+        <Col xl='12'>
+          <InputGroup>
+            {
+              prependText ? (<InputGroupAddon addonType='prepend'>
+              <InputGroupText>
+                {prependText}
+              </InputGroupText>
+              </InputGroupAddon>) : ('')
+            }
+            {middle}
+            { append ? 
+              (<InputGroupAddon addonType='append'>
+                {append}
+              </InputGroupAddon>) : ('')
+            }
+          </InputGroup>
+        </Col>
+      </FormGroup>
+    )
+  }
   render () {
     let assets = this.assets(this.state.currency)
 
     let currencies = this.currencies()
     let types = this.types()
     let offsetButtons = [1, 2, 3, 5, 10]
+    let avaiBalance = 0
+    let onOrderBalance= 0
+    if(this.props.accountInfo) {
+      avaiBalance = Utils.formatNumber(parseFloat(this.props.accountInfo[this.state.currency].available))
+      onOrderBalance= Utils.formatNumber(parseFloat(this.props.accountInfo[this.state.currency].onOrder))
+    } 
     return (
       <Col>
         <Card>
@@ -91,77 +127,37 @@ class PlaceOrder extends Component {
           <CardBody>
             <Row>
               <Col lg='12' md='12' xl='6'>
-                <FormGroup row>
-                  <Col xl='12' xs='12' sm='12'>
-                    <InputGroup>
-
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                                Quantity
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='number' id='quantity' placeholder='Enter quantity' required value={this.state.quantity} onChange={(event) => {
+                {this._renderInputItem(
+                  'Quantity',
+                  (<Input type='number' id='quantity' placeholder='Enter quantity' required value={this.state.quantity} onChange={(event) => {
                         let quantity = parseFloat(event.target.value)
                         let total = (quantity * this.state.expect_price) || 0
                         this.setState({quantity, total})
-                      }} />
-                      <InputGroupAddon addonType='append'>
-                        <InputGroupText>
-                          {this.state.asset}
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Expect Price
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='number' id='price' placeholder='0' required value={this.state.expect_price} onChange={(event) => {
-                        let expectPrice = parseFloat(event.target.value)
-                        expectPrice = expectPrice > 0 ? expectPrice : 0
-                        let total = this.state.quantity * expectPrice
-                        this.setState({expect_price: expectPrice, total})
-                      }} />
-                      <InputGroupAddon addonType='append'>
-                        <InputGroupText>
-                          {this.state.currency}/1{this.state.asset}
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Offset
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='number' id='price' placeholder='0' required value={this.state.offset} onChange={(event) => {
-                        this.setState({offset: event.target.value})
-                      }} />
-                      <InputGroupAddon addonType='append'>
-                        <InputGroupText>
-                          {this.state.currency}
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
+                      }} 
+                  />),
+                  (<Input type='select' name='asset' id='asset' value={this.state.asset} onChange={(event) => this.setState({asset: event.target.value})}>
+                      {
+                        assets.map(e => <option key={e} value={e} >{e}</option>)
+                      }
+                    </Input>)
+                )}
+                
+                {this._renderInputItem(
+                  'Offset',
+                  (<Input type='number' id='price' placeholder='0' required value={this.state.offset} onChange={(event) => {
+                    this.setState({offset: event.target.value})
+                  }}/>),
+                  (<InputGroupText>
+                    {this.state.currency}
+                  </InputGroupText>)
+                )}
+                
                 <FormGroup row>
                   <Col xl='12'>
                     <InputGroup>
                       <Row>
                         {
-                          offsetButtons.map(offsetButton => (<Col xs='2' key={offsetButton}><Button color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => this.setState({offset: this.state.expect_price * offsetButton / 100})
+                          offsetButtons.map(offsetButton => (<Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => this.setState({offset: this.state.expect_price * offsetButton / 100})
                           }> {offsetButton}%  </Button></Col>))
                         }
                       </Row>
@@ -171,95 +167,61 @@ class PlaceOrder extends Component {
               </Col>
 
               <Col>
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Type
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='select' name='type' id='type' value={this.state.type} onChange={(event) => this.setState({type: event.target.value})}>
-                        {
-                          types.map(e => <option key={e.value} value={e.value} >{e.label}</option>)
-                        }
-                      </Input>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Asset
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='select' name='asset' id='asset' value={this.state.asset} onChange={(event) => this.setState({asset: event.target.value})}>
-                        {
-                          assets.map(e => <option key={e} value={e} >{e}</option>)
-                        }
-                      </Input>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
+                {
+                  this._renderInputItem(
+                    'REAL API',
+                    (
+                    <AppSwitch className={'ml-1 mr-3 mb-0 mt-1'} label color={'success'} defaultChecked={this.state.strategy === 'REAL'} size={'sm'} onClick={() => this.setState({strategy: this.state.strategy === 'REAL' ? 'TEST' : 'REAL'})} />
+                    ),
+                    null
+                  )
+                }
+                
+                {this._renderInputItem(
+                  'Expect',
+                  (<Input type='number' id='price' placeholder='0' required value={this.state.expect_price} onChange={(event) => {
+                    let expectPrice = parseFloat(event.target.value)
+                    expectPrice = expectPrice > 0 ? expectPrice : 0
+                    let total = this.state.quantity * expectPrice
+                    this.setState({expect_price: expectPrice, total})
+                  }} />),
+                  (<Input type='select' name='currency' id='currency' onChange={(event) => {
+                    this.setState({currency: event.target.value, asset: this.assets(event.target.value)[0]})
+                    }}>
+                    {
+                      currencies.map(e => <option key={e.value} value={e.value} >{e.label}</option>)
+                    }
+                  </Input>)
+                )}
 
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Currency
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='select' name='currency' id='currency' onChange={(event) => {
-                        this.setState({currency: event.target.value, asset: this.assets(event.target.value)[0]})
-                      }}>
-                        {
-                          currencies.map(e => <option key={e.value} value={e.value} >{e.label}</option>)
-                        }
-                      </Input>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText>
-                          Total
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type='number' id='name' placeholder='Enter total' required value={this.state.total} onChange={(event) => {
-                        try {
-                          let total = parseFloat(event.target.value)
-                          if (this.state.expect_price > 0) {
-                            let quantity = total / this.state.expect_price
-                            this.setState({total, quantity})
-                          } else {
-                            let price = total / this.state.quantity
-                            this.setState({total, price})
-                          }
-                        } catch (e) {
-                          console.log(e, event)
-                        }
-                      }} />
-                      <InputGroupAddon addonType='append'>
-                        <InputGroupText>
-                          {this.state.currency}
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
+                {this._renderInputItem(
+                  'Total',
+                  (<Input type='number' id='name' placeholder='Enter total' required value={this.state.total} onChange={(event) => {
+                    try {
+                      let total = parseFloat(event.target.value)
+                      if (this.state.expect_price > 0) {
+                        let quantity = total / this.state.expect_price
+                        this.setState({total, quantity})
+                      } else {
+                        let price = total / this.state.quantity
+                        this.setState({total, price})
+                      }
+                    } catch (e) {
+                      console.log(e, event)
+                    }
+                  }} />),
+                  (<InputGroupText>
+                    {this.state.currency}
+                  </InputGroupText>)
+                )}
+                {this._renderInputItem(null, (<Badge color='light'>Avai {avaiBalance}</Badge>), (<Badge color='dark'>OnOrder {onOrderBalance}</Badge>))}
               </Col>
             </Row>
           </CardBody>
           <CardFooter>
             <Row>
-              <Col xs='6' xl='2'><Button size='l' color={this.props.mode === 'buy' ? 'success' : 'danger'} onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> {this.props.mode.toUpperCase()}</Button></Col>
-              <Col xs='6' xl='2'><Button size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button></Col>
+              <ConfirmButton className='ml-3' size='l' color={this.props.mode === 'buy' ? 'success' : 'danger'} onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> {this.props.mode.toUpperCase()}</ConfirmButton>
+              <Button className='ml-3' size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button>
             </Row>
           </CardFooter>
           </Collapse>
@@ -270,12 +232,14 @@ class PlaceOrder extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+    accountInfo: state.accountInfo.data,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    request: (params) => dispatch(OpenOrdersActions.openOrdersRequest(params))
+    request: (params) => dispatch(OpenOrdersActions.openOrdersRequest(params)),
+    requestAccount: () => dispatch(AccountInfoActions.accountInfoRequest())
   }
 }
 
