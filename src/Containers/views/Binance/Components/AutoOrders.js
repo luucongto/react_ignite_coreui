@@ -13,13 +13,12 @@ class AutoOrders extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      orders:[],
+      orders: [],
       showOrder: false
     }
     this._setupSocket()
-    
   }
-  refresh(){
+  refresh () {
     SocketApi.emit('auto_order', {command: 'refresh'})
   }
   _setupSocket () {
@@ -30,7 +29,6 @@ class AutoOrders extends Component {
     this.refresh()
   }
 
-  
   cancelOrder (orderId) {
     SocketApi.emit('auto_order', {
       command: 'cancelOrder',
@@ -47,7 +45,7 @@ class AutoOrders extends Component {
         return 'warning'
       case 'done':
         return 'info'
-      case 'REAL': 
+      case 'REAL':
         return 'danger'
       case 'TEST':
         return 'success'
@@ -55,7 +53,7 @@ class AutoOrders extends Component {
         return 'light'
     }
   }
-  _renderTable(orders){
+  _renderTable (orders) {
     return !orders.length ? ('') : (
       <Table responsive size='sm'>
         <thead>
@@ -71,36 +69,36 @@ class AutoOrders extends Component {
         <tbody>
           {
             orders.map(element => {
-            return (
+              return (
                 <tr key={element.id} >
-                  <td> 
-                  <Badge color={'primary'}> {element.id} </Badge></td>
                   <td>
-                    <Badge color={'info'}> {element.currency_num > 10? element.currency_num.toFixed(2) : element.currency_num.toFixed(4)} </Badge>
+                    <Badge color={'primary'}> {element.id} </Badge></td>
+                  <td>
+                    <Badge color={'info'}> {element.currency_num > 10 ? element.currency_num.toFixed(2) : element.currency_num.toFixed(4)} </Badge>
                     <Badge color={'light'}> {element.currency} </Badge>
                   </td>
-                  <td> 
-                    <Badge color={'info'}> {element.asset_num > 10? element.asset_num.toFixed(2) : element.asset_num.toFixed(4)} </Badge>
+                  <td>
+                    <Badge color={'info'}> {element.asset_num > 10 ? element.asset_num.toFixed(2) : element.asset_num.toFixed(4)} </Badge>
                     <Badge color={'dark'}> {element.asset} </Badge>
                   </td>
                   <td>
-                  <Badge color={'dark'}> {element.offset} </Badge>
+                    <Badge color={'dark'}> {element.offset} </Badge>
                   </td>
                   <td>
-                  <Badge color={'light'}> {element.estimate}<img src={'https://tether.to/wp-content/uploads/2015/02/TetherIcon.png'} width='15' className='fa'/> </Badge>
+                    <Badge color={'light'}> {element.estimate}<img src={'https://tether.to/wp-content/uploads/2015/02/TetherIcon.png'} width='15' className='fa' /> </Badge>
                   </td>
                   <td>
                     <Row>
                       <Col xs='6' lg='auto'>
-                      <Badge color={this._color(element.strategy)}> {element.strategy} </Badge>
+                        <Badge color={this._color(element.type)}> {element.type} </Badge>
                       </Col>
                       <Col xs='6' lg='auto'>
-                      <Badge color={this._color(element.status)}> {element.status} </Badge>
+                        <Badge color={this._color(element.status)}> {element.status} </Badge>
                       </Col>
                       {
-                        element.status === 'watching' ?
-                      (<Col xs='12' lg='4'>
-                        <ConfirmButton color='danger' size='sm' onClick={() => this.cancelOrder(element.id)} > <i className='fa fa-ban'/> </ConfirmButton>
+                        element.status === 'watching'
+                      ? (<Col xs='12' lg='4'>
+                        <ConfirmButton color='danger' size='sm' onClick={() => this.cancelOrder(element.id)} > <i className='fa fa-ban' /> </ConfirmButton>
                       </Col>) : ''
                       }
                     </Row>
@@ -114,25 +112,25 @@ class AutoOrders extends Component {
     )
   }
 
-  _update(props){
-  let orders = Utils.clone(props.autoOrders)
-  api.getPrices().then(prices => {
-    orders.forEach(order => {
-      let currency_num = parseFloat(prices[order.asset+order.currency] || 0) * order.asset_num + order.currency_num
-      order.estimate = parseFloat(prices[order.currency+'USDT'] || 1) * currency_num
-      order.estimate = Utils.formatNumber(order.estimate)
-    })
-    orders = underscore.sortBy(orders, a => - new Date(a.updatedAt).getTime())
-    this.setState({orders})
-  }).catch(e => console.log(e))
+  _update (props) {
+    let orders = Utils.clone(props.autoOrders)
+    api.getPrices().then(prices => {
+      orders.forEach(order => {
+        let currency_num = parseFloat(prices[order.asset + order.currency] || 0) * order.asset_num + order.currency_num
+        order.estimate = parseFloat(prices[order.currency + 'USDT'] || 1) * currency_num
+        order.estimate = Utils.formatNumber(order.estimate)
+      })
+      orders = underscore.sortBy(orders, a => -new Date(a.updatedAt).getTime())
+      this.setState({orders})
+    }).catch(e => console.log(e))
   }
-  componentDidMount(){
+  componentDidMount () {
     this._update(this.props)
   }
-  componentWillReceiveProps(props){
+  componentWillReceiveProps (props) {
     this._update(props)
   }
-  
+
   render () {
     let orders = this.state.orders
     return (
@@ -142,8 +140,8 @@ class AutoOrders extends Component {
             <Card>
               <CardHeader>
                 <i className='fa fa-align-justify' /> Auto Order
-                <a className=" float-right mb-0 card-header-action btn btn-minimize"  onClick={() => this.setState({showOrder: !this.state.showOrder})}><i className={this.state.showOrder ? "icon-arrow-up" : "icon-arrow-down"}></i></a>
-                <a className=" float-right mb-0 card-header-action btn btn-minimize" onClick={() => this.refresh()}><i className='fa fa-refresh'></i></a>
+                <a className=' float-right mb-0 card-header-action btn btn-minimize' onClick={() => this.setState({showOrder: !this.state.showOrder})}><i className={this.state.showOrder ? 'icon-arrow-up' : 'icon-arrow-down'} /></a>
+                <a className=' float-right mb-0 card-header-action btn btn-minimize' onClick={() => this.refresh()}><i className='fa fa-refresh' /></a>
               </CardHeader>
               <Collapse isOpen={this.state.showOrder}>
                 <CardBody>

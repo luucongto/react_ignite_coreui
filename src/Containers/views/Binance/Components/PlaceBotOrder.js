@@ -28,13 +28,13 @@ class PlaceBotOrder extends Component {
       show: false,
       asset: this.assets('USDT')[0],
       currency: 'USDT',
-      strategy: this.strategys()[0].value,
+      type: this.types()[0].value,
       offset: 0,
       currency_num: 0,
       asset_num: 0
     }
   }
-  strategys () {
+  types () {
     return [{value: 'TEST', label: 'TEST'},
     {value: 'REAL', label: 'REAL'}]
   }
@@ -55,10 +55,10 @@ class PlaceBotOrder extends Component {
       currency: this.state.currency,
       currency_num: this.state.currency_num,
       asset_num: this.state.asset_num,
-      strategy: this.state.strategy,
-      offset: this.state.offset,
+      type: this.state.type,
+      offset: this.state.offset
     })
-    Alert.info(`Added Auto Order ${this.state.currency_num}${ this.state.currency} / ${this.state.asset_num+this.state.asset} ~ ${ this.state.offset}`, {
+    Alert.info(`Added Auto Order ${this.state.currency_num}${this.state.currency} / ${this.state.asset_num + this.state.asset} ~ ${this.state.offset}`, {
       position: 'bottom-right',
       effect: 'bouncyflip'
     })
@@ -67,13 +67,13 @@ class PlaceBotOrder extends Component {
     this.setState({
       asset: this.assets('USDT')[0],
       currency: 'USDT',
-      strategy: this.strategys()[0].value,
+      type: this.types()[0].value,
       offset: 0,
       currency_num: 0,
       asset_num: 0
     })
   }
-  _renderInputItem(prependText, middle, append){
+  _renderInputItem (prependText, middle, append) {
     return (
       <FormGroup row>
         <Col xl='12'>
@@ -84,8 +84,8 @@ class PlaceBotOrder extends Component {
               </InputGroupText>
             </InputGroupAddon>
             {middle}
-            { append ? 
-              (<InputGroupAddon addonType='append'>
+            { append
+              ? (<InputGroupAddon addonType='append'>
                 {append}
               </InputGroupAddon>) : ('')
             }
@@ -99,20 +99,20 @@ class PlaceBotOrder extends Component {
     let assets = this.assets(this.state.currency)
 
     let currencies = this.currencies()
-    let strategys = this.strategys()
+    let types = this.types()
     let offsetButtons = [1, 2, 3, 5, 10]
     return (
       <Col>
         <Card>
-          <CardHeader  onClick={() => this.setState({show: !this.state.show})}>
+          <CardHeader onClick={() => this.setState({show: !this.state.show})}>
             <i className='fa fa-align-justify' /> Add Auto (test)
-            <a className=" float-right mb-0 card-header-action btn btn-minimize"><i className={this.state.show ? "icon-arrow-up" : "icon-arrow-down"}></i></a>
+            <a className=' float-right mb-0 card-header-action btn btn-minimize'><i className={this.state.show ? 'icon-arrow-up' : 'icon-arrow-down'} /></a>
           </CardHeader>
           <Collapse isOpen={this.state.show}>
-          <CardBody>
-            <Row>
-              <Col lg='12' md='12' xl='6'>
-                {
+            <CardBody>
+              <Row>
+                <Col lg='12' md='12' xl='6'>
+                  {
                   this._renderInputItem(
                     'Balance',
                     (<Input type='number' id='currency_num' placeholder='Enter currency num' required value={this.state.currency_num} onChange={(event) => {
@@ -128,7 +128,7 @@ class PlaceBotOrder extends Component {
                     </Input>)
                   )
                 }
-                {
+                  {
                   this._renderInputItem(
                     'Offset',
                     (<Input type='number' id='price' placeholder='0' required value={this.state.offset} onChange={(event) => {
@@ -139,31 +139,28 @@ class PlaceBotOrder extends Component {
                     </InputGroupText>)
                   )
                 }
-                
-                
-                <FormGroup row>
-                  <Col xl='12'>
+
+                  <FormGroup row>
+                    <Col xl='12'>
                     <InputGroup>
                       <Row>
                         {
                           offsetButtons.map(offsetButton => (<Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => {
                             api.getPrices().then(prices => {
-                              let livePrice = parseFloat( prices[this.state.asset + this.state.currency] || 0)
+                              let livePrice = parseFloat(prices[this.state.asset + this.state.currency] || 0)
                               this.setState({offset: livePrice * offsetButton / 100})
                             }).catch(e => console.log(e))
-
-                            
                           }
-                          }> {offsetButton}%  </Button></Col>))
+                          }> {offsetButton}%       </Button></Col>))
                         }
                       </Row>
                     </InputGroup>
                   </Col>
-                </FormGroup>
-              </Col>
+                  </FormGroup>
+                </Col>
 
-              <Col>
-                {
+                <Col>
+                  {
                   this._renderInputItem(
                     'Asset',
                     (<Input type='number' id='price' placeholder='0' required value={this.state.asset_num} onChange={(event) => {
@@ -171,30 +168,30 @@ class PlaceBotOrder extends Component {
                       this.setState({asset_num})
                     }} />),
                     (<Input type='select' name='asset' id='asset' value={this.state.asset} onChange={(event) => this.setState({asset: event.target.value})}>
-                    {
+                      {
                       assets.map(e => <option key={e} value={e} >{e}</option>)
                     }
-                  </Input>)
+                    </Input>)
                   )
                 }
-                {
+                  {
                   this._renderInputItem(
                     'REAL API',
                     (
-                    <AppSwitch className={'ml-1 mr-3 mb-0 mt-1'} label color={'success'} defaultChecked={this.state.strategy === 'REAL'} size={'sm'} onClick={() => this.setState({strategy: this.state.strategy === 'REAL' ? 'TEST' : 'REAL'})} />
+                      <AppSwitch className={'ml-1 mr-3 mb-0 mt-1'} label color={'success'} defaultChecked={this.state.type === 'REAL'} size={'sm'} onClick={() => this.setState({type: this.state.type === 'REAL' ? 'TEST' : 'REAL'})} />
                     ),
                     null
                   )
                 }
-              </Col>
-            </Row>
-          </CardBody>
-          <CardFooter>
-            <Row>
-              <ConfirmButton className='ml-3' size='l' color='success' onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> Add </ConfirmButton>
-              <Button className='ml-3' size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button>
-            </Row>
-          </CardFooter>
+                </Col>
+              </Row>
+            </CardBody>
+            <CardFooter>
+              <Row>
+                <ConfirmButton className='ml-3' size='l' color='success' onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> Add </ConfirmButton>
+                <Button className='ml-3' size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button>
+              </Row>
+            </CardFooter>
           </Collapse>
         </Card>
       </Col>

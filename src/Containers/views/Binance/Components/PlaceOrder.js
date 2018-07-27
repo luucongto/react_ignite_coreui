@@ -65,7 +65,7 @@ class PlaceOrder extends Component {
       offset: this.state.offset,
       expect_price: this.state.expect_price
     })
-    Alert.info(`Added Order ${this.state.type} ${this.props.mode} ${ this.state.quantity}${this.state.asset} at ${this.state.expect_price}${this.state.currency}`, {
+    Alert.info(`Added Order ${this.state.type} ${this.props.mode} ${this.state.quantity}${this.state.asset} at ${this.state.expect_price}${this.state.currency}`, {
       position: 'bottom-right',
       effect: 'bouncyflip'
     })
@@ -81,21 +81,21 @@ class PlaceOrder extends Component {
     })
   }
 
-  _renderInputItem(prependText, middle, append){
+  _renderInputItem (prependText, middle, append) {
     return (
       <FormGroup row>
         <Col xl='12'>
           <InputGroup>
             {
               prependText ? (<InputGroupAddon addonType='prepend'>
-              <InputGroupText>
-                {prependText}
-              </InputGroupText>
+                <InputGroupText>
+                  {prependText}
+                </InputGroupText>
               </InputGroupAddon>) : ('')
             }
             {middle}
-            { append ? 
-              (<InputGroupAddon addonType='append'>
+            { append
+              ? (<InputGroupAddon addonType='append'>
                 {append}
               </InputGroupAddon>) : ('')
             }
@@ -111,73 +111,74 @@ class PlaceOrder extends Component {
     let types = this.types()
     let offsetButtons = [1, 2, 3, 5, 10]
     let avaiBalance = 0
-    let onOrderBalance= 0
-    if(this.props.accountInfo) {
+    let onOrderBalance = 0
+    if (this.props.accountInfo) {
       avaiBalance = Utils.formatNumber(parseFloat(this.props.accountInfo[this.state.currency].available))
-      onOrderBalance= Utils.formatNumber(parseFloat(this.props.accountInfo[this.state.currency].onOrder))
-    } 
+      onOrderBalance = Utils.formatNumber(parseFloat(this.props.accountInfo[this.state.currency].onOrder))
+    }
     return (
       <Col>
         <Card>
           <CardHeader onClick={() => this.setState({show: !this.state.show})}>
             <i className='fa fa-align-justify' /> {this.props.mode.toUpperCase()}
-            <a className=" float-right mb-0 card-header-action btn btn-minimize"><i className={this.state.show ? "icon-arrow-up" : "icon-arrow-down"}></i></a>
+            <a className=' float-right mb-0 card-header-action btn btn-minimize'><i className={this.state.show ? 'icon-arrow-up' : 'icon-arrow-down'} /></a>
           </CardHeader>
           <Collapse isOpen={this.state.show}>
-          <CardBody>
-            <Row>
-              <Col lg='12' md='12' xl='6'>
-                {this._renderInputItem(
+            <CardBody>
+              <Row>
+                <Col lg='12' md='12' xl='6'>
+                  {this._renderInputItem(
                   'Quantity',
                   (<Input type='number' id='quantity' placeholder='Enter quantity' required value={this.state.quantity} onChange={(event) => {
-                        let quantity = parseFloat(event.target.value)
-                        let total = (quantity * this.state.expect_price) || 0
-                        this.setState({quantity, total})
-                      }} 
+                    let quantity = parseFloat(event.target.value)
+                    let total = (quantity * this.state.expect_price) || 0
+                    this.setState({quantity, total})
+                  }}
                   />),
                   (<Input type='select' name='asset' id='asset' value={this.state.asset} onChange={(event) => this.setState({asset: event.target.value})}>
-                      {
+                    {
                         assets.map(e => <option key={e} value={e} >{e}</option>)
                       }
-                    </Input>)
+                  </Input>)
                 )}
-                
-                {this._renderInputItem(
+
+                  {this._renderInputItem(
                   'Offset',
                   (<Input type='number' id='price' placeholder='0' required value={this.state.offset} onChange={(event) => {
                     this.setState({offset: event.target.value})
-                  }}/>),
+                  }} />),
                   (<InputGroupText>
                     {this.state.currency}
                   </InputGroupText>)
                 )}
-                
-                <FormGroup row>
-                  <Col xl='12'>
-                    <InputGroup>
-                      <Row>
-                        {
-                          offsetButtons.map(offsetButton => (<Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => this.setState({offset: this.state.expect_price * offsetButton / 100})
-                          }> {offsetButton}%  </Button></Col>))
-                        }
-                      </Row>
-                    </InputGroup>
-                  </Col>
-                </FormGroup>
-              </Col>
 
-              <Col>
-                {
+                  <FormGroup row>
+                    <Col xl='12'>
+                      <InputGroup>
+                        <Row>
+                          {
+                          offsetButtons.map(offsetButton => (
+                            <Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => this.setState({offset: this.state.expect_price * offsetButton / 100})}> {offsetButton}%     </Button></Col>
+                          ))
+                        }
+                        </Row>
+                      </InputGroup>
+                    </Col>
+                  </FormGroup>
+                </Col>
+
+                <Col>
+                  {
                   this._renderInputItem(
                     'REAL API',
                     (
-                    <AppSwitch className={'ml-1 mr-3 mb-0 mt-1'} label color={'success'} defaultChecked={this.state.strategy === 'REAL'} size={'sm'} onClick={() => this.setState({strategy: this.state.strategy === 'REAL' ? 'TEST' : 'REAL'})} />
+                      <AppSwitch className={'ml-1 mr-3 mb-0 mt-1'} label color={'success'} defaultChecked={this.state.type === 'REAL'} size={'sm'} onClick={() => this.setState({type: this.state.type === 'REAL' ? 'TEST' : 'REAL'})} />
                     ),
                     null
                   )
                 }
-                
-                {this._renderInputItem(
+
+                  {this._renderInputItem(
                   'Expect',
                   (<Input type='number' id='price' placeholder='0' required value={this.state.expect_price} onChange={(event) => {
                     let expectPrice = parseFloat(event.target.value)
@@ -187,14 +188,14 @@ class PlaceOrder extends Component {
                   }} />),
                   (<Input type='select' name='currency' id='currency' onChange={(event) => {
                     this.setState({currency: event.target.value, asset: this.assets(event.target.value)[0]})
-                    }}>
+                  }}>
                     {
                       currencies.map(e => <option key={e.value} value={e.value} >{e.label}</option>)
                     }
                   </Input>)
                 )}
 
-                {this._renderInputItem(
+                  {this._renderInputItem(
                   'Total',
                   (<Input type='number' id='name' placeholder='Enter total' required value={this.state.total} onChange={(event) => {
                     try {
@@ -214,16 +215,16 @@ class PlaceOrder extends Component {
                     {this.state.currency}
                   </InputGroupText>)
                 )}
-                {this._renderInputItem(null, (<Badge color='light'>Avai {avaiBalance}</Badge>), (<Badge color='dark'>OnOrder {onOrderBalance}</Badge>))}
-              </Col>
-            </Row>
-          </CardBody>
-          <CardFooter>
-            <Row>
-              <ConfirmButton className='ml-3' size='l' color={this.props.mode === 'buy' ? 'success' : 'danger'} onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> {this.props.mode.toUpperCase()}</ConfirmButton>
-              <Button className='ml-3' size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button>
-            </Row>
-          </CardFooter>
+                  {this._renderInputItem(null, (<Badge color='light'>Avai {avaiBalance}</Badge>), (<Badge color='dark'>OnOrder {onOrderBalance}</Badge>))}
+                </Col>
+              </Row>
+            </CardBody>
+            <CardFooter>
+              <Row>
+                <ConfirmButton className='ml-3' size='l' color={this.props.mode === 'buy' ? 'success' : 'danger'} onClick={() => this.placeOrder()} ><i className='fa fa-dot-circle-o' /> {this.props.mode.toUpperCase()}</ConfirmButton>
+                <Button className='ml-3' size='l' color='warning' onClick={() => this.resetOrder()}><i className='fa fa-ban' /> Reset</Button>
+              </Row>
+            </CardFooter>
           </Collapse>
         </Card>
       </Col>
@@ -232,7 +233,7 @@ class PlaceOrder extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    accountInfo: state.accountInfo.data,
+    accountInfo: state.accountInfo.data
   }
 }
 

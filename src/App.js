@@ -5,15 +5,16 @@ import { PersistGate } from 'redux-persist/es/integration/react'
 import reduxStore from './Redux'
 import RootContainer from './Containers/RootContainer'
 // CoreUI Icons Set
-import '@coreui/icons/css/coreui-icons.min.css';
+import '@coreui/icons/css/coreui-icons.min.css'
 // Import Flag Icons Set
-import 'flag-icon-css/css/flag-icon.min.css';
+import 'flag-icon-css/css/flag-icon.min.css'
 // Import Font Awesome Icons Set
-import 'font-awesome/css/font-awesome.min.css';
+import 'font-awesome/css/font-awesome.min.css'
 // Import Simple Line Icons Set
-import 'simple-line-icons/css/simple-line-icons.css';
+import 'simple-line-icons/css/simple-line-icons.css'
 // Import Main styles for this application
 import './Containers/scss/style.css'
+import './Containers/scss/custom.css'
 // import '../node_modules/@coreui/styles/scss/_dropdown-menu-right.scss';
 const { persistor, store } = reduxStore()
 

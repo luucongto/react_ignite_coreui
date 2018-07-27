@@ -2,14 +2,22 @@ import React, { Component } from 'react'
 import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap'
 import { connect } from 'react-redux'
 import LoginActions from '../../../../Redux/LoginRedux'
-
+import { GoogleLogin } from 'react-google-login'
+import runtimeEnv from '@mars/heroku-js-runtime-env'
+import api from '../../../../Services/Api'
+const env = runtimeEnv()
 class Login extends Component {
   constructor (props) {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      isAuthenticated: false,
+      user: null,
+      token: ''
     }
+    this.googleResponse = this.googleResponse.bind(this)
+    this.logout = this.logout.bind(this)
   }
 
   componentWillReceiveProps (props) {
@@ -18,9 +26,28 @@ class Login extends Component {
       this.props.history.push('/')
     }
   }
-
+  logout = () => {
+    this.setState({isAuthenticated: false, token: '', user: null})
+  }
+  googleResponse = (response) => {
+    if (response.accessToken) {
+      const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken}, null, 2)], {type: 'application/json'})
+      // let params = {
+      //   accessToken : response.accessToken,
+      //   profileObj: response.profileObj
+      // }
+      this.props.login({
+        type: 'google',
+        tokenBlob: tokenBlob
+      })
+    }
+  }
   _login () {
-    this.props.login(this.state.username, this.state.password)
+    this.props.login({
+      type: 'local',
+      username: this.state.username,
+      password: this.state.password
+    })
   }
 
   render () {
@@ -55,19 +82,24 @@ class Login extends Component {
                         <Button color='primary' className='px-4' onClick={() => this._login()}>Login</Button>
                       </Col>
                       <Col xs='6' className='text-right'>
-                        <Button color='link' className='px-0'>Forgot password?</Button>
+                        {/* <Button color='link' className='px-0'>Forgot password?</Button> */}
                       </Col>
                     </Row>
+
                   </CardBody>
                 </Card>
-                <Card className='text-white bg-primary py-5 d-md-down-none' style={{ width: 44 + '%' }}>
+                <Card className='py-5 d-md-down-none' style={{ width: 44 + '%' }}>
                   <CardBody className='text-center'>
-                    <div>
-                      <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                      <Button color='primary' className='mt-3' active onClick={()=> this.props.history.push('/register')}>Register Now!</Button>
-                    </div>
+                    <h1>Or</h1>
+                    <p className='text-muted'>Sign In to your account</p>
+                    <GoogleLogin
+                      className='loginBtn loginBtn--google'
+                      clientId={env.REACT_APP_GOOGLE_CLIENT_ID}
+                      onSuccess={this.googleResponse}
+                      onFailure={this.googleResponse}
+                      >
+                      <strong> Login With Google </strong>
+                    </GoogleLogin>
                   </CardBody>
                 </Card>
               </CardGroup>
@@ -81,13 +113,13 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.data,
+    user: state.login.data
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (username, password) => dispatch(LoginActions.loginRequest(username, password))
+    login: (params) => dispatch(LoginActions.loginRequest(params))
   }
 }
 

@@ -30,8 +30,18 @@ class API {
     SocketApi.setup(loginToken)
   }
 
-  login (data) {
-    return this.api.post('login', data).then(data => {
+  login (params) {
+    console.log(params)
+    if(params.type === 'local')
+      return this.api.post('login', params).then(data => {
+        let result = data.data
+        if (result.success && result.token) this.authenticated(result.token)
+        return result
+      })
+    return this.loginGoogle(params.tokenBlob)
+  }
+  loginGoogle(data){
+    return this.api.post('auth/google', data).then(data => {
       let result = data.data
       if (result.success && result.token) this.authenticated(result.token)
       return result

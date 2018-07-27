@@ -27,6 +27,8 @@
     "react": "16.4.0",
     "react-chartjs-2": "2.7.2",
     "react-dom": "16.4.0",
+    "react-google-button": "^0.5.3",
+    "react-google-login": "^3.2.1",
     "react-helmet": "5.2.0",
     "react-loadable": "5.4.0",
     "react-redux": "5.0.7",
@@ -57,7 +59,33 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "standard --verbose | snazzy",
+    "lintdiff": "git diff --name-only --cached --relative | grep '\\.js$' | xargs standard | snazzy",
+    "fixcode": "standard --fix"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "nodemon": "^1.18.2",
+    "snazzy": "^7.1.1",
+    "standard": "10.0.2"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "globals": [
+      "describe",
+      "test",
+      "jest",
+      "expect",
+      "fetch",
+      "navigator",
+      "__DEV__",
+      "XMLHttpRequest",
+      "FormData",
+      "React$Element"
+    ],
+    "ignore": []
   },
   "engines": {
     "node": "v9.11.1",

@@ -1,9 +1,10 @@
 import { call, put } from 'redux-saga/effects'
 import LoginActions from '../Redux/LoginRedux'
 
-export function * login (loginAPI, { username, password }) {
+export function * login (loginAPI, {params}) {
   try {
-    const res = yield call(loginAPI, {username, password})
+    console.log(params)
+    const res = yield call(loginAPI, params)
     if (res && res.success) {
       yield put(LoginActions.loginSuccess(res))
     } else {
