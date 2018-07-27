@@ -32,15 +32,16 @@ class API {
 
   login (params) {
     console.log(params)
-    if(params.type === 'local')
+    if (params.type === 'local') {
       return this.api.post('login', params).then(data => {
         let result = data.data
         if (result.success && result.token) this.authenticated(result.token)
         return result
       })
+    }
     return this.loginGoogle(params.tokenBlob)
   }
-  loginGoogle(data){
+  loginGoogle (data) {
     return this.api.post('auth/google', data).then(data => {
       let result = data.data
       if (result.success && result.token) this.authenticated(result.token)
@@ -49,7 +50,6 @@ class API {
   }
 
   logout () {
-    
     return this.api.get('logout').then(result => {
       this.authenticated('empty')
       return result
@@ -84,7 +84,7 @@ class API {
     })
   }
 
-  getPrices(){
+  getPrices () {
     return this.api.get('binance/allPrices').then(data => {
       let result = data.data
       return result && result.success ? result.data : null
