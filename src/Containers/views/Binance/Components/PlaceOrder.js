@@ -113,8 +113,12 @@ class PlaceOrder extends Component {
     let avaiBalance = 0
     let onOrderBalance = 0
     if (this.props.accountInfo) {
-      avaiBalance = Utils.formatNumber(parseFloat(this.props.accountInfo[this.state.currency].available))
-      onOrderBalance = Utils.formatNumber(parseFloat(this.props.accountInfo[this.state.currency].onOrder))
+      let symbol = this.state.currency
+      if (this.props.mode === 'sell') {
+        symbol = this.state.asset
+      }
+      avaiBalance = Utils.formatNumber(parseFloat(this.props.accountInfo[symbol].available))
+      onOrderBalance = Utils.formatNumber(parseFloat(this.props.accountInfo[symbol].onOrder))
     }
     return (
       <Col>
@@ -158,7 +162,7 @@ class PlaceOrder extends Component {
                         <Row>
                           {
                           offsetButtons.map(offsetButton => (
-                            <Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => this.setState({offset: this.state.expect_price * offsetButton / 100})}> {offsetButton}%     </Button></Col>
+                            <Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => this.setState({offset: this.state.expect_price * offsetButton / 100})}> {offsetButton}% </Button></Col>
                           ))
                         }
                         </Row>
@@ -215,7 +219,7 @@ class PlaceOrder extends Component {
                     {this.state.currency}
                   </InputGroupText>)
                 )}
-                  {this._renderInputItem(null, (<Badge color='light'>Avai {avaiBalance}</Badge>), (<Badge color='dark'>OnOrder {onOrderBalance}</Badge>))}
+                  {this._renderInputItem(null, (<Badge color='light'>{this.props.mode === 'buy' ? this.state.currency : this.state.asset } Avai {avaiBalance}</Badge>), (<Badge color='dark'>OnOrder {onOrderBalance}</Badge>))}
                 </Col>
               </Row>
             </CardBody>

@@ -3,15 +3,13 @@ import { Button, Card, CardBody, CardHeader, Col, Row,
   CardFooter,
   FormGroup,
   Input,
-  Label,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Progress,
-  Badge,
   Collapse
 } from 'reactstrap'
 import ConfirmButton from './ConfirmButton'
+import LoadingButton from './LoadingButton'
 import {AppSwitch} from '@coreui/react'
 import { connect } from 'react-redux'
 import OpenOrdersActions from '../../../../Redux/OpenOrdersRedux'
@@ -142,20 +140,27 @@ class PlaceBotOrder extends Component {
 
                   <FormGroup row>
                     <Col xl='12'>
-                    <InputGroup>
-                      <Row>
-                        {
-                          offsetButtons.map(offsetButton => (<Col xs='2' key={offsetButton}><Button size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} active onClick={() => {
-                            api.getPrices().then(prices => {
-                              let livePrice = parseFloat(prices[this.state.asset + this.state.currency] || 0)
-                              this.setState({offset: livePrice * offsetButton / 100})
-                            }).catch(e => console.log(e))
-                          }
-                          }> {offsetButton}%       </Button></Col>))
+                      <InputGroup>
+                        <Row>
+                          {
+                          offsetButtons.map(offsetButton => (
+                            <Col xs='2' key={offsetButton}>
+                              <LoadingButton
+                                size='sm' color={this.props.mode === 'buy' ? 'success' : 'danger'} 
+                                request={() => api.getPrices()}
+                                handle={(prices) => {
+                                  let livePrice = parseFloat(prices[this.state.asset + this.state.currency] || 0)
+                                  this.setState({offset: livePrice * offsetButton / 100})
+                                }}
+                              >
+                                {offsetButton}%
+                              </LoadingButton>
+                            </Col>
+                          ))
                         }
-                      </Row>
-                    </InputGroup>
-                  </Col>
+                        </Row>
+                      </InputGroup>
+                    </Col>
                   </FormGroup>
                 </Col>
 
@@ -164,8 +169,8 @@ class PlaceBotOrder extends Component {
                   this._renderInputItem(
                     'Asset',
                     (<Input type='number' id='price' placeholder='0' required value={this.state.asset_num} onChange={(event) => {
-                      let asset_num = parseFloat(event.target.value)
-                      this.setState({asset_num})
+                      let assetNum = parseFloat(event.target.value)
+                      this.setState({assetNum})
                     }} />),
                     (<Input type='select' name='asset' id='asset' value={this.state.asset} onChange={(event) => this.setState({asset: event.target.value})}>
                       {

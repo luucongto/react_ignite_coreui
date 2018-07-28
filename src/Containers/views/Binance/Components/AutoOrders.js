@@ -83,7 +83,7 @@ class AutoOrders extends Component {
                   </td>
                   <td>
                     <Badge color={'dark'}> {element.offset} </Badge>
-                    <Badge color={element.offset_percent > 0 ? 'success' : 'danger'}> {element.offset_percentds}% </Badge>
+                    <Badge color={element.offset_percent > 0 ? 'success' : 'danger'}> {element.offset_percent}% </Badge>
                   </td>
                   <td>
                     <Badge color={'light'}> {element.estimate} </Badge>
