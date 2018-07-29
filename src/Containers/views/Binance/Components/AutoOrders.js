@@ -89,7 +89,7 @@ class AutoOrders extends Component {
                     <Badge color={'light'}> {element.estimate} </Badge>
                     <Badge color={'dark'}> {element.initial_estimate}</Badge>
                     <img src={'https://tether.to/wp-content/uploads/2015/02/TetherIcon.png'} width='15' className='fa' />
-                    <Badge color={element.initial_estimate - element.estimate > 0 ? 'success' : 'danger'}> {Utils.formatNumber((element.initial_estimate - element.estimate) / element.initial_estimate * 100)}% </Badge>
+                    <Badge color={element.initial_estimate_percent > 0 ? 'success' : 'danger'}> {element.initial_estimate_percent}% </Badge>
                   </td>
                   <td>
                     <Row>
@@ -124,6 +124,7 @@ class AutoOrders extends Component {
         order.estimate = parseFloat(prices[order.currency + 'USDT'] || 1) * currencyNum
         order.estimate = Utils.formatNumber(order.estimate)
         order.initial_estimate = Utils.formatNumber((parseFloat(prices[order.asset + order.currency] || 0) * order.initial_asset_num + order.initial_currency_num) * parseFloat(prices[order.currency + 'USDT'] || 1))
+        order.initial_estimate_percent = Utils.formatNumber(order.estimate / order.initial_estimate * 100)
         order.offset_percent = Utils.formatNumber(parseFloat(order.offset) / parseFloat(prices[order.asset + order.currency] || 1) * 100)
       })
       orders = underscore.sortBy(orders, a => -new Date(a.updatedAt).getTime())
