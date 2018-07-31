@@ -11,10 +11,7 @@ export default () => {
   const appReducer = combineReducers({
     login: require('./LoginRedux').reducer,
     accountInfo: require('./AccountInfoRedux').reducer,
-    openOrders: require('./OpenOrdersRedux').reducer,
-    autoOrders: require('./AutoOrdersRedux').reducer,
-    apiSetting: require('./ApiSettingRedux').reducer,
-    livePrice: require('./LivePriceRedux').reducer
+    bidder: require('./BidderRedux').reducer
   })
 
   const rootReducer = (state, action) => {

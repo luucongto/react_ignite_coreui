@@ -31,7 +31,7 @@ class DefaultLayout extends Component {
           <DefaultHeader />
         </AppHeader>
         <div className='app-body'>
-          <AppSidebar minimized display='lg'>
+          <AppSidebar display='lg'>
             <AppSidebarHeader />
             <AppSidebarForm />
             <AppSidebarNav navConfig={navigation} {...this.props} />
@@ -40,7 +40,7 @@ class DefaultLayout extends Component {
           </AppSidebar>
           <main className='main'>
             <AppBreadcrumb appRoutes={routes} />
-            <Container>
+            <Container fluid>
               <Switch>
                 {routes.map((route, idx) => {
                   return route.component ? (<PrivateRoute key={idx} {...route} />) : (null)

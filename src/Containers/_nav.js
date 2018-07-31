@@ -1,14 +1,14 @@
 export default {
   items: [
-    {
-      name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW'
-      }
-    },
+    // {
+    //   name: 'Dashboard',
+    //   url: '/dashboard',
+    //   icon: 'icon-speedometer',
+    //   badge: {
+    //     variant: 'info',
+    //     text: 'NEW'
+    //   }
+    // },
     {
       title: true,
       name: 'Account',
@@ -25,23 +25,33 @@ export default {
     },
     {
       title: true,
-      name: 'Components',
+      name: 'Auction House',
       wrapper: {
         element: '',
         attributes: {}
       }
     },
     {
-      name: 'Trade',
+      name: 'Auctioning',
       url: '/trade',
       icon: 'icon-basket'
     },
+    {
+      name: 'Wait',
+      url: '/wait',
+      icon: 'icon-cursor'
+    },
+    {
+      name: 'Finished',
+      url: '/finished',
+      icon: 'icon-basket-loaded'
+    }
     // {
     //   name: 'Trades',
     //   url: '/',
     //   icon: 'icon-basket',
     //   children: [
-        
+
     //     {
     //       name: 'History',
     //       url: '/tradeHistory',

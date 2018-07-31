@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import AuctionProduct from './Components/AuctionProduct'
-class Trade extends Component {
+import FinishedProduct from './Components/FinishedProduct'
+class Finished extends Component {
   constructor (props) {
     super(props)
     this.toggle = this.toggle.bind(this)
@@ -19,11 +19,11 @@ class Trade extends Component {
   render () {
     return (
       <div className='animated fadeIn'>
-        <AuctionProduct />
+        <FinishedProduct />
       </div>
 
     )
   }
 }
 
-export default Trade
+export default Finished

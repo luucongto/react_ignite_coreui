@@ -6649,6 +6649,13 @@ react-loadable@5.4.0:
   dependencies:
     prop-types "^15.5.0"
 
+react-number-format@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-3.5.0.tgz#f319ac72dbf07d6d9d33b0c2a91de7a2dba23a5a"
+  dependencies:
+    babel-runtime "^6.26.0"
+    prop-types "^15.6.0"
+
 react-perfect-scrollbar@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-perfect-scrollbar/-/react-perfect-scrollbar-1.1.1.tgz#60f2aa9ab61ecb45ef890070fc3b3a657f2491a9"

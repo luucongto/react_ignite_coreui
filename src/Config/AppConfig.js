@@ -1,5 +1,5 @@
 const AppConfig = {
-  appName: 'IgniteReactApp'
+  appName: 'Punch Auction House'
 }
 
 export default AppConfig
