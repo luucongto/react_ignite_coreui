@@ -4,26 +4,45 @@ class SocketApi {
   constructor () {
     this.socket = null
     this.handlers = []
-    this.connectionStatus = 'disconnect'
+    this.isConnected = false
     this.serverTime = '...'
     this.serverRealApi = true
+    this.listeners = {}
   }
 
   setup (loginToken) {
     let self = this
-    if(this.socket) this.socket.disconnect()
-    if(loginToken === 'empty') return
-    console.log("Setup socket ", loginToken)
+    if (this.socket) this.socket.disconnect()
+    if (loginToken === 'empty') return
+    console.log('Setup socket ', loginToken)
     this.socket = io(ApiConfig.baseURL, {query: `auth_token=${loginToken}`})
     this.socket.on('server_setting', data => {
-      this.serverTime = data.time
-      this.serverRealApi = data.type
+      self.serverTime = data.time
+      self.serverRealApi = data.type
+      let cbfuncs = self.listeners['server_setting']
+      if (cbfuncs) {
+        cbfuncs.forEach(cbfunc => {
+          return cbfunc(data)
+        })
+      }
     })
     this.socket.on('connect', () => {
-      self.connectionStatus = 'connect'
+      self.isConnected = true
+      let cbfuncs = self.listeners['connect']
+      if (cbfuncs) {
+        cbfuncs.forEach(cbfunc => {
+          return cbfunc()
+        })
+      }
     })
     this.socket.on('disconnect', () => {
-      self.connectionStatus = 'disconnect'
+      self.isConnected = false
+      let cbfuncs = self.listeners['disconnect']
+      if (cbfuncs) {
+        cbfuncs.forEach(cbfunc => {
+          return cbfunc()
+        })
+      }
     })
     this.handlers.forEach(handle => {
       this.socket.on(handle.event, data => {
@@ -31,21 +50,34 @@ class SocketApi {
       })
     })
   }
-  on(event, callback){
-    this.handlers.push({event, callback})
-    if(this.socket) {
-      console.log('Set listen', event)
-      this.socket.on(event, data=> {callback(data)})
+  addListener (event, callback) {
+    if (this.listeners[event]) {
+      this.listeners[event].push(callback)
+    } else {
+      this.listeners[event] = [callback]
     }
   }
-  emit(event, data){
-    if(this.socket){
+  removeListener (event, callback) {
+    if (this.listeners[event]) {
+      let index = this.listeners[event].indexOf(callback)
+      this.listeners[event].splice(index, 1)
+    }
+  }
+  on (event, callback) {
+    this.handlers.push({event, callback})
+    if (this.socket) {
+      console.log('Set listen', event)
+      this.socket.on(event, data => { callback(data) })
+    }
+  }
+  emit (event, data) {
+    if (this.socket) {
       this.socket.emit(event, data)
       return true
     }
     return false
   }
-  socket() {
+  socket () {
     return this.socket
   }
 }

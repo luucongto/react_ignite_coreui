@@ -12,7 +12,7 @@ class BiddingProductItem extends Component {
     super(props)
     let product = this.props.product
     let bidPrice: 0
-    if (product.status === 'bidding' && product.round) {
+    if (product.status === 'bidding' && product.round && product.round.bid_price > 0) {
       bidPrice = product.round.bid_price + product.step_price
     } else {
       bidPrice = product.start_price
@@ -134,7 +134,7 @@ class BiddingProductItem extends Component {
           <ListGroup>
             {product.bids ? product.bids.map((bid, index) => {
               return (<ListGroupItem key={index}>
-                <strong><img src={this._getBidder(bid.user_id).image_url} className='bidder_avatar' /> {this._getBidder(bid.user_id).name}</strong>
+                <strong><img src={this._getBidder(bid.user_id).image_url} className='bidder_avatar' /> {bid.user_id === this.props.user.id ? 'You' : this._getBidder(bid.user_id).name}</strong>
                 <strong className='float-right'>{this._renderCurrency(bid.bid_price)}</strong>
               </ListGroupItem>)
             }) : (<ListGroupItem className='text-danger text-center'>
@@ -218,7 +218,7 @@ class BiddingProductItem extends Component {
     return <NumberFormat value={value} displayType={'text'} thousandSeparator prefix={'VND'} />
   }
   _getBidder (userId) {
-    return this.props.bidders && this.props.bidders[userId] ? this.props.bidders[userId] : {
+    return this.props.users && this.props.users[userId] ? this.props.users[userId] : {
       name: '...',
       image_url: ''
     }
@@ -244,12 +244,12 @@ class BiddingProductItem extends Component {
     let roundHeader
     let biddingHeader
     let firstColWid = 8
+    let isBidDisable = false
+    let topColor = 'danger'
     if (!this.state.isOpen) {
-      let topColor = 'success'
-      let topText = 'You are top'
-      if (product.round && product.round.bidder !== this.props.user.id) {
-        topColor = 'danger'
-        topText = this._getBidder(product.round.bidder).name
+      if (product.round && product.round.bidder === this.props.user.id) {
+        topColor = 'success'
+        isBidDisable = true
       }
       if (product.status === 'bidding') {
         firstColWid = 4
@@ -264,9 +264,9 @@ class BiddingProductItem extends Component {
 
         biddingHeader = (
           <Col xl='6' className='float-right justify-content-end text-right'>
-            <Badge color={topColor}>{product.round ? topText : 'Lets take the first bid' } </Badge>
-            <Badge color='danger'>Current Price {product.round ? product.round.bid_price : product.start_price }</Badge>
-            <Button className='ml-3' color={!this.state.placingBid ? 'success' : 'light'} onClick={() => this.placeBid()} disabled={this.state.placingBid} > <i className={`fa ${this.state.placingBid ? 'fa-spinner fa-spin' : 'fa-shopping-basket'}`} /> Quick Bid {this.state.bidPrice } </Button>
+            {/* <Badge color={topColor}>{product.round ? topText : 'Lets take the first bid' } </Badge> */}
+            <Badge color={topColor} >Current Price {product.round ? product.round.bid_price : product.start_price }</Badge>
+            <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={() => this.placeBid()} disabled={isBidDisable} > <i className={`fa ${this.state.placingBid ? 'fa-spinner fa-spin' : 'fa-shopping-basket'}`} /> Quick Bid {this.state.bidPrice } </Button>
           </Col>
         )
       } else if (product.status === 'waiting') {
@@ -336,7 +336,7 @@ class BiddingProductItem extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.login.data,
-    bidders: state.bidder.data
+    users: state.bidder.data
   }
 }
 

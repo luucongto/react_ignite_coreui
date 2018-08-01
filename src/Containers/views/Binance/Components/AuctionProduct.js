@@ -89,15 +89,16 @@ class AuctionProduct extends Component {
   render () {
     let userId = this.props.login.id
     let biddings = this.state.products.filter(product => product.status === 'bidding')
-    let joinedBids = biddings.filter(product => product.bidders.indexOf(userId) >= 0)
-    let sortedBiddings = []
+    // let joinedBids = biddings.filter(product => product.bidders.indexOf(userId) >= 0)
+    let sortedBiddings = underscore.sortBy(biddings, product => product.start_at + ' ' + product.id)
     // add joined bid but not top
-    sortedBiddings = sortedBiddings.concat(joinedBids.filter(product => product.round && product.round.bidder !== userId))
-    // add not join
-    sortedBiddings = sortedBiddings.concat(biddings.filter(product => product.bidders.indexOf(userId) < 0))
-    // add joined bid but top
-    sortedBiddings = sortedBiddings.concat(joinedBids.filter(product => product.round && product.round.bidder === userId))
-    console.log(sortedBiddings.length, biddings.length)
+    // sortedBiddings = sortedBiddings.concat(joinedBids.filter(product => product.round && product.round.bidder !== userId))
+    // // add not join
+    // sortedBiddings = sortedBiddings.concat(biddings.filter(product => product.bidders.indexOf(userId) < 0))
+    // // add joined bid but top
+    // sortedBiddings = sortedBiddings.concat(joinedBids.filter(product => product.round && product.round.bidder === userId))
+    // console.log(sortedBiddings.length, biddings.length)
+
     return (
       <div className='animated fadeIn pl-0 pr-0'>
         {this._renderBidding(sortedBiddings, '12')}
