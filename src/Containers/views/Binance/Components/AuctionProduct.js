@@ -101,7 +101,8 @@ class AuctionProduct extends Component {
 
     return (
       <div className='animated fadeIn pl-0 pr-0'>
-        {this._renderBidding(sortedBiddings, '12')}
+        {sortedBiddings.length ? this._renderBidding(sortedBiddings, '12') 
+        : (<h3> There isn't any auctioning products </h3>)}
       </div>
     )
   }

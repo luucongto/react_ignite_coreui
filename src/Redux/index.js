@@ -11,7 +11,8 @@ export default () => {
   const appReducer = combineReducers({
     login: require('./LoginRedux').reducer,
     accountInfo: require('./AccountInfoRedux').reducer,
-    bidder: require('./BidderRedux').reducer
+    bidder: require('./BidderRedux').reducer,
+    serverSetting: require('./ServerSettingRedux').reducer
   })
 
   const rootReducer = (state, action) => {

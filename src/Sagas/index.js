@@ -5,11 +5,13 @@ import api from '../Services/Api'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { LoginTypes } from '../Redux/LoginRedux'
 import { AccountInfoTypes } from '../Redux/AccountInfoRedux'
+import { ServerSettingTypes } from '../Redux/ServerSettingRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { login, logout } from './LoginSagas'
 import { accountInfo } from './AccountInfoSagas'
+import { serverSetting } from './ServerSettingSagas'
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -25,6 +27,7 @@ export default function * root () {
     // Login
     takeLatest(LoginTypes.LOGIN_REQUEST, login, api.login),
     takeLatest(LoginTypes.LOGOUT_REQUEST, logout, api.logout),
-    takeLatest(AccountInfoTypes.ACCOUNT_INFO_REQUEST, accountInfo, api.accountInfo)
+    takeLatest(AccountInfoTypes.ACCOUNT_INFO_REQUEST, accountInfo, api.accountInfo),
+    takeLatest(ServerSettingTypes.SERVER_SETTING_REQUEST, serverSetting, api.serverSetting)
   ])
 }

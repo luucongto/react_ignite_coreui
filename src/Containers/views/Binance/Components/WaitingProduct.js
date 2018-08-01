@@ -98,7 +98,7 @@ class WaitingProduct extends Component {
     }
     return (
       <div className='animated fadeIn pl-0 pr-0'>
-        {this._renderBidding(waitings)}
+        {waitings.length ? this._renderBidding(waitings) : (<h3> There isn't any auctioning products </h3>)}
         <Pagination>
 
           {pages.map(page => page)}

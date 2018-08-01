@@ -53,6 +53,11 @@ class DefaultHeader extends Component {
             <Badge color='info' > {moment(SocketApi.serverTime * 1000).format('YYYY/MM/DD HH:mm:ss')}</Badge>
           </NavItem>
         </Nav>
+        {this.props.user && this.props.user.isAdmin ? (<Nav navbar>
+          <NavItem className='px-3'>
+            <NavLink href='/admin'>Admin</NavLink>
+          </NavItem>
+        </Nav>) : ('')}
         <Nav className='ml-auto' navbar>
           <NavItem className='px-3'>
             <strong> Welcome, {this.props.user ? this.props.user.name : ''} </strong>

@@ -42,7 +42,7 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 `
 
-let tempSaga = 
+let tempSaga =
 `import { call, put } from 'redux-saga/effects'
 import  ${changeCase.pascalCase(name)}Actions from '../Redux/ ${changeCase.pascalCase(name)}Redux'
 
@@ -59,10 +59,10 @@ export function *  ${changeCase.camelCase(name)} (api, {params}) {
   }
 }
 `
-try{
+try {
   fs.writeFileSync(`./src/Redux/${changeCase.pascalCase(name)}Redux.js`, temp)
   fs.writeFileSync(`./src/Sagas/${changeCase.pascalCase(name)}Saga.js`, tempSaga)
-  console.log(`DONE:`, `./src/Redux/${changeCase.pascalCase(name)}Redux.js`, `./src/Sagas/${changeCase.pascalCase(name)}Saga.js`)
-} catch(e){
+  console.log(`DONE:`, `./src/Redux/${changeCase.pascalCase(name)}Redux.js`, `./src/Sagas/${changeCase.pascalCase(name)}Sagas.js`)
+} catch (e) {
   console.log(e)
 }

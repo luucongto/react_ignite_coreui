@@ -59,6 +59,19 @@ class API {
       return result ? result.data : null
     })
   }
+
+  serverSetting (params) {
+    if (params.command === 'get') {
+      return this.api.get('admin/apisetting').then(result => {
+        return result ? result.data : null
+      })
+    }
+    if (params.command === 'post') {
+      return this.api.post('admin/apisetting', params).then(result => {
+        return result ? result.data : null
+      })
+    }
+  }
 }
 
 let api = new API()

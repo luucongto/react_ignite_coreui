@@ -190,6 +190,11 @@ const Finished = Loadable({
   loading: Loading
 })
 
+const Admin = Loadable({
+  loader: () => import('./views/Binance/Admin'),
+  loading: Loading
+})
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
@@ -233,7 +238,8 @@ const routes = [
   { path: '/accountInfo', name: 'Account Info', component: AccountInfo },
   { path: '/trade', name: 'Opening Auctions', component: Trade },
   { path: '/wait', name: 'Waiting Auctions', component: Wait },
-  { path: '/finished', name: 'Finished Auctions', component: Finished }
+  { path: '/finished', name: 'Finished Auctions', component: Finished },
+  { path: '/admin', name: 'Admin Panel', component: Admin }
 ]
 
 export default routes

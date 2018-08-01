@@ -89,7 +89,7 @@ class FinishedProduct extends Component {
     let finished = this.state.products.filter(product => product.status === 'finished')
     return (
       <div className='animated fadeIn pl-0 pr-0'>
-        {this._renderBidding(finished)}
+        {finished.length ? this._renderBidding(finished) : (<h3> There isn't any auctioning products </h3>)}
       </div>
     )
   }
