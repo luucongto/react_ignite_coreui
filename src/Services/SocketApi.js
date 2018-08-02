@@ -83,5 +83,5 @@ class SocketApi {
 }
 
 let api = new SocketApi()
-
+export const SocketApiClass = SocketApi
 export default api
