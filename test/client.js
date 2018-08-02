@@ -31,7 +31,7 @@ class Client {
   }
   run () {
     let self = this
-    let timeout = parseInt(Math.random() * 100000)
+    let timeout = parseInt(Math.random() * 20000)
     setTimeout(() => {
       self.placeBid()
       self.run()
