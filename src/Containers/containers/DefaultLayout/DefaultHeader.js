@@ -46,7 +46,6 @@ class DefaultHeader extends Component {
   _setupSocket () {
     let self = this
     SocketApi.on('auction', data => {
-      console.log('DefaulHeader update products')
       self.props.updateProducts(data)
     })
     SocketApi.on('users', data => {

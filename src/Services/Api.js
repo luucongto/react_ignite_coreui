@@ -31,7 +31,6 @@ class API {
   }
 
   login (params) {
-    console.log(params)
     if (params.type === 'local') {
       return this.api.post('login', params).then(data => {
         let result = data.data

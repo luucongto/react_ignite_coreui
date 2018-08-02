@@ -50,7 +50,6 @@ class BaseProducts extends Component {
     )
   }
   componentDidMount () {
-    console.log('componentDidMount', Object.values(this.props.products).length)
     window.addEventListener('scroll', this.onScroll, false)
     if (this.props.products && Object.values(this.props.products).length) {
       this.fetchMoreData(true)

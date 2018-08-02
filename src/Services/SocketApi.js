@@ -15,7 +15,6 @@ class SocketApi {
     let self = this
     if (this.socket) this.socket.disconnect()
     if (loginToken === 'empty') return
-    console.log('Setup socket ', loginToken)
     this.socket = io(ApiConfig.baseURL, {query: `auth_token=${loginToken}`})
     this.socket.on('server_setting', data => {
       self.serverTime = data.time
@@ -68,7 +67,6 @@ class SocketApi {
   on (event, callback) {
     this.handlers.push({event, callback})
     if (this.socket) {
-      console.log('Set listen', event)
       this.socket.on(event, data => { callback(data) })
     }
   }

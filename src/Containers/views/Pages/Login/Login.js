@@ -24,7 +24,6 @@ class Login extends Component {
   }
 
   componentWillReceiveProps (props) {
-    console.log('props', props)
     if (props.user) {
       this.props.history.push('/')
     }

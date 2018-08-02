@@ -3,7 +3,6 @@ import LoginActions from '../Redux/LoginRedux'
 
 export function * login (loginAPI, {params}) {
   try {
-    console.log(params)
     const res = yield call(loginAPI, params)
     if (res && res.success) {
       yield put(LoginActions.loginSuccess(res))
