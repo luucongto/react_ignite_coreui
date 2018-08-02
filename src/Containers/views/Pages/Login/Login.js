@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row, Progress } from 'reactstrap'
 import { AppNavbarBrand } from '@coreui/react'
 import { connect } from 'react-redux'
 import LoginActions from '../../../../Redux/LoginRedux'
@@ -54,7 +54,7 @@ class Login extends Component {
 
   render () {
     return (
-      <div className='app flex-row align-items-center'>
+      <div className='app flex-row align-items-center animated fadeIn'>
         <Container>
           <Row className='justify-content-center mb-3'>
             <Col md='6' className='just-center text-center'>
@@ -67,7 +67,9 @@ class Login extends Component {
             </Col>
           </Row>
           <Row className='justify-content-center'>
-            <Col md='6'>
+            {
+              this.props.fetching ? (<Progress value='100' color='success' animated />)
+            : <Col md='6'>
               <Card className='p-4'>
                 <CardBody>
                   <h1>Login</h1>
@@ -107,6 +109,7 @@ class Login extends Component {
                 </CardBody>
               </Card>
             </Col>
+            }
           </Row>
         </Container>
       </div>
@@ -116,7 +119,8 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.data
+    user: state.login.data,
+    fetching: state.login.fetching
   }
 }
 

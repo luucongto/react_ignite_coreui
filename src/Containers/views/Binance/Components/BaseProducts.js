@@ -13,12 +13,12 @@ class BaseProducts extends Component {
       fetchScroll: false,
       filters: {
         Phone: true,
-        Cpu: true,
+        CPU: true,
         'Mac Mini': true,
         Monitor: true,
         Keyboard: true,
         Server: true,
-        Ups: true
+        UPS: true
       }
     }
     this.fetchMoreData = this.fetchMoreData.bind(this)
