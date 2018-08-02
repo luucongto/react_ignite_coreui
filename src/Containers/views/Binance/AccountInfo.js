@@ -32,7 +32,7 @@ class AccountInfo extends Component {
         <ListGroupItem color='secondary'>
           <Row>
             <Col> Total Win Items <h3> {bidNum}</h3></Col>
-            <Col> Total Purcharsed <h3> <NumberFormat value={totalPurcharsed} displayType={'text'} thousandSeparator prefix={'VND'} /></h3></Col>
+            <Col> Total Purcharsed <h3> <NumberFormat value={totalPurcharsed} displayType={'text'} thousandSeparator prefix={'đ'} /></h3></Col>
           </Row>
         </ListGroupItem>
       </ListGroup>
@@ -46,8 +46,8 @@ class AccountInfo extends Component {
         </ListGroupItem>
         <ListGroupItem color='secondary'>
           <Row>
-            <Col> Start Price <h3> <NumberFormat value={product.start_price} displayType={'text'} thousandSeparator prefix={'VND'} /></h3></Col>
-            <Col> Minimum Step <h3> <NumberFormat value={product.step_price} displayType={'text'} thousandSeparator prefix={'VND'} /></h3></Col>
+            <Col> Start Price <h3> <NumberFormat value={product.start_price} displayType={'text'} thousandSeparator prefix={'đ'} /></h3></Col>
+            <Col> Minimum Step <h3> <NumberFormat value={product.step_price} displayType={'text'} thousandSeparator prefix={'đ'} /></h3></Col>
           </Row>
         </ListGroupItem>
       </ListGroup>
@@ -63,7 +63,7 @@ class AccountInfo extends Component {
             <Col className='ribbon'>
               <div class='ribbon-stitches-top' />
               <strong class='ribbon-content'>
-                <h1><NumberFormat value={product.win_price} displayType={'text'} thousandSeparator prefix={'VND'} /></h1>
+                <h1><NumberFormat value={product.win_price} displayType={'text'} thousandSeparator prefix={'đ'} /></h1>
               </strong>
               <div class='ribbon-stitches-bottom' />
             </Col>

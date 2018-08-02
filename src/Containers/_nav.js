@@ -32,17 +32,17 @@ export default {
       }
     },
     {
-      name: 'Auctioning',
+      name: 'Auctioning Products',
       url: '/trade',
       icon: 'icon-basket'
     },
     {
-      name: 'Wait',
+      name: 'Incomming Products',
       url: '/wait',
       icon: 'icon-cursor'
     },
     {
-      name: 'Finished',
+      name: 'Sold Products',
       url: '/finished',
       icon: 'icon-basket-loaded'
     }

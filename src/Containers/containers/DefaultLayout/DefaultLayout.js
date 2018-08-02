@@ -40,7 +40,7 @@ class DefaultLayout extends Component {
           </AppSidebar>
           <main className='main'>
             <AppBreadcrumb appRoutes={routes} />
-            <Container fluid>
+            <Container fluid style={{backgroundColor: 'white'}}>
               <Switch>
                 {routes.map((route, idx) => {
                   return route.component ? (<PrivateRoute key={idx} {...route} />) : (null)

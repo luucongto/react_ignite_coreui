@@ -7,6 +7,8 @@ import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler }
 import logo from '../../assets/img/brand/Punch_Logo.png'
 import sygnet from '../../assets/img/brand/Punch_P_Logo.png'
 import LoginActions from '../../../Redux/LoginRedux'
+import ProductAction from '../../../Redux/ProductRedux'
+import BidderAction from '../../../Redux/BidderRedux'
 import SocketApi from '../../../Services/SocketApi'
 import moment from 'moment'
 const propTypes = {
@@ -28,6 +30,7 @@ class DefaultHeader extends Component {
   }
   componentDidMount () {
     this.timeInterval = setInterval(() => this.forceUpdate(), 1000)
+    this._setupSocket()
   }
   componentWillUnmount () {
     clearInterval(this.timeInterval)
@@ -35,7 +38,22 @@ class DefaultHeader extends Component {
   logout () {
     this.props.logout()
   }
-
+  refresh () {
+    SocketApi.emit('auction', {
+      command: 'refresh'
+    })
+  }
+  _setupSocket () {
+    let self = this
+    SocketApi.on('auction', data => {
+      console.log('DefaulHeader update products')
+      self.props.updateProducts(data)
+    })
+    SocketApi.on('users', data => {
+      self.props.updateBidders(data)
+    })
+    this.refresh()
+  }
   render () {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
@@ -49,8 +67,9 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className='d-md-down-none' display='lg' />
         <Nav navbar>
           <NavItem className='px-3'>
-            <Badge color={this.state.isConnected ? 'success' : 'danger'} > <i className={this.state.isConnected ? 'fa fa-wifi' : 'fa fa-flash'} /> {this.state.isConnected ? '' : 'Server Disconnected'} </Badge>
+            <Badge color={this.state.isConnected ? 'success' : 'danger'} > <i className={this.state.isConnected ? 'fa fa-wifi' : 'fa fa-flash'} /> {this.state.isConnected ? SocketApi.onlineClients : 'Server Disconnected'} </Badge>
             <Badge color='info' > {moment(SocketApi.serverTime * 1000).format('YYYY/MM/DD HH:mm:ss')}</Badge>
+
           </NavItem>
         </Nav>
         {this.props.user && this.props.user.isAdmin ? (<Nav navbar>
@@ -83,13 +102,16 @@ DefaultHeader.defaultProps = defaultProps
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.data
+    user: state.login.data,
+    products: state.product.data
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: (username, password) => dispatch(LoginActions.logoutRequest())
+    logout: (username, password) => dispatch(LoginActions.logoutRequest()),
+    updateBidders: (bidders) => dispatch(BidderAction.bidderSuccess(bidders)),
+    updateProducts: (products) => dispatch(ProductAction.productSuccess(products))
   }
 }
 

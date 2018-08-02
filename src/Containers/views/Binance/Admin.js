@@ -8,11 +8,19 @@ class Admin extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      auto_start: false,
       multi_auction_same_time: 1
     }
   }
+  componentDidMount () {
+    this.props.request({command: 'get'})
+  }
   componentWillReceiveProps (props) {
-
+    if (!props.serverSetting) return
+    this.setState({
+      multi_auction_same_time: props.serverSetting.multi_auction_same_time,
+      auto_start: props.serverSetting.auto_start
+    })
   }
   _render () {
     return (
@@ -29,7 +37,7 @@ class Admin extends Component {
               </Row>
               <Row>
                 <Col xl='8'> Max products are auctioned at the same time </Col>
-                <Col xl='4'> <Input type='number' value={this.state.multi_auction_same_time} /> </Col>
+                <Col xl='4'> <Input type='number' value={this.state.multi_auction_same_time} onChange={(event) => this.setState({multi_auction_same_time: parseInt(event.target.value)})} /> </Col>
               </Row>
             </CardBody>
             <CardFooter>

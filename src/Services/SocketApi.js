@@ -7,6 +7,7 @@ class SocketApi {
     this.isConnected = false
     this.serverTime = '...'
     this.serverRealApi = true
+    this.onlineClients = 0
     this.listeners = {}
   }
 
@@ -19,6 +20,7 @@ class SocketApi {
     this.socket.on('server_setting', data => {
       self.serverTime = data.time
       self.serverRealApi = data.type
+      self.onlineClients = data.clients
       let cbfuncs = self.listeners['server_setting']
       if (cbfuncs) {
         cbfuncs.forEach(cbfunc => {

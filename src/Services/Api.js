@@ -16,10 +16,12 @@ class API {
     })
     const naviMonitor = (response) => console.log('hey!  listen! ', response)
     this.api.addMonitor(naviMonitor)
-    this.loginToken = loginToken
+    this.authenticated = this.authenticated.bind(this)
     this.login = this.login.bind(this)
+    this.loginGoogle = this.loginGoogle.bind(this)
     this.logout = this.logout.bind(this)
     this.accountInfo = this.accountInfo.bind(this)
+    this.serverSetting = this.serverSetting.bind(this)
   }
 
   authenticated (loginToken) {
