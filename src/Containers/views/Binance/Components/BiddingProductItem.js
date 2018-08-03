@@ -175,23 +175,6 @@ class BiddingProductItem extends Component {
     if (product.start_at > now) {
       return ('')
     }
-    if (!product.round) {
-      return (
-        <Row>
-
-          <Col xl={this.props.col === '12' ? '4' : '6'} style={{zIndex: 1, paddingLeft: 50}}>
-            <Row className='text-center ribbon-container'>
-              <Col xl='12' className='text-center' id='ribbon-container' >
-                <div className='ribbon-red'>
-                  <span id='content-red'>NO ONE BID</span>
-                </div>
-              </Col>
-            </Row>
-            {this._renderProductDetail(product, 12)}
-          </Col>
-        </Row>
-      )
-    }
     return (
       <Row>
         <Col xl='12' >
@@ -207,7 +190,7 @@ class BiddingProductItem extends Component {
           <Row className='text-center'>
             <Col className='text-center text-danger'>
               <h5>WIN PRICE</h5>
-              <h3>{this._renderCurrency(product.win_price)}</h3>
+              <h3>{this._renderCurrency(product.win_price || 0)}</h3>
             </Col>
           </Row>
           {this._renderProductDetail(product, 12)}
@@ -297,7 +280,7 @@ class BiddingProductItem extends Component {
         biddingHeader = (
           <Col xl='4' className='float-right justify-content-end text-right' onClick={() => this.setState({isOpen: !this.state.isOpen})} >
             <Badge color={topColor}>{product.round ? this._getBidder(product.round.bidder).name : 'No one bid' } </Badge>
-            <Badge color='danger'>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</Badge>
+            <Badge color='danger'>{this._renderCurrency(product.win_price || 0)}</Badge>
           </Col>
         )
       }

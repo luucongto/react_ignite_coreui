@@ -1,26 +1,31 @@
 import React, { Component } from 'react'
 import { Button, Col, Row, Card, CardHeader, CardBody, Input, CardFooter } from 'reactstrap'
 import { connect } from 'react-redux'
-import underscore from 'underscore'
 import { AppSwitch } from '@coreui/react'
 import ServerSettingActions from '../../../Redux/ServerSettingRedux'
 class Admin extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      auto_start: false,
+      auto_start: true,
       multi_auction_same_time: 1
     }
-  }
-  componentDidMount () {
     this.props.request({command: 'get'})
   }
+  componentDidMount () {
+    
+  }
   componentWillReceiveProps (props) {
+    console.log(props.serverSetting)
     if (!props.serverSetting) return
     this.setState({
       multi_auction_same_time: props.serverSetting.multi_auction_same_time,
-      auto_start: props.serverSetting.auto_start
+      auto_start: !!props.serverSetting.auto_start
     })
+    this.forceUpdate()
+  }
+  updateApi () {
+    this.props.request({command: 'post', auto_start: this.state.auto_start ? 1 : 0, multi_auction_same_time: this.state.multi_auction_same_time})
   }
   _render () {
     return (
@@ -31,9 +36,13 @@ class Admin extends Component {
               Socket Bot Setting
             </CardHeader>
             <CardBody>
-              <Row>
+              <Row className='mb-2'>
                 <Col xl='10'> Auto Start Auction Item </Col>
-                <Col xl='2' className='text-right'> <AppSwitch className={'mx-1'} color={'primary'} checked /> </Col>
+                <Col xl='2' className='text-right'> 
+                  <Button size='sm' color='info' onClick={() => this.setState({auto_start: !this.state.auto_start})} >
+                    <i className={this.state.auto_start ? 'mr-1 fa fa-check-square-o' : 'mr-1 fa fa-square-o'} />
+                  </Button>
+                </Col>
               </Row>
               <Row>
                 <Col xl='8'> Max products are auctioned at the same time </Col>
@@ -41,7 +50,7 @@ class Admin extends Component {
               </Row>
             </CardBody>
             <CardFooter>
-              <Button color='success' onClick={() => this.updateApi()} > Update and Restart Server </Button>
+              <Button color='success' onClick={() => this.updateApi()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Update and Restart Server </Button>
             </CardFooter>
           </Card>
         </Col>
