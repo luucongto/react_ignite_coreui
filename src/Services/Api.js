@@ -75,6 +75,16 @@ class API {
     }
   }
   notice (params) {
+    if (params.command === 'post') {
+      return this.api.post('notice/add', params).then(result => {
+        return result ? result.data : null
+      })
+    }
+    if (params.command === 'getAdmin') {
+      return this.api.get('notice/admin').then(result => {
+        return result ? result.data : null
+      })
+    }
     return this.api.get('notice/all').then(result => {
       return result ? result.data : null
     })
