@@ -30,7 +30,7 @@ class BiddingProductItem extends Component {
     let product = props.product
     let bidPrice = this.state.bidPrice
     if (!product) return
-    if (product.status === 'bidding' && product.round) {
+    if (product.status === 'bidding' && product.round && product.round.bid_price > 0) {
       bidPrice = product.round.bid_price + product.step_price
     } else {
       bidPrice = product.start_price
