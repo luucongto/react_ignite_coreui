@@ -23,25 +23,30 @@ class Notices extends Component {
   render () {
     return (
       <div className='animated fadeIn'>
-        <Row>
-          <Col xs='12' xl='6'>
+        <Col>
+          <Row>
+
             {this.props.notices && this.props.notices.length
           ? <InfiniteScrollList
             items={this.props.notices}
-            renderItem={(notice, index) => <Card key={index}>
-              <CardHeader>
+            renderItem={(notice, index) =>
+              <Col xs='12' xl='6' key={index}>
+                <Card>
+                  <CardHeader>
                 [{moment(notice.updatedAt).format('YYYY/MM/DD HH:mm')}] {notice.title}
-              </CardHeader>
-              <CardBody>
-                {renderHTML(notice.content)}
-              </CardBody>
-            </Card>}
+                  </CardHeader>
+                  <CardBody>
+                    {renderHTML(notice.content)}
+                  </CardBody>
+                </Card>
+              </Col>}
             fetchData={(init) => this._fetchMoreData(init)}
           />
           : ('Yay! There isn\'t any notices now. Let\'s try again later!!!')
             }
-          </Col>
-        </Row>
+
+          </Row>
+        </Col>
       </div>
     )
   }

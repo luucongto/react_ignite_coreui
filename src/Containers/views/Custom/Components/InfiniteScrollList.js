@@ -14,11 +14,7 @@ class InfiniteScrollList extends Component {
     this.onScroll = this.onScroll.bind(this)
   }
   _renderList (items) {
-    return (
-      <Row>
-        {items.map((item, index) => this.props.renderItem(item, index))}
-      </Row>
-    )
+    return items.map((item, index) => this.props.renderItem(item, index))
   }
   componentDidMount () {
     window.addEventListener('scroll', this.onScroll, false)
