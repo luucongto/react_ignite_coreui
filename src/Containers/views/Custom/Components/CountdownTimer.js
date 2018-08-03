@@ -37,7 +37,7 @@ class CountdownTimer extends Component {
     let diff = 0
     if (this.state.autostart) {
       let end = this.state.end
-      diff = parseInt(-1 * moment().diff(end * 1000) / 1000)
+      diff = end - Math.floor(new Date().getTime() / 1000)
     } else {
       diff = this.props.duration || 0
     }
