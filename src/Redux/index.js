@@ -13,7 +13,9 @@ export default () => {
     accountInfo: require('./AccountInfoRedux').reducer,
     bidder: require('./BidderRedux').reducer,
     serverSetting: require('./ServerSettingRedux').reducer,
-    product: require('./ProductRedux').reducer
+    product: require('./ProductRedux').reducer,
+    notice: require('./NoticeRedux').reducer,
+    localLike: require('./LocalLikeRedux').reducer
   })
 
   const rootReducer = (state, action) => {

@@ -174,27 +174,31 @@ const Widgets = Loadable({
 
 // Custom
 const AccountInfo = Loadable({
-  loader: () => import('./views/Binance/AccountInfo'),
+  loader: () => import('./views/Custom/AccountInfo'),
   loading: Loading
 })
 const Trade = Loadable({
-  loader: () => import('./views/Binance/Trade'),
+  loader: () => import('./views/Custom/Trade'),
   loading: Loading
 })
 const Wait = Loadable({
-  loader: () => import('./views/Binance/Wait'),
+  loader: () => import('./views/Custom/Wait'),
   loading: Loading
 })
 const Finished = Loadable({
-  loader: () => import('./views/Binance/Finished'),
+  loader: () => import('./views/Custom/Finished'),
   loading: Loading
 })
 
 const Admin = Loadable({
-  loader: () => import('./views/Binance/Admin'),
+  loader: () => import('./views/Custom/Admin'),
   loading: Loading
 })
 
+const Notices = Loadable({
+  loader: () => import ('./views/Custom/Notices'),
+  loading: Loading
+})
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
@@ -239,7 +243,8 @@ const routes = [
   { path: '/trade', name: 'Opening Auctions', component: Trade },
   { path: '/wait', name: 'Waiting Auctions', component: Wait },
   { path: '/finished', name: 'Finished Auctions', component: Finished },
-  { path: '/admin', name: 'Admin Panel', component: Admin }
+  { path: '/admin', name: 'Admin Panel', component: Admin },
+  { path: '/notices', name: 'Notices', component: Notices}
 ]
 
 export default routes

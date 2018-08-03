@@ -10,6 +10,15 @@ export default {
     //   }
     // },
     {
+      name: 'Notices',
+      url: '/notices',
+      icon: 'icon-speedometer',
+      badge: {
+        variant: 'info',
+        text: 'NEW'
+      }
+    },
+    {
       title: true,
       name: 'Account',
       wrapper: { // optional wrapper object

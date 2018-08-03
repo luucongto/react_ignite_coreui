@@ -1,6 +1,6 @@
 var fs = require('fs')
 var changeCase = require('change-case')
-let name = process.argv[2]
+let name = process.argv[2].trim()
 let temp = `
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'

@@ -22,6 +22,7 @@ class API {
     this.logout = this.logout.bind(this)
     this.accountInfo = this.accountInfo.bind(this)
     this.serverSetting = this.serverSetting.bind(this)
+    this.notice = this.notice.bind(this)
   }
 
   authenticated (loginToken) {
@@ -72,6 +73,11 @@ class API {
         return result ? result.data : null
       })
     }
+  }
+  notice (params) {
+    return this.api.get('notice/all').then(result => {
+      return result ? result.data : null
+    })
   }
 }
 

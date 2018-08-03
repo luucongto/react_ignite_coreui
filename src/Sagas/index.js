@@ -6,12 +6,14 @@ import { StartupTypes } from '../Redux/StartupRedux'
 import { LoginTypes } from '../Redux/LoginRedux'
 import { AccountInfoTypes } from '../Redux/AccountInfoRedux'
 import { ServerSettingTypes } from '../Redux/ServerSettingRedux'
+import { NoticeTypes } from '../Redux/NoticeRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { login, logout } from './LoginSagas'
 import { accountInfo } from './AccountInfoSagas'
 import { serverSetting } from './ServerSettingSagas'
+import { notice } from './NoticeSaga'
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -28,6 +30,7 @@ export default function * root () {
     takeLatest(LoginTypes.LOGIN_REQUEST, login, api.login),
     takeLatest(LoginTypes.LOGOUT_REQUEST, logout, api.logout),
     takeLatest(AccountInfoTypes.ACCOUNT_INFO_REQUEST, accountInfo, api.accountInfo),
-    takeLatest(ServerSettingTypes.SERVER_SETTING_REQUEST, serverSetting, api.serverSetting)
+    takeLatest(ServerSettingTypes.SERVER_SETTING_REQUEST, serverSetting, api.serverSetting),
+    takeLatest(NoticeTypes.NOTICE_REQUEST, notice, api.notice)
   ])
 }

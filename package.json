@@ -33,6 +33,7 @@
     "react-loadable": "5.4.0",
     "react-number-format": "^3.5.0",
     "react-redux": "5.0.7",
+    "react-render-html": "^0.6.0",
     "react-router-config": "1.0.0-beta.4",
     "react-router-dom": "4.2.2",
     "react-s-alert": "1.4.1",

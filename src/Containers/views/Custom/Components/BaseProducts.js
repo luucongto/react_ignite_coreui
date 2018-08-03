@@ -2,15 +2,12 @@ import React, { Component } from 'react'
 import { Card, CardHeader, CardBody, Badge, FormGroup, Input, Label, Button, Col, Row, Progress } from 'reactstrap'
 import { connect } from 'react-redux'
 import BiddingProductItem from './BiddingProductItem'
+import InfiniteScrollList from './InfiniteScrollList'
 import underscore from 'underscore'
 class BaseProducts extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      page: 0,
-      products: [],
-      hasMore: true,
-      fetchScroll: false,
       filters: {
         Phone: true,
         CPU: true,
@@ -21,8 +18,7 @@ class BaseProducts extends Component {
         UPS: true
       }
     }
-    this.fetchMoreData = this.fetchMoreData.bind(this)
-    this.onScroll = this.onScroll.bind(this)
+    this._fetchMoreData = this._fetchMoreData.bind(this)
   }
   _color (status) {
     switch (status) {
@@ -49,54 +45,28 @@ class BaseProducts extends Component {
       </Row>
     )
   }
-  componentDidMount () {
-    window.addEventListener('scroll', this.onScroll, false)
-    if (this.props.products && Object.values(this.props.products).length) {
-      this.fetchMoreData(true)
-    }
-  }
-  componentWillReceiveProps (props) {
-    if (props.products && Object.values(props.products).length) {
-      this.fetchMoreData(true)
-    }
-  }
-  componentWillUnMount () {
-    window.removeEventListener('scroll', this.onScroll, false)
-    clearTimeout(this.fetchTimeoutHandle)
-  }
-  onScroll () {
-    if (
-      (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500) &&
-      this.state.hasMore
-    ) {
-      this.fetchMoreData()
-    }
-  }
-  fetchMoreData (init = false) {
-    if (this.state.fetchScroll) return
-    this.setState({fetchScroll: true})
-    this.fetchTimeoutHandle = setTimeout(() => {
-      let products = Object.values(this.props.products) || []
-      let currentProducts = init ? [] : this.state.products
-      let totalWaitings = products
-      if (this.props.today) {
-        let today = new Date().toDateString()
 
-        totalWaitings = products.filter(product => {
-          return new Date(product.updatedAt).toDateString() === today
-        })
-      }
-      totalWaitings = totalWaitings.filter(product => product.status === this.props.filterStatus)
-      Object.keys(this.state.filters).forEach(filter => {
-        if (!this.state.filters[filter]) {
-          totalWaitings = totalWaitings.filter(product => product.category !== filter)
-        }
+  _fetchMoreData (currentProducts, init = false) {
+    let products = Object.values(this.props.products) || []
+    currentProducts = init ? [] : currentProducts
+    let totalWaitings = products
+    if (this.props.today) {
+      let today = new Date().toDateString()
+
+      totalWaitings = products.filter(product => {
+        return new Date(product.updatedAt).toDateString() === today
       })
-      let filteredLists = totalWaitings.slice(currentProducts.length, currentProducts.length + 20)
-      let newProducts = [...currentProducts, ...filteredLists]
-      newProducts = underscore.uniq(newProducts)
-      this.setState({fetchScroll: false, products: newProducts, hasMore: newProducts.length < totalWaitings.length })
-    }, 300)
+    }
+    totalWaitings = totalWaitings.filter(product => product.status === this.props.filterStatus)
+    Object.keys(this.state.filters).forEach(filter => {
+      if (!this.state.filters[filter]) {
+        totalWaitings = totalWaitings.filter(product => product.category !== filter)
+      }
+    })
+    let filteredLists = totalWaitings.slice(currentProducts.length, currentProducts.length + 20)
+    let newProducts = [...currentProducts, ...filteredLists]
+    newProducts = underscore.uniq(newProducts)
+    return {items: newProducts, hasMore: newProducts.length < totalWaitings.length}
   }
   render () {
     let self = this
@@ -117,7 +87,6 @@ class BaseProducts extends Component {
                   let filters = JSON.parse(JSON.stringify(this.state.filters))
                   filters[filter] = !filters[filter]
                   self.setState({filters})
-                  self.fetchMoreData(true)
                 }} >
                   <i className={this.state.filters[filter] ? 'mr-1 fa fa-check-square-o' : 'mr-1 fa fa-square-o'} />
                   {filter}
@@ -126,7 +95,13 @@ class BaseProducts extends Component {
             }
           </CardHeader>
         </Card>
-        {this._renderList(this.state.products, this.props.colLength)}
+        <Row>
+          <InfiniteScrollList ref='scrollList'
+            items={this.props.products}
+            renderItem={(product, index) => <BiddingProductItem col={this.props.colLength} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
+            fetchData={(currentProducts, init) => this._fetchMoreData(currentProducts, init)}
+        />
+        </Row>
       </Col>
     )
   }
