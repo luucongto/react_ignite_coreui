@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Card, CardHeader, CardBody, Badge, FormGroup, Input, Label, Button, Col, Row, Progress } from 'reactstrap'
-import { connect } from 'react-redux'
 import BiddingProductItem from './BiddingProductItem'
 import InfiniteScrollList from './InfiniteScrollList'
 import underscore from 'underscore'
+import PropTypes from 'prop-types'
 class BaseProducts extends Component {
   constructor (props) {
     super(props)
@@ -97,7 +97,7 @@ class BaseProducts extends Component {
         </Card>
         <Row>
           <InfiniteScrollList ref='scrollList'
-            items={this.props.products}
+            items={Object.values(this.props.products) || []}
             renderItem={(product, index) => <BiddingProductItem col={this.props.colLength} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
             fetchData={(currentProducts, init) => this._fetchMoreData(currentProducts, init)}
         />
@@ -106,16 +106,7 @@ class BaseProducts extends Component {
     )
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    login: state.login.data,
-    products: state.product.data
-  }
+BaseProducts.propTypes = {
+  products: PropTypes.object
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(BaseProducts)
+export default BaseProducts

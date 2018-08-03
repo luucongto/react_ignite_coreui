@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardBody, Badge, FormGroup, Input, Label, Button, Col, Row, Progress } from 'reactstrap'
+import { Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 class InfiniteScrollList extends Component {
   constructor (props) {

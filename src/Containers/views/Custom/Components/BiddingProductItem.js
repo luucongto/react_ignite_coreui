@@ -279,7 +279,7 @@ class BiddingProductItem extends Component {
       } else if (product.status === 'finished') {
         biddingHeader = (
           <Col xl='4' className='float-right justify-content-end text-right' onClick={() => this.setState({isOpen: !this.state.isOpen})} >
-            <Badge color={topColor}>{product.round ? this._getBidder(product.round.bidder).name : 'No one bid' } </Badge>
+            <Badge color={product.winner_id === this.props.user.id ? 'success' : 'danger'}>{this._getBidder(product.winner_id).name } </Badge>
             <Badge color='danger'>{this._renderCurrency(product.win_price || 0)}</Badge>
           </Col>
         )
