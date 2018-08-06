@@ -343,3 +343,44 @@
   right: 0;
   border-width: .5em .5em 0 0;
 }
+
+.img-ribbon {
+  background: url('../assets/img/ribbon/white-ribbon.png');
+  height: 90px;
+  margin-bottom: 5px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  padding-top: 1em;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1.5em;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-ribbon {
+  background: url('../assets/img/ribbon/circle.png');
+  height: 200px;
+  margin-bottom: 5px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  padding-top: 20px;
+  text-align: center
+}
+
+.sold-ribbon {
+  background: url('../assets/img/ribbon/sold.png');
+  height: 50px;
+    margin-bottom: 5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: left;
+    padding-top: 20px;
+    text-align: center;
+    position: absolute;
+    left: -11px;
+    top: -25px;
+}

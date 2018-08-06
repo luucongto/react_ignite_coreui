@@ -8,6 +8,7 @@ import NumberFormat from 'react-number-format'
 import Carousels from './Carousels'
 import SocketApi from '../../../../Services/SocketApi'
 import logo from '../../../assets/img/brand/Punch_Logo.png'
+import pLogo from '../../../assets/img/brand/Punch_P_Logo.png'
 class BiddingProductItem extends Component {
   constructor (props) {
     super(props)
@@ -125,6 +126,11 @@ class BiddingProductItem extends Component {
             )
           )}
           </Row>
+          <Row className='mt-3'>
+            <Col xl='12' className='img-ribbon'>
+              <h3>Seller <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3>
+            </Col>
+          </Row>
         </Col>
 
         <Col xl={this.props.col === '12' ? '3' : '6'}>
@@ -152,6 +158,11 @@ class BiddingProductItem extends Component {
         {this._renderProductDetail(product, 8)}
         <Col xl={this.props.col === '12' ? '4' : '4'}>
           <ListGroup>
+            <ListGroupItem color='danger'>
+              <Row>
+                <Col> Seller <h3> <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3></Col>
+              </Row>
+            </ListGroupItem>
             <ListGroupItem color='success'>
               <Row>
                 <Col> Start <h3>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:mm')}</h3></Col>
@@ -177,20 +188,20 @@ class BiddingProductItem extends Component {
     }
     return (
       <Row>
+        
         <Col xl='12' >
-
-          {/* <Col xl={this.props.col === '12' ? '4' : '6'} style={{paddingRight: 25, paddingTop: '16%'}}> */}
-          <Row className='text-center just-center'>
-            <Col xl='10' className='text-center' id='ribbon-container' >
-              <div className='ribbon-red'>
-                <span id='content-red'>{this._getBidder(product.winner_id).name}</span>
-              </div>
+          {product.winner_id ? <Col className='sold-ribbon' ></Col> : ('')}
+          <Row className='text-center just-center circle-ribbon'>
+            <Col xl='8' lg='6' xs='10' className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66}}>
+              <span id='content-red'>{this._getBidder(product.winner_id).name}</span>
+            </Col>
+            <Col xl='12' className='text-white' style={{fontSize: '1.5em'}}>
+              {this._renderCurrency(product.win_price || 0)}
             </Col>
           </Row>
-          <Row className='text-center'>
-            <Col className='text-center text-danger'>
-              <h5>WIN PRICE</h5>
-              <h3>{this._renderCurrency(product.win_price || 0)}</h3>
+          <Row className='mt-3'>
+            <Col xl='12' className='img-ribbon'>
+              Seller <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}
             </Col>
           </Row>
           {this._renderProductDetail(product, 12)}
@@ -202,9 +213,10 @@ class BiddingProductItem extends Component {
     return <NumberFormat value={value} displayType={'text'} thousandSeparator prefix={'đ'} />
   }
   _getBidder (userId) {
-    return this.props.users && this.props.users[userId] ? this.props.users[userId] : {
-      name: '...',
-      image_url: ''
+    let user = this.props.users && this.props.users[userId] ? this.props.users[userId] : {}
+    return {
+      name: user.name || '...',
+      image_url: user.image_url || pLogo
     }
   }
   _color (status) {
