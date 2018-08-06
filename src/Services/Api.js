@@ -14,8 +14,8 @@ class API {
       // 15 second timeout...
       timeout: 15000
     })
-    const naviMonitor = (response) => console.log('hey!  listen! ', response)
-    this.api.addMonitor(naviMonitor)
+    // const naviMonitor = (response) => console.log('hey!  listen! ', response)
+    // this.api.addMonitor(naviMonitor)
     this.authenticated = this.authenticated.bind(this)
     this.login = this.login.bind(this)
     this.loginGoogle = this.loginGoogle.bind(this)
