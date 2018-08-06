@@ -83,7 +83,7 @@ class BaseProducts extends Component {
           <CardHeader>
             {
               Object.keys(this.state.filters).map(filter => (
-                <Button key={filter} size='sm' className='ml-1' color={this._color(filter)} onClick={() => {
+                <Button key={filter} size='sm' className='mr-1 mt-1' color={this._color(filter)} onClick={() => {
                   let filters = JSON.parse(JSON.stringify(this.state.filters))
                   filters[filter] = !filters[filter]
                   self.setState({filters})

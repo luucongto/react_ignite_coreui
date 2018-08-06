@@ -250,7 +250,7 @@ class BiddingProductItem extends Component {
         )
 
         roundHeader = (
-          <Col xl='3' xs='6' onClick={() => this.setState({isOpen: !this.state.isOpen})} >
+          <Col xl='3' xs='12' onClick={() => this.setState({isOpen: !this.state.isOpen})} className='mt-1' >
             {product.round ? (<CountdownTimer mini autostart end={product.round.end_at} prefix={roundPrefix} />) : (<CountdownTimer mini autostart={false} d
               duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />)}
 
@@ -258,7 +258,7 @@ class BiddingProductItem extends Component {
           )
 
         biddingHeader = (
-          <Col xl='3' xs='6' className='float-right justify-content-end text-right'>
+          <Col xl='auto' xs='12' className='mt-1'>
             {/* <Badge color={topColor}>{product.round ? topText : 'Lets take the first bid' } </Badge> */}
             <Badge color={topColor} className='pt-2' ><h5>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</h5></Badge>
             <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={() => this.placeBid()} disabled={isBidDisable} >
