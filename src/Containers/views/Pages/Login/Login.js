@@ -4,11 +4,9 @@ import { AppNavbarBrand } from '@coreui/react'
 import { connect } from 'react-redux'
 import LoginActions from '../../../../Redux/LoginRedux'
 import { GoogleLogin } from 'react-google-login'
-import runtimeEnv from '@mars/heroku-js-runtime-env'
 import api from '../../../../Services/Api'
 import logo from '../../../assets/img/brand/Punch_Logo.png'
 import sygnet from '../../../assets/img/brand/Punch_P_Logo.png'
-const env = runtimeEnv()
 class Login extends Component {
   constructor (props) {
     super(props)
@@ -97,7 +95,7 @@ class Login extends Component {
                     <Col xs='12' lg='6'>
                       <GoogleLogin
                         className='loginBtn loginBtn--google '
-                        clientId={env.REACT_APP_GOOGLE_CLIENT_ID}
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                         onSuccess={this.googleResponse}
                         onFailure={this.googleResponse}
                         >
