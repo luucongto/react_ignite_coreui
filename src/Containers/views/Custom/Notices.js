@@ -12,6 +12,7 @@ class Notices extends Component {
     super(props)
     this.props.request({command: this.props.user.isAdmin ? 'getAdmin' : 'get'})
     this.state = {
+      notices: [],
       title: null,
       content: null,
       start_at: null,
@@ -25,6 +26,14 @@ class Notices extends Component {
       content: this.state.content,
       start_at: Math.floor(new Date(this.state.start_at).getTime() / 1000)
     })
+  }
+  _filter (notices) {
+    return underscore.sortBy(notices, notice => -notice.start_at)
+  }
+  compomentWillReceiveProps (props) {
+    if (props.notices) {
+      this.setState({notice: this._filter(props.notices)})
+    }
   }
   _fetchMoreData (currentNotices, init = false) {
     let notices = Object.values(this.props.notices) || []
@@ -91,7 +100,7 @@ class Notices extends Component {
             {this._renderAdmin()}
             {this.props.notices && this.props.notices.length
           ? <InfiniteScrollList
-            items={this.props.notices}
+            items={this.state.notices}
             renderItem={(notice, index) =>
               <Col xs='12' xl='12' key={index}>
                 <Card>
@@ -105,7 +114,6 @@ class Notices extends Component {
                   </Collapse>
                 </Card>
               </Col>}
-            fetchData={(init) => this._fetchMoreData(init)}
           />
           : ('Yay! There isn\'t any notices now. Let\'s try again later!!!')
             }

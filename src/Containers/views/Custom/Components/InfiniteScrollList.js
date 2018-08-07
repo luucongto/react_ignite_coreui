@@ -50,11 +50,19 @@ class InfiniteScrollList extends Component {
     }, 300)
   }
   render () {
+    let loadpanel
+    if (this.state.fetchScroll) {
+      loadpanel = <Progress value='100' animated />
+    } else if (this.state.hasMore) {
+      loadpanel = <Button size='l' color='info' onClick={() => this._fetchMoreData()}> Load More </Button>
+    } else if (this.props.endText) {
+      loadpanel = <strong> {this.props.endText} </strong>
+    }
     return (
       <Row>
         {this._renderList(this.state.items)}
         <Col xl='12' className='text-center'>
-          {this.state.fetchScroll ? <Progress value='100' animated /> : !this.state.hasMore ? <strong> You read 'em all!!! </strong> : (<Button size='l' color='info' onClick={() => this._fetchMoreData()}> Load More </Button>)}
+          {loadpanel}
         </Col>
       </Row>
     )
