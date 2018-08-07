@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+  web:
+    container_name: pvnauction_nginx
+    image: nginx
+    environments:
+      - VIRTUAL_HOST=auction.punch.local
+      - NETWORK_ACCESS=internal
+    volumes:
+      - ./build:/usr/share/nginx/html
+    restart: always
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external:
+      name: reverse-proxy
