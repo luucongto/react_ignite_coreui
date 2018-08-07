@@ -11,6 +11,7 @@ import ProductAction from '../../../Redux/ProductRedux'
 import BidderAction from '../../../Redux/BidderRedux'
 import SocketApi from '../../../Services/SocketApi'
 import moment from 'moment'
+import Alert from 'react-s-alert'
 const propTypes = {
   children: PropTypes.node
 }
@@ -50,6 +51,20 @@ class DefaultHeader extends Component {
     })
     SocketApi.on('users', data => {
       self.props.updateBidders(data)
+    })
+    SocketApi.on('server_message', data => {
+      console.log('server_message', data)
+      if (data.type === 'error') {
+        Alert.error(data.msg, {
+          position: 'bottom-right',
+          effect: 'bouncyflip'
+        })
+      } else if (data.type === 'info') {
+        Alert.info(data.msg, {
+          position: 'bottom-right',
+          effect: 'bouncyflip'
+        })
+      }
     })
     this.refresh()
   }

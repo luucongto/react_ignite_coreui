@@ -99,8 +99,8 @@ class BaseProducts extends Component {
         </Card>
 
         <InfiniteScrollList ref='scrollList'
-            items={this.state.products}
-            renderItem={(product, index) => <BiddingProductItem col={this.props.colLength} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
+          items={this.state.products}
+          renderItem={(product, index) => <BiddingProductItem col={this.props.colLength} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
         />
       </Col>
     )
