@@ -1,24 +1,29 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardBody, Badge, FormGroup, Input, Label, Button, Col, Row, Progress } from 'reactstrap'
+import { Card, CardHeader, Button, Col, Row } from 'reactstrap'
 import BiddingProductItem from './BiddingProductItem'
 import InfiniteScrollList from './InfiniteScrollList'
+import Utils from '../../../../Utils/Utils'
 import underscore from 'underscore'
 import PropTypes from 'prop-types'
 class BaseProducts extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      filters: {
-        Phone: true,
-        CPU: true,
-        'Mac Mini': true,
-        Monitor: true,
-        Keyboard: true,
-        Server: true,
-        UPS: true
-      }
+    let filters = {
+      Phone: true,
+      CPU: true,
+      'Mac Mini': true,
+      Monitor: true,
+      Keyboard: true,
+      Server: true,
+      UPS: true
     }
-    this._fetchMoreData = this._fetchMoreData.bind(this)
+    this.state = {
+      products: this._filter(Object.values(props.products) || [], filters),
+      filters: filters
+    }
+  }
+  componentWillReceiveProps (props) {
+    this.setState({products: this._filter(Object.values(props.products) || [], this.state.filters)})
   }
   _color (status) {
     switch (status) {
@@ -46,9 +51,7 @@ class BaseProducts extends Component {
     )
   }
 
-  _fetchMoreData (currentProducts, init = false) {
-    let products = Object.values(this.props.products) || []
-    currentProducts = init ? [] : currentProducts
+  _filter (products, filters) {
     let totalWaitings = products
     if (this.props.today) {
       let today = new Date().toDateString()
@@ -57,17 +60,16 @@ class BaseProducts extends Component {
         return new Date(product.updatedAt).toDateString() === today
       })
     }
-    totalWaitings = totalWaitings.filter(product => product.status === this.props.filterStatus)
-    Object.keys(this.state.filters).forEach(filter => {
-      if (!this.state.filters[filter]) {
+    Object.keys(filters).forEach(filter => {
+      if (!filters[filter]) {
         totalWaitings = totalWaitings.filter(product => product.category !== filter)
       }
     })
-    let filteredLists = totalWaitings.slice(currentProducts.length, currentProducts.length + 20)
-    let newProducts = [...currentProducts, ...filteredLists]
-    newProducts = underscore.uniq(newProducts)
-    return {items: newProducts, hasMore: newProducts.length < totalWaitings.length}
+    totalWaitings = totalWaitings.filter(product => product.status === this.props.filterStatus)
+    totalWaitings = underscore.sortBy(totalWaitings, 'id')
+    return totalWaitings
   }
+
   render () {
     let self = this
     return (
@@ -84,9 +86,9 @@ class BaseProducts extends Component {
             {
               Object.keys(this.state.filters).map(filter => (
                 <Button key={filter} size='sm' className='mr-1 mt-1' color={this._color(filter)} onClick={() => {
-                  let filters = JSON.parse(JSON.stringify(this.state.filters))
+                  let filters = Utils.clone(self.state.filters)
                   filters[filter] = !filters[filter]
-                  self.setState({filters})
+                  self.setState({filters, products: self._filter(Object.values(self.props.products), filters)})
                 }} >
                   <i className={this.state.filters[filter] ? 'mr-1 fa fa-check-square-o' : 'mr-1 fa fa-square-o'} />
                   {filter}
@@ -95,13 +97,11 @@ class BaseProducts extends Component {
             }
           </CardHeader>
         </Card>
-        <Row>
-          <InfiniteScrollList ref='scrollList'
-            items={Object.values(this.props.products) || []}
+
+        <InfiniteScrollList ref='scrollList'
+            items={this.state.products}
             renderItem={(product, index) => <BiddingProductItem col={this.props.colLength} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
-            fetchData={(currentProducts, init) => this._fetchMoreData(currentProducts, init)}
         />
-        </Row>
       </Col>
     )
   }
