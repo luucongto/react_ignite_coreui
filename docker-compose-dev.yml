@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+  web:
+    container_name: pvnauction_nginx
+    image: nginx
+    volumes:
+      - ./build:/usr/share/nginx/html
+    restart: always
