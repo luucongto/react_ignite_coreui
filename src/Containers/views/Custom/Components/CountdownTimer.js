@@ -49,8 +49,8 @@ class CountdownTimer extends Component {
     s = this.pad(s)
     if (this.props.mini) {
       return (
-        <div>
-          <Badge color='info' className='pt-2'><h5>{this.props.prefix.title} {this.pad(this.props.prefix.value)}</h5></Badge>
+        <div style={{width: 90}}>
+          <Badge color='info' className='pt-2'><h5>{this.pad(this.props.prefix.value)}</h5></Badge>
           <Badge color={diff > 60 ? 'success' : (diff > 10 ? 'warning' : 'danger')} className='pt-2 ml-2'><h5>{m}:{s}</h5></Badge>
         </div>
       )

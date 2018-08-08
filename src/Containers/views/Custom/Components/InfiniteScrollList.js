@@ -19,12 +19,12 @@ class InfiniteScrollList extends Component {
   }
   componentDidMount () {
     window.addEventListener('scroll', this.onScroll, false)
-    if (this.props.items && Object.values(this.props.items).length) {
-      this._fetchMoreData(true)
-    }
+    this._fetchMoreData(true)
   }
   componentWillReceiveProps (props) {
-    if (props.items && Object.values(props.items).length) {
+    if (this.props.fetchMore) {
+      this.setState({items: props.items})
+    } else {
       this._fetchMoreData(true)
     }
   }
@@ -43,11 +43,18 @@ class InfiniteScrollList extends Component {
   _fetchMoreData (init = false) {
     if (this.state.fetchScroll) return
     this.setState({fetchScroll: true})
-    this.fetchTimeoutHandle = setTimeout(() => {
-      let items = this.props.items.slice(0, init ? LIMITAPAGE : this.state.items.length + LIMITAPAGE)
-      let hasMore = (init ? LIMITAPAGE : this.state.items.length + LIMITAPAGE) <= this.props.items.length
-      this.setState({fetchScroll: false, items: items, hasMore: hasMore})
-    }, 300)
+
+    if (this.props.fetchMore) {
+      let {hasMore} = this.props.fetchMore(Math.floor(this.state.items.length / LIMITAPAGE))
+      this.setState({fetchScroll: false, hasMore: hasMore})
+    } else {
+      clearTimeout(this.fetchTimeoutHandle)
+      this.fetchTimeoutHandle = setTimeout(() => {
+        let items = this.props.items.slice(0, init ? LIMITAPAGE : this.state.items.length + LIMITAPAGE)
+        let hasMore = (init ? LIMITAPAGE : this.state.items.length + LIMITAPAGE) <= this.props.items.length
+        this.setState({fetchScroll: false, items: items, hasMore: hasMore})
+      }, 300)
+    }
   }
   render () {
     let loadpanel
@@ -61,7 +68,7 @@ class InfiniteScrollList extends Component {
     return (
       <Row>
         {this._renderList(this.state.items)}
-        <Col xl='12' className='text-center'>
+        <Col xl='12' className='text-center mb-3'>
           {loadpanel}
         </Col>
       </Row>
@@ -70,6 +77,7 @@ class InfiniteScrollList extends Component {
 }
 InfiniteScrollList.propTypes = {
   renderItem: PropTypes.func.isRequired,
-  items: PropTypes.array.isRequired
+  items: PropTypes.array.isRequired,
+  fetchMore: PropTypes.func
 }
 export default InfiniteScrollList

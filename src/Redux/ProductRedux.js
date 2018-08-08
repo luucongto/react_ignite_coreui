@@ -24,7 +24,7 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-export const productRequest = state => state.merge({ fetching: true, error: null, data: null })
+export const productRequest = state => state.merge({ fetching: true, error: null })
 
 export const productSuccess = (state, { data }) => {
   data.forEach(element => {
@@ -33,7 +33,7 @@ export const productSuccess = (state, { data }) => {
   return state
 }
 
-export const productFailure = (state, { error }) => state.merge({ fetching: false, error, data: null })
+export const productFailure = (state, { error }) => state.merge({ fetching: false, error })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

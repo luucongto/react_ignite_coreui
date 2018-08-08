@@ -4,7 +4,7 @@ import BaseProducts from './BaseProducts'
 class WaitingProduct extends Component {
   render () {
     return (
-      <BaseProducts title='Incomming Products' filterStatus='waiting' products={this.props.products} />
+      <BaseProducts title='Incoming Products' filterStatus={['waiting']} products={this.props.products} />
     )
   }
 }

@@ -14,13 +14,13 @@ class ConfirmButton extends Component {
       isConfirming: false
     }
   }
-  cancel(){
+  cancel () {
     this.setState({isConfirming: false})
   }
-  click(){
-    if(this.state.isConfirming){
-      this.cancel()
+  click () {
+    if (this.state.isConfirming) {
       this.props.onClick()
+      this.cancel()
     } else {
       this.setState({isConfirming: true})
       setTimeout(this.cancel.bind(this), 5000)
@@ -28,26 +28,25 @@ class ConfirmButton extends Component {
   }
 
   render () {
-    if(this.state.isConfirming) { 
+    if (this.state.isConfirming) {
       return (
         <div className={this.props.className || ''}>
-          <Button size={this.props.size || 'sm'} active color='danger' onClick={() => this.cancel()}>
-            <i className='fa fa-ban'/>
+          <Button size={this.props.size || 'sm'} active color='danger' disabled={this.props.disabled} onClick={() => this.cancel()}>
+            <i className='fa fa-ban' />
           </Button>
-          <Button className='ml-2' size={this.props.size || 'sm'} active color='success' onClick={() => this.click()}>
-            <i className='fa fa-check'/>
+          <Button className='ml-2' size={this.props.size || 'sm'} active color='success' disabled={this.props.disabled} onClick={() => this.click()}>
+            <i className='fa fa-check' />
           </Button>
         </div>
       )
     } else {
       return (
-        <Button className={this.props.className || ''} size={this.props.size || 'sm'} active color={this.props.color || 'success'} onClick={() => this.click()}>
+        <Button className={this.props.className || ''} size={this.props.size || 'sm'} disabled={this.props.disabled} color={this.props.color || 'success'} onClick={() => this.click()}>
           {this.props.children}
         </Button>
       )
     }
   }
 }
-
 
 export default ConfirmButton

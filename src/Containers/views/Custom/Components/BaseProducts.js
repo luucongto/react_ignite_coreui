@@ -43,10 +43,10 @@ class BaseProducts extends Component {
         return 'secondary'
     }
   }
-  _renderList (products, colLength = '6') {
+  _renderList (products, colOpen = '6', colCollapse = '6') {
     return (
       <Row>
-        {products.map((product, index) => <BiddingProductItem col={colLength} product={product} key={index} placeBid={(params) => this.placeBid(params)} />)}
+        {products.map((product, index) => <BiddingProductItem colOpen={colOpen} colCollapse={colCollapse} product={product} key={index} placeBid={(params) => this.placeBid(params)} />)}
       </Row>
     )
   }
@@ -65,8 +65,8 @@ class BaseProducts extends Component {
         totalWaitings = totalWaitings.filter(product => product.category !== filter)
       }
     })
-    totalWaitings = totalWaitings.filter(product => product.status === this.props.filterStatus)
-    totalWaitings = underscore.sortBy(totalWaitings, 'id')
+    totalWaitings = totalWaitings.filter(product => this.props.filterStatus.indexOf(product.status) >= 0)
+    totalWaitings = underscore.sortBy(totalWaitings, this.props.order || 'start_at')
     return totalWaitings
   }
 
@@ -100,7 +100,8 @@ class BaseProducts extends Component {
 
         <InfiniteScrollList ref='scrollList'
           items={this.state.products}
-          renderItem={(product, index) => <BiddingProductItem col={this.props.colLength} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
+          fetchMore={this.props.fetchMore}
+          renderItem={(product, index) => <BiddingProductItem colCollapse={this.props.colCollapse} colOpen={this.props.colOpen} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
         />
       </Col>
     )

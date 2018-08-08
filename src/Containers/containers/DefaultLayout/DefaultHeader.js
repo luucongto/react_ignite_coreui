@@ -46,6 +46,7 @@ class DefaultHeader extends Component {
   }
   _setupSocket () {
     let self = this
+    console.log("Setup socket")
     SocketApi.on('auction', data => {
       self.props.updateProducts(data)
     })
@@ -60,10 +61,10 @@ class DefaultHeader extends Component {
           effect: 'bouncyflip'
         })
       } else if (data.type === 'info') {
-        Alert.info(data.msg, {
-          position: 'bottom-right',
-          effect: 'bouncyflip'
-        })
+        // Alert.info(data.msg, {
+        //   position: 'bottom-right',
+        //   effect: 'bouncyflip'
+        // })
       }
     })
     this.refresh()
@@ -79,25 +80,22 @@ class DefaultHeader extends Component {
           minimized={{ src: sygnet, width: 30, height: 30, alt: 'Punch Logo' }}
         />
         <AppSidebarToggler className='d-md-down-none' display='lg' />
-        <Nav navbar>
+        <Nav navbar className="d-md-down-none">
           <NavItem className='px-3'>
             <Badge color={this.state.isConnected ? 'success' : 'danger'} > <i className={this.state.isConnected ? 'fa fa-wifi' : 'fa fa-flash'} /> {this.state.isConnected ? SocketApi.onlineClients : 'Server Disconnected'} </Badge>
             <Badge color='info' > {moment(SocketApi.serverTime * 1000).format('YYYY/MM/DD HH:mm:ss')}</Badge>
 
           </NavItem>
         </Nav>
-        {this.props.user && this.props.user.isAdmin ? (<Nav navbar>
+        {this.props.user && this.props.user.isAdmin ? (<Nav navbar className="d-md-down-none">
           <NavItem className='px-3'>
             <NavLink href='/admin'>Admin</NavLink>
           </NavItem>
         </Nav>) : ('')}
         <Nav className='ml-auto' navbar>
-          <NavItem className='px-3'>
-            <strong> Welcome, {this.props.user ? this.props.user.name : ''} </strong>
-          </NavItem>
           <AppHeaderDropdown direction='down'>
-            <DropdownToggle nav>
-              <i className='fa fa-bars' />
+            <DropdownToggle nav className='px-3'>
+            <strong><img src={this.props.user ? this.props.user.image_url : sygnet} className='bidder_avatar' /> {this.props.user ? this.props.user.name : ''} </strong>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem onClick={() => this.logout()}><i className='fa fa-lock' /> Logout</DropdownItem>

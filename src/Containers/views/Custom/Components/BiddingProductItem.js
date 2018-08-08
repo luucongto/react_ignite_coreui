@@ -26,6 +26,13 @@ class BiddingProductItem extends Component {
       isOpen: false
     }
     this._getBidder = this._getBidder.bind(this)
+    this._updateBidMsg = this._updateBidMsg.bind(this)
+    SocketApi.on('bid_message', this._updateBidMsg)
+  }
+  _updateBidMsg(data, product) {
+    if(data.productId === this.props.product.id) {
+        this.setState({placingBid: false})
+    }
   }
   componentWillReceiveProps (props) {
     let product = props.product
@@ -37,11 +44,9 @@ class BiddingProductItem extends Component {
       bidPrice = product.start_price
     }
     this.setState({bidPrice})
-    let self = this
-    clearTimeout(this.timeoutHandle)
-    this.timeoutHandle = setTimeout(() => {
-      self.setState({placingBid: false})
-    }, 100)
+  }
+  componentWillUnmount(){
+    SocketApi.remove('bid_message', this._updateBidMsg)
   }
   _renderInputItem (prependText, middle, append) {
     return (
@@ -68,6 +73,7 @@ class BiddingProductItem extends Component {
   }
 
   placeBid () {
+    if (this.state.placingBid) return
     this.setState({placingBid: true})
     SocketApi.emit('auction', {
       command: 'placeBid',
@@ -90,7 +96,7 @@ class BiddingProductItem extends Component {
       ]
     }
     return (
-      <Col xl={this.props.col === '12' ? '5' : customCol} className='mb-3'>
+      <Col xl={customCol} className='mb-3'>
         <Carousels items={items} />
       </Col>
     )
@@ -100,7 +106,7 @@ class BiddingProductItem extends Component {
     return (
       <Row>
         {this._renderProductDetail(product)}
-        <Col xl={this.props.col === '12' ? '4' : '6'}>
+        <Col xl={this.props.colOpen === '12' ? '4' : '6'}>
           <Row className='just-center'>
             {product.round ? (<CountdownTimer autostart end={product.round.end_at} prefix={roundPrefix} />) : (
               <CountdownTimer autostart={false} duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />
@@ -114,17 +120,28 @@ class BiddingProductItem extends Component {
             </Col>
           </Row>
           <Row className='just-center mt-3'>
-            {this._renderInputItem(
-            'Bid',
-            (<Input type='number' id='price' placeholder='Enter Bid Price' required value={this.state.bidPrice} onChange={(event) => {
-              let bidPrice = parseInt(event.target.value)
-              this.setState({bidPrice})
-            }}
-            />),
-            (
+            <Col xl='1' xs='auto' className='ml-0 mr-0 pl-0 pr-0 float-right'>
+              <Button color='danger' onClick={() => this.setState({bidPrice: this.state.bidPrice - product.step_price})} > <i className='fa fa-minus' /> </Button>
+            </Col>
+            <Col xs='auto' xl='4' lg='4' className='ml-0 mr-1 pl-0 pr-0'>
+              <Input
+                type='text'
+                id='price'
+                placeholder='Enter Bid Price'
+                required
+                value={this.state.bidPrice}
+                disabled={this.state.placingBid}
+                onChange={(event) => {
+                  let bidPrice = parseInt(event.target.value)
+                  this.setState({bidPrice})
+                }} />
+            </Col>
+            <Col xl='1' xs='auto' className='ml-0 mr-0 pl-0 pr-0'>
+              <Button color='success' onClick={() => this.setState({bidPrice: this.state.bidPrice + product.step_price})} > <i className='fa fa-plus' /> </Button>
+            </Col>
+            <Col xl='3' xs='auto'>
               <ConfirmButton size='l' color='success' onClick={() => this.placeBid()} disabled={this.state.placingBid} ><i className={`fa ${this.state.placingBid ? 'fa-spinner fa-spin' : 'fa-shopping-basket'}`} /> BID </ConfirmButton>
-            )
-          )}
+            </Col>
           </Row>
           <Row className='mt-3'>
             <Col xl='12' className='img-ribbon'>
@@ -133,7 +150,7 @@ class BiddingProductItem extends Component {
           </Row>
         </Col>
 
-        <Col xl={this.props.col === '12' ? '3' : '6'}>
+        <Col xl={this.props.colOpen === '12' ? '3' : '6'}>
           <Row >
             <Col className='text-primary text-center '><h3 className='ribbon_top'>TOP BIDDERS</h3> </Col>
           </Row>
@@ -156,7 +173,7 @@ class BiddingProductItem extends Component {
     return (
       <Row>
         {this._renderProductDetail(product, 8)}
-        <Col xl={this.props.col === '12' ? '4' : '4'}>
+        <Col xl={this.props.colOpen === '12' ? '4' : '4'}>
           <ListGroup>
             <ListGroupItem color='danger'>
               <Row>
@@ -186,11 +203,35 @@ class BiddingProductItem extends Component {
     if (product.start_at > now) {
       return ('')
     }
+    if (this.props.colOpen === '12') {
+      return (
+        <Row>
+          <Col xl='6' style={{paddingTop:40}} className='text-center just-center'>
+            {product.winner_id ? <Col className='sold-ribbon' /> : ('')}
+            {this._renderProductDetail(product, 12)}
+          </Col>
+          <Col xl='6' xs='12' >
+            <Row className='text-center just-center circle-ribbon'>
+              <Col xl='8' lg='6' xs='10' className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66}}>
+                <span id='content-red'>{this._getBidder(product.winner_id).name}</span>
+              </Col>
+              <Col xl='12' className='text-white' style={{fontSize: '1.5em'}}>
+                {this._renderCurrency(product.win_price || 0)}
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col xl='12' className='img-ribbon'>
+                Seller <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      )
+    }
     return (
       <Row>
-        
         <Col xl='12' >
-          {product.winner_id ? <Col className='sold-ribbon' ></Col> : ('')}
+          {product.winner_id ? <Col className='sold-ribbon' /> : ('')}
           <Row className='text-center just-center circle-ribbon'>
             <Col xl='8' lg='6' xs='10' className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66}}>
               <span id='content-red'>{this._getBidder(product.winner_id).name}</span>
@@ -239,79 +280,59 @@ class BiddingProductItem extends Component {
   }
   _renderHeader (product) {
     let roundPrefix = {value: product.round ? product.round.num : 1, title: 'Round'}
-    let roundHeader
-    let biddingHeader
     let productInfo
-    let firstColWid = 8
-    let isBidDisable = false
+    let otherInfo
+    let isBidDisable = this.state.placingBid
     let topColor = 'danger'
-
+    let renderProductInfo = (col = 'auto', tagH5 = true) => {
+      return (
+        <Col xl={col} xs={col} onClick={() => this.setState({isOpen: !this.state.isOpen})} className='pl-1 pr-1'>
+          <Badge className={`ml-2 ${tagH5 ? 'pt-2' : ''}`} color={this._color(product.category)} > {tagH5 ? (<h5> {product.category} </h5>) : product.category}</Badge>
+          <Badge className={`ml-2 mr-2 ${tagH5 ? 'pt-2' : ''}`} color={'dark'} > {tagH5 ? (<h5> {product.ams_code} </h5>) : product.ams_code}</Badge>
+          <Badge className={`mr-2 ${tagH5 ? 'pt-2' : ''}`} color={'light'} > {tagH5 ? (<h5> {product.name} </h5>) : product.name}</Badge>
+        </Col>
+      )
+    }
+    productInfo = renderProductInfo(12)
     if (!this.state.isOpen) {
       if (product.round && product.round.bidder === this.props.user.id) {
         topColor = 'success'
         isBidDisable = true
       }
       if (product.status === 'bidding') {
-        firstColWid = 6
-        productInfo = (
-          <Col xl={firstColWid} onClick={() => this.setState({isOpen: !this.state.isOpen})} >
-            <Badge className='ml-2 pt-2' color={this._color(product.category)} > <h5>{product.category} </h5></Badge>
-            <Badge className='ml-2 mr-2 pt-2' color={'dark'} > <h5>{product.ams_code} </h5></Badge>
-            {product.name}
-          </Col>
-        )
-
-        roundHeader = (
-          <Col xl='3' xs='12' onClick={() => this.setState({isOpen: !this.state.isOpen})} className='mt-1' >
-            {product.round ? (<CountdownTimer mini autostart end={product.round.end_at} prefix={roundPrefix} />) : (<CountdownTimer mini autostart={false} d
-              duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />)}
-
-          </Col>
-          )
-
-        biddingHeader = (
-          <Col xl='auto' xs='12' className='mt-1'>
-            {/* <Badge color={topColor}>{product.round ? topText : 'Lets take the first bid' } </Badge> */}
-            <Badge color={topColor} className='pt-2' ><h5>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</h5></Badge>
-            <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={() => this.placeBid()} disabled={isBidDisable} >
-              <i className={`fa ${this.state.placingBid ? 'mr-1 fa-spinner fa-spin' : 'mr-1 fa-shopping-basket'}`} />
-              Quick Bid {this._renderCurrency(this.state.bidPrice) }
-            </Button>
-          </Col>
-        )
+        productInfo = renderProductInfo()
+        otherInfo = (<Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1'>
+          {product.round ? (<CountdownTimer mini autostart end={product.round.end_at} prefix={roundPrefix} />)
+            : (<CountdownTimer mini autostart={false} duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />)}
+          <Badge color={'light'} className='pt-2' ><h5 className={'text-'+topColor}>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</h5></Badge>
+          <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={() => this.placeBid()} disabled={isBidDisable} >
+            <i className={`fa ${this.state.placingBid ? 'mr-1 fa-spinner fa-spin' : 'mr-1 fa-shopping-basket'}`} />
+            {this._renderCurrency(this.state.bidPrice) }
+          </Button>
+        </Col>)
       } else if (product.status === 'waiting') {
-        firstColWid = 6
-        biddingHeader = (
-          <Col xl='6' className='float-right justify-content-end text-right' onClick={() => this.setState({isOpen: !this.state.isOpen})} >
+        productInfo = renderProductInfo()
+        otherInfo = (
+          <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({isOpen: !this.state.isOpen})}>
             <Badge color='success' className='mr-2 pt-2' ><h5>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:mm')}</h5></Badge>
-            <Badge color='info' > {this._renderCurrency(product.start_price)} </Badge>
-
+            <Badge color='info' className='pt-2'> <h5> {this._renderCurrency(product.start_price)} </h5></Badge>
           </Col>
         )
       } else if (product.status === 'finished') {
-        biddingHeader = (
-          <Col xl='4' className='float-right justify-content-end text-right' onClick={() => this.setState({isOpen: !this.state.isOpen})} >
+        productInfo = renderProductInfo('auto', false)
+        otherInfo = (
+          <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({isOpen: !this.state.isOpen})}>
             <Badge color={product.winner_id === this.props.user.id ? 'success' : 'danger'}>{this._getBidder(product.winner_id).name } </Badge>
             <Badge color='danger'>{this._renderCurrency(product.win_price || 0)}</Badge>
           </Col>
         )
       }
-    } else {
-      firstColWid = 12
     }
-    productInfo = (
-      <Col xl={firstColWid} onClick={() => this.setState({isOpen: !this.state.isOpen})} >
-        <Badge className='ml-2' color={this._color(product.category)} > {product.category} </Badge>
-        <Badge className='ml-2 mr-2' color={'dark'} > {product.ams_code} </Badge>
-        {product.name}
-      </Col>
-    )
     return (
       <CardHeader>
         <Row>
           {productInfo}
-          {roundHeader}
-          {biddingHeader}
+          {otherInfo}
         </Row>
       </CardHeader>
 
@@ -331,7 +352,7 @@ class BiddingProductItem extends Component {
         bidPanel = this._renderWaiting(product)
     }
     return (
-      <Col xl={this.props.col || '6'} className='animated fadeIn fadeOut'>
+      <Col xl={this.state.isOpen ? this.props.colOpen || '6' : this.props.colCollapse || 6} className='animated fadeIn fadeOut'>
         <Card>
           {this._renderHeader(product)}
           <Collapse isOpen={this.state.isOpen} data-parent='#accordion' id='collapseOne' aria-labelledby='headingOne'>
