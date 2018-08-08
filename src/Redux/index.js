@@ -14,6 +14,7 @@ export default () => {
     bidder: require('./BidderRedux').reducer,
     serverSetting: require('./ServerSettingRedux').reducer,
     product: require('./ProductRedux').reducer,
+    soldProduct: require('./SoldProductRedux').reducer,
     notice: require('./NoticeRedux').reducer,
     localLike: require('./LocalLikeRedux').reducer
   })

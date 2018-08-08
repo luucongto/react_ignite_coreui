@@ -57,7 +57,7 @@ class BaseProducts extends Component {
       let today = new Date().toDateString()
 
       totalWaitings = products.filter(product => {
-        return new Date(product.updatedAt).toDateString() === today
+        return new Date(product.updated_at).toDateString() === today
       })
     }
     Object.keys(filters).forEach(filter => {

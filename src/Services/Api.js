@@ -24,6 +24,7 @@ class API {
     this.serverSetting = this.serverSetting.bind(this)
     this.notice = this.notice.bind(this)
     this.product = this.product.bind(this)
+    this.soldProduct = this.soldProduct.bind(this)
   }
 
   authenticated (loginToken) {
@@ -96,14 +97,16 @@ class API {
         return result ? result.data : null
       })
     }
-    if (params.command === 'getAdmin') {
-      return this.api.get('notice/admin').then(result => {
-        return result ? result.data : null
-      })
-    }
     return this.api.get('product/sold', params).then(result => {
       return result ? result.data : null
     })
+  }
+  soldProduct (params) {
+    if (params.command === 'getAdmin') {
+      return this.api.get('product/admin', params).then(result => {
+        return result ? result.data : null
+      })
+    }
   }
 }
 

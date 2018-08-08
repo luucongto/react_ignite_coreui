@@ -8,6 +8,7 @@ import { AccountInfoTypes } from '../Redux/AccountInfoRedux'
 import { ServerSettingTypes } from '../Redux/ServerSettingRedux'
 import { NoticeTypes } from '../Redux/NoticeRedux'
 import { ProductTypes } from '../Redux/ProductRedux'
+import {SoldProductTypes} from '../Redux/SoldProductRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
@@ -16,6 +17,7 @@ import { accountInfo } from './AccountInfoSagas'
 import { serverSetting } from './ServerSettingSagas'
 import { notice } from './NoticeSaga'
 import { product } from './ProductSaga'
+import {soldProduct} from './SoldProductSaga'
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -34,6 +36,7 @@ export default function * root () {
     takeLatest(AccountInfoTypes.ACCOUNT_INFO_REQUEST, accountInfo, api.accountInfo),
     takeLatest(ServerSettingTypes.SERVER_SETTING_REQUEST, serverSetting, api.serverSetting),
     takeLatest(NoticeTypes.NOTICE_REQUEST, notice, api.notice),
-    takeLatest(ProductTypes.PRODUCT_REQUEST, product, api.product)
+    takeLatest(ProductTypes.PRODUCT_REQUEST, product, api.product),
+    takeLatest(SoldProductTypes.SOLD_PRODUCT_REQUEST, soldProduct, api.soldProduct),
   ])
 }

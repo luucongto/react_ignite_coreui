@@ -3,6 +3,8 @@ import { Button, Col, Row, Card, CardHeader, CardBody, Input, CardFooter } from 
 import { connect } from 'react-redux'
 import { AppSwitch } from '@coreui/react'
 import ServerSettingActions from '../../../Redux/ServerSettingRedux'
+import AdminExport from './AdminExport'
+
 class Admin extends Component {
   constructor (props) {
     super(props)
@@ -59,6 +61,10 @@ class Admin extends Component {
               <Button color='success' onClick={() => this.updateApi()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Update and Restart Server </Button>
             </CardFooter>
           </Card>
+          
+        </Col>
+        <Col xl='12'>
+        <AdminExport />
         </Col>
       </Row>
     )
