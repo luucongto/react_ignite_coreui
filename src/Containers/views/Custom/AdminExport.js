@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Col, Row, Card, CardHeader, CardBody, Input, CardFooter,Table, FormGroup, Label, Badge } from 'reactstrap'
+import { Button, Col, Row, Card, CardHeader, CardBody, Input, CardFooter,Table, FormGroup, Label, Badge, Progress } from 'reactstrap'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { AppSwitch } from '@coreui/react'
@@ -86,6 +86,7 @@ class AdminExport extends Component {
     this.props.request({command: 'getAdmin', updated_at: this.state.updated_at})
   }
   _renderProducts(){
+    if(this.props.fetching) return (<Progress value='100' animated color='info' />)
     if(!this.state.productData.length) return ('')
     let products = this.state.productData[0]
     return (
