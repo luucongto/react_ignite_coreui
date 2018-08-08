@@ -59,8 +59,8 @@ class Login extends Component {
               {/* <AppNavbarBrand
                 full={{ src: sygnet, width: 300, height: 300, alt: 'Punch Logo' }} /> */}
               {window.innerWidth < 500
-                ? <img src={sygnet} width='200' height='200' alt='Punch Logo' class='' />
-              : <img src={logo} width='500' height='200' alt='Punch Logo' class='' />
+                ? <img src={sygnet} width='200' height='200' alt='Punch Logo' />
+              : <img src={logo} width='500' height='200' alt='Punch Logo'/>
               }
             </Col>
           </Row>

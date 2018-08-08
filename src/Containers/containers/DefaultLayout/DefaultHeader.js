@@ -27,6 +27,7 @@ class DefaultHeader extends Component {
     }
     SocketApi.addListener('connect', () => this.setState({isConnected: true}))
     SocketApi.addListener('disconnect', () => this.setState({isConnected: false}))
+    this._displayServerMessage = this._displayServerMessage.bind(this)
     // SocketApi.addListener('server_setting', (data) => this.setState({serverTime: data.time}))
   }
   componentDidMount () {
@@ -53,21 +54,31 @@ class DefaultHeader extends Component {
     SocketApi.on('users', data => {
       self.props.updateBidders(data)
     })
-    SocketApi.on('server_message', data => {
-      console.log('server_message', data)
+    SocketApi.on('server_message', this._displayServerMessage)
+    this.refresh()
+  }
+  componentWillUnmount(){
+    let self = this
+    SocketApi.remove('server_message', this._displayServerMessage)
+    SocketApi.remove('auction', data => {
+      self.props.updateProducts(data)
+    })
+    SocketApi.remove('users', data => {
+      self.props.updateBidders(data)
+    })
+  }
+  _displayServerMessage(data){
       if (data.type === 'error') {
-        Alert.error(data.msg, {
-          position: 'bottom-right',
-          effect: 'bouncyflip'
-        })
+          Alert.error(data.msg, {
+            position: 'bottom-right',
+            effect: 'bouncyflip'
+          })
       } else if (data.type === 'info') {
         // Alert.info(data.msg, {
         //   position: 'bottom-right',
         //   effect: 'bouncyflip'
         // })
       }
-    })
-    this.refresh()
   }
   render () {
     // eslint-disable-next-line

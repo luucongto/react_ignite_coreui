@@ -105,7 +105,7 @@ class BiddingProductItem extends Component {
     let roundPrefix = {value: product.round ? product.round.num : 1, title: 'Round'}
     return (
       <Row>
-        {this._renderProductDetail(product)}
+        {this._renderProductDetail(product, this.props.colOpen === '12' ? '4' : '6' )}
         <Col xl={this.props.colOpen === '12' ? '4' : '6'}>
           <Row className='just-center'>
             {product.round ? (<CountdownTimer autostart end={product.round.end_at} prefix={roundPrefix} />) : (
@@ -150,7 +150,7 @@ class BiddingProductItem extends Component {
           </Row>
         </Col>
 
-        <Col xl={this.props.colOpen === '12' ? '3' : '6'}>
+        <Col xl={this.props.colOpen === '12' ? '4' : '6'}>
           <Row >
             <Col className='text-primary text-center '><h3 className='ribbon_top'>TOP BIDDERS</h3> </Col>
           </Row>
