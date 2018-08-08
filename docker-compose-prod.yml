@@ -4,7 +4,7 @@ services:
   web:
     container_name: pvnauction_nginx
     image: nginx
-    environments:
+    environment:
       - VIRTUAL_HOST=auction.punch.local
       - NETWORK_ACCESS=internal
     volumes:
