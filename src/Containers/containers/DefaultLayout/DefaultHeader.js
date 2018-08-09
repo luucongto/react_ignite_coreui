@@ -36,14 +36,9 @@ class DefaultHeader extends Component {
   }
   componentWillUnmount () {
     clearInterval(this.timeInterval)
-    let self = this
-    SocketApi.removeAllListener('server_message', this._displayServerMessage)
-    SocketApi.removeAllListener('auction', data => {
-      self.props.updateProducts(data)
-    })
-    SocketApi.removeAllListener('users', data => {
-      self.props.updateBidders(data)
-    })
+    SocketApi.removeAllListener('server_message')
+    SocketApi.removeAllListener('auction')
+    SocketApi.removeAllListener('users')
   }
   logout () {
     this.props.logout()

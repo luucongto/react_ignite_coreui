@@ -59,7 +59,6 @@ class DefaultLayout extends Component {
     return items
   }
   componentWillReceiveProps (props) {
-    console.log('componentWillReceiveProps', props)
     if (props.user && props.user.isAdmin) {
       let items = this._getSideNav(props)
       this.setState({navigation: {items}})

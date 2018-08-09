@@ -28,7 +28,7 @@ class InfiniteScrollList extends Component {
       this._fetchMoreData(true)
     }
   }
-  componentWillUnMount () {
+  componentWillUnmount () {
     window.removeEventListener('scroll', this.onScroll, false)
     clearTimeout(this.fetchTimeoutHandle)
   }
