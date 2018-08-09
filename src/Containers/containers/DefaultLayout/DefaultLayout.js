@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Switch } from 'react-router-dom'
 import { Container } from 'reactstrap'
+import { connect } from 'react-redux'
 
 import {
   AppAside,
@@ -24,6 +25,46 @@ import DefaultHeader from './DefaultHeader'
 import PrivateRoute from '../../../Navigation/PrivateRoute'
 
 class DefaultLayout extends Component {
+  constructor (props) {
+    super(props)
+    let items = this._getSideNav(props)
+    this.state = {
+      navigation: {items}
+    }
+  }
+  _getSideNav (props) {
+    let items = navigation.items
+    if (props.user && props.user.isSeller) {
+      items = navigation.items.concat([
+        {
+          title: true,
+          name: 'Seller House',
+          wrapper: {
+            element: '',
+            attributes: {}
+          }
+        },
+        {
+          name: 'Selling Products',
+          url: '/seller/manage',
+          icon: 'icon-calculator'
+        },
+        {
+          name: 'Overral',
+          url: '/seller/sold',
+          icon: 'icon-pie-chart'
+        }
+      ])
+    }
+    return items
+  }
+  componentWillReceiveProps (props) {
+    console.log('componentWillReceiveProps', props)
+    if (props.user && props.user.isAdmin) {
+      let items = this._getSideNav(props)
+      this.setState({navigation: {items}})
+    }
+  }
   render () {
     return (
       <div className='app'>
@@ -34,7 +75,7 @@ class DefaultLayout extends Component {
           <AppSidebar minimized display='lg'>
             <AppSidebarHeader />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={navigation} {...this.props} />
+            <AppSidebarNav navConfig={this.state.navigation} {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
@@ -61,5 +102,15 @@ class DefaultLayout extends Component {
     )
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.data
+  }
+}
 
-export default DefaultLayout
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout)

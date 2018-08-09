@@ -70,9 +70,9 @@ class SocketApi {
       this.socket.on(event, data => { callback(data) })
     }
   }
-  remove(event, func){
+  removeAllListener (event) {
     if (this.socket) {
-      this.socket.removeListener(event, func)
+      this.socket.removeAllListeners(event)
     }
   }
   emit (event, data) {

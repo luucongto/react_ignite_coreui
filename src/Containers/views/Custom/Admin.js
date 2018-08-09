@@ -19,7 +19,6 @@ class Admin extends Component {
 
   }
   componentWillReceiveProps (props) {
-    console.log(props.serverSetting)
     if (!props.serverSetting) return
     this.setState({
       multi_auction_same_time: props.serverSetting.multi_auction_same_time,

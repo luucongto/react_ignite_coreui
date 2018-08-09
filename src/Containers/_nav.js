@@ -46,7 +46,7 @@ export default {
       icon: 'icon-basket'
     },
     {
-      name: 'Incomming Products',
+      name: 'Incoming Products',
       url: '/wait',
       icon: 'icon-cursor'
     },

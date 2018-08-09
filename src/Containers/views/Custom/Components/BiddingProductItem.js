@@ -46,7 +46,7 @@ class BiddingProductItem extends Component {
     this.setState({bidPrice})
   }
   componentWillUnmount(){
-    SocketApi.remove('bid_message', this._updateBidMsg)
+    SocketApi.removeAllListener('bid_message', this._updateBidMsg)
   }
   _renderInputItem (prependText, middle, append) {
     return (

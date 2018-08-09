@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {Button, Row, Col, Card, CardHeader, CardBody, Collapse, FormGroup, Label, Input} from 'reactstrap'
+import {Button, Row, Col, Card, CardHeader, CardBody, Collapse, FormGroup, Label, Input, Badge} from 'reactstrap'
 import renderHTML from 'react-render-html'
 import NoticeActions from '../../../Redux/NoticeRedux'
 import InfiniteScrollList from './Components/InfiniteScrollList'
@@ -12,11 +12,10 @@ class Notices extends Component {
     super(props)
     this.props.request({command: this.props.user.isAdmin ? 'getAdmin' : 'get'})
     this.state = {
-      notices: [],
-      title: null,
-      content: null,
-      start_at: null,
-      openning: 0
+      title: '',
+      content: '',
+      start_at: 0,
+      opening: 0
     }
   }
   addNotice () {
@@ -27,25 +26,8 @@ class Notices extends Component {
       start_at: Math.floor(new Date(this.state.start_at).getTime() / 1000)
     })
   }
-  _filter (notices) {
-    return underscore.sortBy(notices, notice => -notice.start_at)
-  }
-  compomentWillReceiveProps (props) {
-    if (props.notices) {
-      this.setState({notice: this._filter(props.notices)})
-    }
-  }
-  _fetchMoreData (currentNotices, init = false) {
-    let notices = Object.values(this.props.notices) || []
-    currentNotices = init ? [] : currentNotices
-    let totalWaitings = notices
-    let filteredLists = totalWaitings.slice(currentNotices.length, currentNotices.length + 20)
-    let newNotices = [...currentNotices, ...filteredLists]
-    newNotices = underscore.sortBy(newNotices, notice => -notice.start_at)
-    return {items: newNotices, hasMore: newNotices.length < totalWaitings.length}
-  }
   toggle (index) {
-    this.setState({openning: this.state.openning === index ? -1 : index})
+    this.setState({opening: this.state.opening === index ? -1 : index})
   }
   _renderAdmin () {
     return !this.props.user.isAdmin ? ('') : (<Col xs='12' xl='12'>
@@ -53,14 +35,14 @@ class Notices extends Component {
         <CardHeader onClick={() => this.toggle(-2)}>
         Insert notice
       </CardHeader>
-        <Collapse isOpen={this.state.openning === -2} >
+        <Collapse isOpen={this.state.opening === -2} >
           <CardBody>
             <FormGroup row>
               <Col md='1'>
                 <Label htmlFor='textarea-input'>Title</Label>
               </Col>
               <Col xs='12' md='11'>
-                <Input type='text' name='textarea-input' id='textarea-input' rows='9' maxlength='255' value={this.state.title} onChange={(event) => this.setState({title: event.target.value})}
+                <Input type='text' name='textarea-input' id='textarea-input' rows='9' maxLength={255} value={this.state.title} onChange={(event) => this.setState({title: event.target.value})}
                   placeholder='Content...' />
               </Col>
             </FormGroup>
@@ -93,21 +75,23 @@ class Notices extends Component {
     </Col>)
   }
   render () {
+    console.log(this.props.notices)
     return (
       <div className='animated fadeIn'>
         <Col>
           <Row>
             {this._renderAdmin()}
-            {this.props.notices && this.props.notices.length
+          </Row>
+          {this.props.notices && this.props.notices.length
           ? <InfiniteScrollList
-            items={this.state.notices}
+            items={this.props.notices}
             renderItem={(notice, index) =>
-              <Col xs='12' xl='12' key={index}>
+              <Col xs='6' xl='6' key={index}>
                 <Card>
                   <CardHeader onClick={() => this.toggle(index)}>
-                [{moment(notice.start_at * 1000).format('YYYY/MM/DD HH:mm')}] {notice.title}
+                    <Badge color='info'>{moment(notice.start_at * 1000).format('YYYY/MM/DD HH:mm')} </Badge> {notice.title}
                   </CardHeader>
-                  <Collapse isOpen={this.state.openning === index} >
+                  <Collapse isOpen={this.state.opening === index} >
                     <CardBody>
                       {renderHTML(notice.content)}
                     </CardBody>
@@ -115,10 +99,8 @@ class Notices extends Component {
                 </Card>
               </Col>}
           />
-          : ('Yay! There isn\'t any notices now. Let\'s try again later!!!')
+          : ('')
             }
-
-          </Row>
         </Col>
       </div>
     )

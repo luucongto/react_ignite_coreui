@@ -196,7 +196,16 @@ const Admin = Loadable({
 })
 
 const Notices = Loadable({
-  loader: () => import ('./views/Custom/Notices'),
+  loader: () => import('./views/Custom/Notices'),
+  loading: Loading
+})
+
+const SellerManagement = Loadable({
+  loader: () => import('./views/Custom/SellerManagement'),
+  loading: Loading
+})
+const SellerSoldManagement = Loadable({
+  loader: () => import('./views/Custom/SellerSoldManagement'),
   loading: Loading
 })
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -244,7 +253,10 @@ const routes = [
   { path: '/wait', name: 'Waiting Auctions', component: Wait },
   { path: '/finished', name: 'Finished Auctions', component: Finished },
   { path: '/admin', name: 'Admin Panel', component: Admin },
-  { path: '/notices', name: 'Notices', component: Notices}
+  { path: '/notices', name: 'Notices', component: Notices },
+  { path: '/seller/manage', name: 'Seller Management', component: SellerManagement },
+  { path: '/seller/sold', name: 'Sold Management', component: SellerSoldManagement }
+
 ]
 
 export default routes

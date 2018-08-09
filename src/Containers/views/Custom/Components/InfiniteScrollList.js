@@ -33,8 +33,11 @@ class InfiniteScrollList extends Component {
     clearTimeout(this.fetchTimeoutHandle)
   }
   onScroll () {
+    var body = document.body
+    var html = document.documentElement
+    var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     if (
-      (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500) &&
+      (window.innerHeight + window.scrollY) >= (docHeight * 0.9) &&
       this.state.hasMore
     ) {
       this._fetchMoreData()
