@@ -29,9 +29,9 @@ class BiddingProductItem extends Component {
     this._updateBidMsg = this._updateBidMsg.bind(this)
     SocketApi.on('bid_message', this._updateBidMsg)
   }
-  _updateBidMsg(data, product) {
-    if(data.productId === this.props.product.id) {
-        this.setState({placingBid: false})
+  _updateBidMsg (data, product) {
+    if (data.productId === this.props.product.id) {
+      this.setState({placingBid: false})
     }
   }
   componentWillReceiveProps (props) {
@@ -44,9 +44,6 @@ class BiddingProductItem extends Component {
       bidPrice = product.start_price
     }
     this.setState({bidPrice})
-  }
-  componentWillUnmount(){
-    SocketApi.removeAllListener('bid_message', this._updateBidMsg)
   }
   _renderInputItem (prependText, middle, append) {
     return (
@@ -105,7 +102,7 @@ class BiddingProductItem extends Component {
     let roundPrefix = {value: product.round ? product.round.num : 1, title: 'Round'}
     return (
       <Row>
-        {this._renderProductDetail(product, this.props.colOpen === '12' ? '4' : '6' )}
+        {this._renderProductDetail(product, this.props.colOpen === '12' ? '4' : '6')}
         <Col xl={this.props.colOpen === '12' ? '4' : '6'}>
           <Row className='just-center'>
             {product.round ? (<CountdownTimer autostart end={product.round.end_at} prefix={roundPrefix} />) : (
@@ -206,7 +203,7 @@ class BiddingProductItem extends Component {
     if (this.props.colOpen === '12') {
       return (
         <Row>
-          <Col xl='6' style={{paddingTop:40}} className='text-center just-center'>
+          <Col xl='6' style={{paddingTop: 40}} className='text-center just-center'>
             {product.winner_id ? <Col className='sold-ribbon' /> : ('')}
             {this._renderProductDetail(product, 12)}
           </Col>
@@ -304,7 +301,7 @@ class BiddingProductItem extends Component {
         otherInfo = (<Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1'>
           {product.round ? (<CountdownTimer mini autostart end={product.round.end_at} prefix={roundPrefix} />)
             : (<CountdownTimer mini autostart={false} duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />)}
-          <Badge color={'light'} className='pt-2' ><h5 className={'text-'+topColor}>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</h5></Badge>
+          <Badge color={'light'} className='pt-2' ><h5 className={'text-' + topColor}>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</h5></Badge>
           <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={() => this.placeBid()} disabled={isBidDisable} >
             <i className={`fa ${this.state.placingBid ? 'mr-1 fa-spinner fa-spin' : 'mr-1 fa-shopping-basket'}`} />
             {this._renderCurrency(this.state.bidPrice) }
