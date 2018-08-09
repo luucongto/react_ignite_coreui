@@ -17,6 +17,22 @@ You need to install modules before starts.
 
 Client will be started default port `3000`. If you are running server at this port, client will ask you to change client port to `3001`
 
+# Docker
+
+##### Create symlink to the related docker compose file:
+
+Dev: `ln -s docker/docker-compose-dev.yml docker-compose.yml`
+
+Prod: `ln -s docker/docker-compose-prod.yml docker-compose.yml`
+
+##### Build if needed
+
+`sudo docker run -it --rm -v "$PWD":/usr/src/app -w /usr/src/app node:8 bash -c "npm install && npm run build"`
+
+##### Start docker
+
+`sudo docker-compose up`
+
 # Build and deploy 
 You can build and deploy to heroku (free) with build pack for react `https://github.com/mars/create-react-app-buildpack` 
 
