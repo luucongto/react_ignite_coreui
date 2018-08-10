@@ -87,7 +87,15 @@ class SellerProduct extends Component {
             }})
       })
     })
-
+    let btnAvai = (!this.props.product) ||
+      (this.state.name !== this.props.product.name) ||
+      (this.state.start_price !== this.props.product.start_price) ||
+      (this.state.step_price !== this.props.product.step_price) ||
+      (this.state.ams_code !== this.props.product.ams_code) ||
+      (this.state.round_time_1 !== this.props.product.round_time_1) ||
+      (this.state.round_time_2 !== this.props.product.round_time_2) ||
+      (this.state.round_time_3 !== this.props.product.round_time_3) ||
+      (this.state.start_at !== this.props.product.start_at)
     return (
       <Col xl='12' xs='12'>
         <Card>
@@ -114,7 +122,7 @@ class SellerProduct extends Component {
               </Row>
             </CardBody>
             <CardFooter>
-              <ConfirmButton color='success' onClick={() => this.action()} > {this.props.product ? 'UPDATE' : 'ADD'} </ConfirmButton>
+              <ConfirmButton color='success' onClick={() => this.action()} disabled={!btnAvai} > {this.props.product ? 'UPDATE' : 'ADD'} </ConfirmButton>
               {/* {this.props.product ? <ConfirmButton color='danger' onClick={() => this.destroy()} > DESTROY </ConfirmButton> : ('')} */}
             </CardFooter>
           </Collapse>

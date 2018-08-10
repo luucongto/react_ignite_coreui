@@ -19,11 +19,12 @@ class Notices extends Component {
     }
   }
   addNotice () {
+    console.log(this.state)
     this.props.request({
       command: 'post',
       title: this.state.title,
       content: this.state.content,
-      start_at: Math.floor(new Date(this.state.start_at).getTime() / 1000)
+      start_at: this.state.start_at
     })
   }
   toggle (index) {
@@ -60,7 +61,9 @@ class Notices extends Component {
                 <Label htmlFor='date-input'>Show</Label>
               </Col>
               <Col xs='12' md='11'>
-                <Input type='datetime-local' id='date-input' name='date-input' placeholder='date' value={this.state.start_at} onChange={(event) => this.setState({start_at: event.target.value})} />
+                <Input type='datetime-local' id='date-input' name='datetime-local' value={moment(this.state.start_at * 1000).format('YYYY-MM-DDTHH:mm')} placeholder='date' onChange={event => {
+                  this.setState({start_at: Math.floor(new Date(event.target.value).getTime() / 1000)})
+                }} />
               </Col>
             </FormGroup>
             <FormGroup row>
@@ -75,7 +78,6 @@ class Notices extends Component {
     </Col>)
   }
   render () {
-    console.log(this.props.notices)
     return (
       <div className='animated fadeIn'>
         <Col>

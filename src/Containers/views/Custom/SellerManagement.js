@@ -72,7 +72,7 @@ class SellerManagement extends Component {
                 <Badge color='info'>{product.id}</Badge>
                 <Badge color='danger'>{product.category}</Badge>
                 <Badge color='warning'>{product.ams_code}</Badge>
-                <Badge color='primary'>{moment(product.start_at).format('YYYY/MM/DD HH:MM')}</Badge>
+                <Badge color='primary'>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:MM')}</Badge>
                 <Badge color='success'>{this._renderCurrency(product.start_price)}</Badge>
                 <Badge color='success'>+{this._renderCurrency(product.step_price)}</Badge>
                 <Badge color='light'>{product.name}</Badge>
