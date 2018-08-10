@@ -5,6 +5,7 @@ import InfiniteScrollList from './InfiniteScrollList'
 import Utils from '../../../../Utils/Utils'
 import underscore from 'underscore'
 import PropTypes from 'prop-types'
+import {translate} from 'react-i18next'
 class BaseProducts extends Component {
   constructor (props) {
     super(props)
@@ -110,4 +111,4 @@ class BaseProducts extends Component {
 BaseProducts.propTypes = {
   products: PropTypes.object
 }
-export default BaseProducts
+export default translate('translations')(BaseProducts)

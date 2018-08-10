@@ -4,6 +4,7 @@ import BaseProducts from './BaseProducts'
 import ProductActions from '../../../../Redux/ProductRedux'
 import Utils from '../../../../Utils/Utils'
 import underscore from 'underscore'
+import {translate} from 'react-i18next'
 class AuctionProduct extends Component {
   constructor (props) {
     super(props)
@@ -33,12 +34,12 @@ class AuctionProduct extends Component {
     let products = {}
     Object.values(this.props.products).forEach(product => {
       if (this.state.productIds.indexOf(product.id) >= 0) {
-        products[product.id] = product 
+        products[product.id] = product
       }
     })
     return (
       <div className='animated fadeIn pl-0 pr-0'>
-        <BaseProducts title='Auctioning Products' filterStatus={['bidding', 'finished']} order='start_at' colOpen='12' colCollapse='6' products={products} />
+        <BaseProducts title={this.props.t('auctioning_products')} filterStatus={['bidding', 'finished']} order='start_at' colOpen='12' colCollapse='6' products={products} />
         {/* <BaseProducts title='Today Sold Products' filterStatus={['finished']} order='updatedAt' today colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} /> */}
 
       </div>
@@ -57,4 +58,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuctionProduct)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(AuctionProduct))

@@ -9,6 +9,7 @@ import Carousels from './Carousels'
 import SocketApi from '../../../../Services/SocketApi'
 import logo from '../../../assets/img/brand/Punch_Logo.png'
 import pLogo from '../../../assets/img/brand/Punch_P_Logo.png'
+import { translate } from 'react-i18next'
 class BiddingProductItem extends Component {
   constructor (props) {
     super(props)
@@ -99,7 +100,8 @@ class BiddingProductItem extends Component {
     )
   }
   _renderBidding (product) {
-    let roundPrefix = {value: product.round ? product.round.num : 1, title: 'Round'}
+    const {t} = this.props
+    let roundPrefix = {value: product.round ? product.round.num : 1, title: this.props.t('round')}
     return (
       <Row>
         {this._renderProductDetail(product, this.props.colOpen === '12' ? '4' : '6')}
@@ -137,19 +139,19 @@ class BiddingProductItem extends Component {
               <Button color='success' onClick={() => this.setState({bidPrice: this.state.bidPrice + product.step_price})} > <i className='fa fa-plus' /> </Button>
             </Col>
             <Col xl='3' xs='auto'>
-              <ConfirmButton size='l' color='success' onClick={() => this.placeBid()} disabled={this.state.placingBid} ><i className={`fa ${this.state.placingBid ? 'fa-spinner fa-spin' : 'fa-shopping-basket'}`} /> BID </ConfirmButton>
+              <ConfirmButton size='l' color='success' onClick={() => this.placeBid()} disabled={this.state.placingBid} ><i className={`fa ${this.state.placingBid ? 'fa-spinner fa-spin' : 'fa-shopping-basket'}`} /> {this.props.t('bid_btn')} </ConfirmButton>
             </Col>
           </Row>
           <Row className='mt-3'>
             <Col xl='12' className='img-ribbon'>
-              <h3>Seller <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3>
+              <h3>{this.props.t('seller')} <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3>
             </Col>
           </Row>
         </Col>
 
         <Col xl={this.props.colOpen === '12' ? '4' : '6'}>
           <Row >
-            <Col className='text-primary text-center '><h3 className='ribbon_top'>TOP BIDDERS</h3> </Col>
+            <Col className='text-primary text-center '><h3 className='ribbon_top'>{t('top_bidders')}</h3> </Col>
           </Row>
           <ListGroup>
             {product.bids ? product.bids.map((bid, index) => {
@@ -158,8 +160,8 @@ class BiddingProductItem extends Component {
                 <strong className='float-right'>{this._renderCurrency(bid.bid_price)}</strong>
               </ListGroupItem>)
             }) : (<ListGroupItem className='text-danger text-center'>
-              Let's take the first bid!!!
-              </ListGroupItem>)
+              {t('take_first_bid')}
+            </ListGroupItem>)
         }
           </ListGroup>
         </Col>
@@ -174,18 +176,18 @@ class BiddingProductItem extends Component {
           <ListGroup>
             <ListGroupItem color='danger'>
               <Row>
-                <Col> Seller <h3> <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3></Col>
+                <Col> {this.props.t('seller')} <h3> <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3></Col>
               </Row>
             </ListGroupItem>
             <ListGroupItem color='success'>
               <Row>
-                <Col> Start <h3>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:mm')}</h3></Col>
+                <Col> {this.props.t('start')} <h3>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:mm')}</h3></Col>
               </Row>
             </ListGroupItem>
             <ListGroupItem color='secondary'>
               <Row>
-                <Col> Start Price <h3> {this._renderCurrency(product.start_price)}</h3></Col>
-                <Col> Minimum Step <h3> {this._renderCurrency(product.step_price)}</h3></Col>
+                <Col> {this.props.t('start_price')} <h3> {this._renderCurrency(product.start_price)}</h3></Col>
+                <Col> {this.props.t('minimum_step')}<h3> {this._renderCurrency(product.step_price)}</h3></Col>
               </Row>
             </ListGroupItem>
 
@@ -218,7 +220,7 @@ class BiddingProductItem extends Component {
             </Row>
             <Row className='mt-3'>
               <Col xl='12' className='img-ribbon'>
-                Seller <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}
+                {this.props.t('seller')} <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}
               </Col>
             </Row>
           </Col>
@@ -239,7 +241,7 @@ class BiddingProductItem extends Component {
           </Row>
           <Row className='mt-3'>
             <Col xl='12' className='img-ribbon'>
-              Seller <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}
+              {this.props.t('seller')} <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}
             </Col>
           </Row>
           {this._renderProductDetail(product, 12)}
@@ -276,7 +278,7 @@ class BiddingProductItem extends Component {
     }
   }
   _renderHeader (product) {
-    let roundPrefix = {value: product.round ? product.round.num : 1, title: 'Round'}
+    let roundPrefix = {value: product.round ? product.round.num : 1, title: this.props.t('round')}
     let productInfo
     let otherInfo
     let isBidDisable = this.state.placingBid
@@ -376,4 +378,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BiddingProductItem)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(BiddingProductItem))

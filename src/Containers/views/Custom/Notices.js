@@ -6,7 +6,7 @@ import NoticeActions from '../../../Redux/NoticeRedux'
 import InfiniteScrollList from './Components/InfiniteScrollList'
 import underscore from 'underscore'
 import moment from 'moment'
-
+import { translate, Trans } from 'react-i18next'
 class Notices extends Component {
   constructor (props) {
     super(props)
@@ -31,34 +31,35 @@ class Notices extends Component {
     this.setState({opening: this.state.opening === index ? -1 : index})
   }
   _renderAdmin () {
+    const { t } = this.props
     return !this.props.user.isAdmin ? ('') : (<Col xs='12' xl='12'>
       <Card>
         <CardHeader onClick={() => this.toggle(-2)}>
-        Insert notice
-      </CardHeader>
+          {this.props.t('insert_notice')}
+        </CardHeader>
         <Collapse isOpen={this.state.opening === -2} >
           <CardBody>
             <FormGroup row>
               <Col md='1'>
-                <Label htmlFor='textarea-input'>Title</Label>
+                <Label htmlFor='textarea-input'>{t('title')}</Label>
               </Col>
               <Col xs='12' md='11'>
                 <Input type='text' name='textarea-input' id='textarea-input' rows='9' maxLength={255} value={this.state.title} onChange={(event) => this.setState({title: event.target.value})}
-                  placeholder='Content...' />
+                  placeholder='...' />
               </Col>
             </FormGroup>
             <FormGroup row>
               <Col md='1'>
-                <Label htmlFor='textarea-input'>Content</Label>
+                <Label htmlFor='textarea-input'>{this.props.t('content')}</Label>
               </Col>
               <Col xs='12' md='11'>
                 <Input type='textarea' name='textarea-input' id='textarea-input' rows='9' value={this.state.content} onChange={(event) => this.setState({content: event.target.value})}
-                  placeholder='Content...' />
+                  placeholder='...' />
               </Col>
             </FormGroup>
             <FormGroup row>
               <Col md='1'>
-                <Label htmlFor='date-input'>Show</Label>
+                <Label htmlFor='date-input'>{this.props.t('show')}</Label>
               </Col>
               <Col xs='12' md='11'>
                 <Input type='datetime-local' id='date-input' name='datetime-local' value={moment(this.state.start_at * 1000).format('YYYY-MM-DDTHH:mm')} placeholder='date' onChange={event => {
@@ -68,7 +69,7 @@ class Notices extends Component {
             </FormGroup>
             <FormGroup row>
               <Col md='12'>
-                <Button color='success' onClick={() => this.addNotice()} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Add </Button>
+                <Button color='success' onClick={() => this.addNotice()} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> {this.props.t('btn_add')} </Button>
               </Col>
 
             </FormGroup>
@@ -122,4 +123,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notices)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(Notices))

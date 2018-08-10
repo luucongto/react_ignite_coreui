@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Badge} from 'reactstrap'
-import moment from 'moment'
+import { translate } from 'react-i18next'
 class CountdownTimer extends Component {
   constructor (props) {
     super(props)
@@ -66,11 +66,11 @@ class CountdownTimer extends Component {
         }
         <div className={this.props.autostart ? 'active mr-1' : 'mr-1'}>
           <span className='minutes'>{m}</span>
-          <div className='smalltext'>Minutes</div>
+          <div className='smalltext'>{this.props.t('minutes')}</div>
         </div>
         <div className={this.props.autostart ? 'active' : ''}>
           <span className='seconds'>{s}</span>
-          <div className='smalltext'>Seconds</div>
+          <div className='smalltext'>{this.props.t('seconds')}</div>
         </div>
       </div>
 
@@ -82,4 +82,4 @@ class CountdownTimer extends Component {
   }
 }
 
-export default CountdownTimer
+export default translate('translations')(CountdownTimer)

@@ -12,6 +12,7 @@ import BidderAction from '../../../Redux/BidderRedux'
 import SocketApi from '../../../Services/SocketApi'
 import moment from 'moment'
 import Alert from 'react-s-alert'
+import {translate} from 'react-i18next'
 const propTypes = {
   children: PropTypes.node
 }
@@ -74,6 +75,13 @@ class DefaultHeader extends Component {
     }
   }
   render () {
+    let langs = {
+      'en': {
+        code: 'en', icon: 'us', name: 'English'
+      },
+      'vi': {
+        code: 'vi', icon: 'vn', name: 'Tiếng Việt'
+      }}
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
     return (
@@ -86,7 +94,7 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className='d-md-down-none' display='lg' />
         <Nav navbar className='d-md-down-none'>
           <NavItem className='px-3'>
-            <Badge color={this.state.isConnected ? 'success' : 'danger'} > <i className={this.state.isConnected ? 'fa fa-wifi' : 'fa fa-flash'} /> {this.state.isConnected ? SocketApi.onlineClients : 'Server Disconnected'} </Badge>
+            <Badge color={this.state.isConnected ? 'success' : 'danger'} > <i className={this.state.isConnected ? 'fa fa-wifi' : 'fa fa-flash'} /> {this.state.isConnected ? SocketApi.onlineClients : this.props.t('server_disconnected')} </Badge>
             <Badge color='info' > {moment(SocketApi.serverTime * 1000).format('YYYY/MM/DD HH:mm:ss')}</Badge>
 
           </NavItem>
@@ -102,7 +110,17 @@ class DefaultHeader extends Component {
               <strong><img src={this.props.user ? this.props.user.image_url : sygnet} className='bidder_avatar' /> {this.props.user ? this.props.user.name : ''} </strong>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem onClick={() => this.logout()}><i className='fa fa-lock' /> Logout</DropdownItem>
+              <DropdownItem onClick={() => this.logout()}><i className='fa fa-lock' />{this.props.t('logout')}</DropdownItem>
+            </DropdownMenu>
+          </AppHeaderDropdown>
+        </Nav>
+        <Nav className='ml-1' navbar>
+          <AppHeaderDropdown direction='down'>
+            <DropdownToggle nav className='px-3'>
+              <strong><i className={`flag-icon flag-icon-${langs[this.props.i18n.language].icon}`} /></strong>
+            </DropdownToggle>
+            <DropdownMenu right style={{ right: 'auto' }}>
+              {Object.values(langs).map(lang => <DropdownItem onClick={() => this.props.i18n.changeLanguage(lang.code)}><i className={`flag-icon flag-icon-${lang.icon}`} />{lang.name}</DropdownItem>)}
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
@@ -131,4 +149,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultHeader)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(DefaultHeader))

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import BaseProducts from './BaseProducts'
 import ProductActions from '../../../../Redux/ProductRedux'
+import {translate} from 'react-i18next'
 class FinishedProduct extends Component {
   constructor (props) {
     super(props)
@@ -22,7 +23,7 @@ class FinishedProduct extends Component {
   }
   render () {
     return (
-      <BaseProducts title='Sold Products' filterStatus={['finished']} colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} />
+      <BaseProducts title={this.props.t('sold_products')} filterStatus={['finished']} colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} />
     )
   }
 }
@@ -39,4 +40,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FinishedProduct)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(FinishedProduct))

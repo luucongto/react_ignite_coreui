@@ -1,28 +1,27 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import {translate} from 'react-i18next'
 const propTypes = {
-  children: PropTypes.node,
-};
+  children: PropTypes.node
+}
 
-const defaultProps = {};
+const defaultProps = {}
 
 class DefaultFooter extends Component {
-  render() {
-
+  render () {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
     return (
       <React.Fragment>
-        <span>Copyright© 2018 - Punch Entertainment (Vietnam) Co., Ltd. All Rights Reserved.</span>
+        <span>{this.props.t('copy_right')}</span>
         {/* <span className="ml-auto">Powered by <a href="https://coreui.io/react">CoreUI for React</a></span> */}
       </React.Fragment>
-    );
+    )
   }
 }
 
-DefaultFooter.propTypes = propTypes;
-DefaultFooter.defaultProps = defaultProps;
+DefaultFooter.propTypes = propTypes
+DefaultFooter.defaultProps = defaultProps
 
-export default DefaultFooter;
+export default translate('translations')(DefaultFooter)

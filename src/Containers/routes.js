@@ -3,6 +3,7 @@ import Loadable from 'react-loadable'
 
 import DefaultLayout from './containers/DefaultLayout/DefaultLayout'
 import {Progress} from 'reactstrap'
+import i18n from '../I18n'
 function Loading () {
   return <div><Progress animated color='success' value='100' /></div>
 }
@@ -248,14 +249,14 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/accountInfo', name: 'Account Info', component: AccountInfo },
-  { path: '/trade', name: 'Opening Auctions', component: Trade },
-  { path: '/wait', name: 'Waiting Auctions', component: Wait },
-  { path: '/finished', name: 'Finished Auctions', component: Finished },
-  { path: '/admin', name: 'Admin Panel', component: Admin },
-  { path: '/notices', name: 'Notices', component: Notices },
-  { path: '/seller/manage', name: 'Seller Management', component: SellerManagement },
-  { path: '/seller/sold', name: 'Sold Management', component: SellerSoldManagement }
+  { path: '/accountInfo', name: i18n.t('account'), component: AccountInfo },
+  { path: '/trade', name: i18n.t('auctioning_products'), component: Trade },
+  { path: '/wait', name: i18n.t('incoming_products'), component: Wait },
+  { path: '/finished', name: i18n.t('sold_products'), component: Finished },
+  { path: '/admin', name: i18n.t('Admin'), component: Admin },
+  { path: '/notices', name: i18n.t('notices'), component: Notices },
+  { path: '/seller/manage', name: i18n.t('seller_management'), component: SellerManagement },
+  { path: '/seller/sold', name: i18n.t('sold_management'), component: SellerSoldManagement }
 
 ]
 

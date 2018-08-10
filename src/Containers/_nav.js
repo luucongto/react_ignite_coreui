@@ -1,3 +1,4 @@
+import i18n from '../I18n'
 export default {
   items: [
     // {
@@ -9,52 +10,7 @@ export default {
     //     text: 'NEW'
     //   }
     // },
-    {
-      name: 'Notices',
-      url: '/notices',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW'
-      }
-    },
-    {
-      title: true,
-      name: 'Account',
-      wrapper: { // optional wrapper object
-        element: '', // required valid HTML5 element tag
-        attributes: {} // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
-      },
-      class: '' // optional class names space delimited list for title item ex: "text-center"
-    },
-    {
-      name: 'Info',
-      url: '/accountInfo',
-      icon: 'icon-pencil'
-    },
-    {
-      title: true,
-      name: 'Auction House',
-      wrapper: {
-        element: '',
-        attributes: {}
-      }
-    },
-    {
-      name: 'Auctioning Products',
-      url: '/trade',
-      icon: 'icon-basket'
-    },
-    {
-      name: 'Incoming Products',
-      url: '/wait',
-      icon: 'icon-cursor'
-    },
-    {
-      name: 'Sold Products',
-      url: '/finished',
-      icon: 'icon-basket-loaded'
-    }
+
     // {
     //   name: 'Trades',
     //   url: '/',

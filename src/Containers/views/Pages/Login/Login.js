@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row, Progress } from 'reactstrap'
-import { AppNavbarBrand } from '@coreui/react'
-import { connect } from 'react-redux'
-import LoginActions from '../../../../Redux/LoginRedux'
 import { GoogleLogin } from 'react-google-login'
-import api from '../../../../Services/Api'
+import { translate } from 'react-i18next'
+import { connect } from 'react-redux'
+import { Button, Card, CardBody, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Progress, Row } from 'reactstrap'
+import LoginActions from '../../../../Redux/LoginRedux'
 import logo from '../../../assets/img/brand/Punch_Logo.png'
 import sygnet from '../../../assets/img/brand/Punch_P_Logo.png'
 class Login extends Component {
@@ -60,7 +59,7 @@ class Login extends Component {
                 full={{ src: sygnet, width: 300, height: 300, alt: 'Punch Logo' }} /> */}
               {window.innerWidth < 500
                 ? <img src={sygnet} width='200' height='200' alt='Punch Logo' />
-              : <img src={logo} width='500' height='200' alt='Punch Logo'/>
+              : <img src={logo} width='500' height='200' alt='Punch Logo' />
               }
             </Col>
           </Row>
@@ -70,8 +69,8 @@ class Login extends Component {
             : <Col md='6'>
               <Card className='p-4'>
                 <CardBody>
-                  <h1>Login</h1>
-                  <p className='text-muted'>Sign In to your account</p>
+                  <h1>{this.props.t('login')}</h1>
+                  <p className='text-muted'>{this.props.t('Sign In to your account')}</p>
                   <InputGroup className='mb-3'>
                     <InputGroupAddon addonType='prepend'>
                       <InputGroupText>
@@ -89,17 +88,17 @@ class Login extends Component {
                     <Input type='password' placeholder='Password' onChange={event => this.setState({password: event.target.value})} value={this.state.password} />
                   </InputGroup>
                   <Row>
-                    <Col xs='12' lg='6'>
-                      <Button color='primary' className='px-4 loginBtn' onClick={() => this._login()}>Login</Button>
+                    <Col xs='12' lg='auto'>
+                      <Button color='primary' className='px-4 loginBtn' onClick={() => this._login()}>{this.props.t('login')}</Button>
                     </Col>
-                    <Col xs='12' lg='6'>
+                    <Col xs='12' lg='auto'>
                       <GoogleLogin
                         className='loginBtn loginBtn--google '
                         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                         onSuccess={this.googleResponse}
                         onFailure={this.googleResponse}
                         >
-                        <strong> Login With Google </strong>
+                        <strong> {this.props.t('login_with_google')} </strong>
                       </GoogleLogin>
                     </Col>
                   </Row>
@@ -128,4 +127,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(Login))

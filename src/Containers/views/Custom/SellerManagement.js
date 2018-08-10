@@ -8,6 +8,7 @@ import InfiniteScrollList from './Components/InfiniteScrollList'
 import Alert from 'react-s-alert'
 import moment from 'moment'
 import NumberFormat from 'react-number-format'
+import {translate} from 'react-i18next'
 class SellerManagement extends Component {
   constructor (props) {
     super(props)
@@ -61,7 +62,7 @@ class SellerManagement extends Component {
     return (
       <div className='animated fadeIn pl-0 pr-0'>
         <Row>
-          <SellerProduct header='Add Auction Product' index={-2} toggle={this.toggle} opening={this.state.opening === -2} />
+          <SellerProduct header={this.props.t('add_auction_product')} index={-2} toggle={this.toggle} opening={this.state.opening === -2} />
         </Row>
         <InfiniteScrollList ref='scrollList'
           items={this.state.products}
@@ -88,7 +89,7 @@ class SellerManagement extends Component {
   }
   render () {
     return this.props.user.isSeller ? this._render()
-        : (<h3> Unauthorized </h3>)
+        : (<h3> {this.props.t('unauthorized')} </h3>)
   }
 }
 const mapStateToProps = (state) => {
@@ -102,4 +103,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SellerManagement)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(SellerManagement))

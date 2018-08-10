@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import BaseProducts from './BaseProducts'
+import {translate} from 'react-i18next'
 class WaitingProduct extends Component {
   render () {
     return (
-      <BaseProducts title='Incoming Products' filterStatus={['waiting']} products={this.props.products} />
+      <BaseProducts title={this.props.t('incoming_products')} filterStatus={['waiting']} products={this.props.products} />
     )
   }
 }
@@ -19,4 +20,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WaitingProduct)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(WaitingProduct))

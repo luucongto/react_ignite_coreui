@@ -4,6 +4,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import SoldProductActions from '../../../Redux/SoldProductRedux'
 import ReactExport from 'react-data-export'
+import {translate} from 'react-i18next'
 const ExcelFile = ReactExport.ExcelFile
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
 
@@ -109,22 +110,22 @@ class AdminExport extends Component {
           <Row>
             <Col xl='3'>
               <FormGroup row>
-                  <Col md='3'>
-                    <Label htmlFor='date-input'>Sold After</Label>
-                  </Col>
-                  <Col xs='12' md='6'>
-                    <Input type='datetime-local' id='date-input' name='datetime-local' placeholder='date' onChange={(event => this.setState({updated_at: Math.floor(new Date(event.target.value).getTime() / 1000)}))} />
-                  </Col>
-                  <Col xs='12' md='3'>
-                    <Button color='success' onClick={() => this.search()} > Search </Button>
-                  </Col>
-                </FormGroup>
+                <Col md='3'>
+                  <Label htmlFor='date-input'>{this.props.t('Sold After')}</Label>
+                </Col>
+                <Col xs='12' md='6'>
+                  <Input type='datetime-local' id='date-input' name='datetime-local' placeholder='date' onChange={(event => this.setState({updated_at: Math.floor(new Date(event.target.value).getTime() / 1000)}))} />
+                </Col>
+                <Col xs='12' md='3'>
+                  <Button color='success' onClick={() => this.search()} > {this.props.t('Search')} </Button>
+                </Col>
+              </FormGroup>
             </Col>
             {this.state.productData.length ? (<Col xl='1'>
-              <ExcelFile element={<Button color='success' > Export Excel </Button>}>
-                  <ExcelSheet dataSet={this.state.productData} name='Products' />
-                  <ExcelSheet dataSet={this.state.winnerData} name='Winners' />
-                </ExcelFile>
+              <ExcelFile element={<Button color='success' >{this.props.t('Export Excel')}</Button>}>
+                <ExcelSheet dataSet={this.state.productData} name='Products' />
+                <ExcelSheet dataSet={this.state.winnerData} name='Winners' />
+              </ExcelFile>
             </Col>) : ('')}
           </Row>
         </CardHeader>
@@ -158,4 +159,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminExport)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(AdminExport))

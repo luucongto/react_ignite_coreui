@@ -4,6 +4,7 @@ import Utils from '../../../../Utils/Utils'
 import ConfirmButton from './ConfirmButton'
 import SocketApi from '../../../../Services/SocketApi'
 import moment from 'moment'
+import {translate} from 'react-i18next'
 class SellerProduct extends Component {
   constructor (props) {
     super(props)
@@ -57,14 +58,14 @@ class SellerProduct extends Component {
   }
   render () {
     let formData = [
-      {title: 'Name', value: this.state.name, type: 'text', onChange: event => this.setState({name: event.target.value})},
-      {title: 'Start Price', value: this.state.start_price, type: 'number', onChange: event => this.setState({start_price: event.target.value})},
-      {title: 'Step Price', value: this.state.step_price, type: 'number', onChange: event => this.setState({step_price: event.target.value})},
-      {title: 'AMS CODE', value: this.state.ams_code, type: 'text', onChange: event => this.setState({ams_code: event.target.value})},
-      {title: 'Round Time 1', value: this.state.round_time_1, type: 'number', onChange: event => this.setState({round_time_1: event.target.value})},
-      {title: 'Round Time 2', value: this.state.round_time_2, type: 'number', onChange: event => this.setState({round_time_2: event.target.value})},
-      {title: 'Round Time 3', value: this.state.round_time_3, type: 'number', onChange: event => this.setState({round_time_3: event.target.value})},
-      {title: 'Start', value: moment(this.state.start_at * 1000).format('YYYY-MM-DDTHH:mm'), type: 'datetime-local', onChange: event => this.setState({start_at: Math.floor(new Date(event.target.value).getTime() / 1000)})}
+      {title: this.props.t('name'), value: this.state.name, type: 'text', onChange: event => this.setState({name: event.target.value})},
+      {title: this.props.t('start_price'), value: this.state.start_price, type: 'number', onChange: event => this.setState({start_price: event.target.value})},
+      {title: this.props.t('step_price'), value: this.state.step_price, type: 'number', onChange: event => this.setState({step_price: event.target.value})},
+      {title: this.props.t('ams_code'), value: this.state.ams_code, type: 'text', onChange: event => this.setState({ams_code: event.target.value})},
+      {title: this.props.t('round_time_1'), value: this.state.round_time_1, type: 'number', onChange: event => this.setState({round_time_1: event.target.value})},
+      {title: this.props.t('round_time_2'), value: this.state.round_time_2, type: 'number', onChange: event => this.setState({round_time_2: event.target.value})},
+      {title: this.props.t('round_time_3'), value: this.state.round_time_3, type: 'number', onChange: event => this.setState({round_time_3: event.target.value})},
+      {title: this.props.t('start'), value: moment(this.state.start_at * 1000).format('YYYY-MM-DDTHH:mm'), type: 'datetime-local', onChange: event => this.setState({start_at: Math.floor(new Date(event.target.value).getTime() / 1000)})}
     ]
     let self = this
     this.state.images.forEach((image, index) => {
@@ -131,4 +132,4 @@ class SellerProduct extends Component {
     )
   }
 }
-export default SellerProduct
+export default translate('translations')(translate('translations')(SellerProduct))

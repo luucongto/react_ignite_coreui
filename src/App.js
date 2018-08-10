@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/es/integration/react'
+import { I18nextProvider } from 'react-i18next'
 
+import i18n from './I18n/I18n'
 import reduxStore from './Redux'
 import RootContainer from './Containers/RootContainer'
 // CoreUI Icons Set
@@ -25,14 +27,16 @@ const onBeforeLift = () => {
 class App extends Component {
   render () {
     return (
-      <Provider store={store}>
-        <PersistGate
-          loading={<h3>Loading...</h3>}
-          onBeforeLift={onBeforeLift}
-          persistor={persistor}>
-          <RootContainer />
-        </PersistGate>
-      </Provider>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <PersistGate
+            loading={<h3>Loading...</h3>}
+            onBeforeLift={onBeforeLift}
+            persistor={persistor}>
+            <RootContainer />
+          </PersistGate>
+        </Provider>
+      </I18nextProvider>
     )
   }
 }

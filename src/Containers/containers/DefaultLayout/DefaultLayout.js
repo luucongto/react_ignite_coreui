@@ -16,14 +16,13 @@ import {
   AppSidebarNav
 } from '@coreui/react'
 // sidebar nav config
-import navigation from '../../_nav'
 // routes config
 import routes from '../../routes'
 import DefaultAside from './DefaultAside'
 import DefaultFooter from './DefaultFooter'
 import DefaultHeader from './DefaultHeader'
 import PrivateRoute from '../../../Navigation/PrivateRoute'
-
+import {translate} from 'react-i18next'
 class DefaultLayout extends Component {
   constructor (props) {
     super(props)
@@ -33,24 +32,70 @@ class DefaultLayout extends Component {
     }
   }
   _getSideNav (props) {
-    let items = navigation.items
+    const i18n = this.props.i18n
+    let items = [{
+      name: i18n.t('notices'),
+      url: '/notices',
+      icon: 'icon-speedometer',
+      badge: {
+        variant: 'info',
+        text: 'NEW'
+      }
+    },
+    {
+      title: true,
+      name: i18n.t('account'),
+      wrapper: { // optional wrapper object
+        element: '', // required valid HTML5 element tag
+        attributes: {} // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+      },
+      class: '' // optional class names space delimited list for title item ex: "text-center"
+    },
+    {
+      name: i18n.t('info'),
+      url: '/accountInfo',
+      icon: 'icon-pencil'
+    },
+    {
+      title: true,
+      name: i18n.t('auction_house'),
+      wrapper: {
+        element: '',
+        attributes: {}
+      }
+    },
+    {
+      name: i18n.t('auctioning_products'),
+      url: '/trade',
+      icon: 'icon-basket'
+    },
+    {
+      name: i18n.t('incoming_products'),
+      url: '/wait',
+      icon: 'icon-cursor'
+    },
+    {
+      name: i18n.t('sold_products'),
+      url: '/finished',
+      icon: 'icon-basket-loaded'
+    }]
     if (props.user && props.user.isSeller) {
-      items = navigation.items.concat([
+      items = items.concat([
         {
           title: true,
-          name: 'Seller House',
+          name: this.props.t('seller_house'),
           wrapper: {
             element: '',
             attributes: {}
           }
         },
         {
-          name: 'Selling Products',
+          name: this.props.t('seller_management'),
           url: '/seller/manage',
           icon: 'icon-calculator'
         },
         {
-          name: 'Overral',
+          name: this.props.t('sold_management'),
           url: '/seller/sold',
           icon: 'icon-pie-chart'
         }
@@ -112,4 +157,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(DefaultLayout))
