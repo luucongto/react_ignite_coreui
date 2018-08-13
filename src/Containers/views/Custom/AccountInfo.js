@@ -6,6 +6,7 @@ import Alert from 'react-s-alert'
 import NumberFormat from 'react-number-format'
 import BaseProducts from './Components/BaseProducts'
 import {translate} from 'react-i18next'
+import Const from '../../../Config/Const'
 class AccountInfo extends Component {
   constructor (props) {
     super(props)
@@ -46,7 +47,7 @@ class AccountInfo extends Component {
       return ('')
     }
     return (
-      <BaseProducts title={this.props.t('sold_products')} filterStatus='finished' colLength={4} products={this.props.accountInfo.products} />
+      <BaseProducts title={this.props.t('sold_products')} filterStatus={Const.PRODUCT_STATUS.FINISHED} colLength={4} products={this.props.accountInfo.products} />
     )
   }
   render () {

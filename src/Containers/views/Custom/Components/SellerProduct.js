@@ -96,7 +96,8 @@ class SellerProduct extends Component {
       (this.state.round_time_1 !== this.props.product.round_time_1) ||
       (this.state.round_time_2 !== this.props.product.round_time_2) ||
       (this.state.round_time_3 !== this.props.product.round_time_3) ||
-      (this.state.start_at !== this.props.product.start_at)
+      (this.state.start_at !== this.props.product.start_at) ||
+      (this.state.images !== this.props.product.images)
     return (
       <Col xl='12' xs='12'>
         <Card>

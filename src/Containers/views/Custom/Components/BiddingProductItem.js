@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Button, Badge, Card, CardBody, CardHeader, Col, Row, ListGroup, ListGroupItem, Input, Collapse, FormGroup, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
+import { Button, Badge, Card, CardBody, CardHeader, Col, Row, ListGroup, ListGroupItem, Input, Collapse, FormGroup, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import ConfirmButton from './ConfirmButton'
@@ -7,6 +7,7 @@ import CountdownTimer from './CountdownTimer'
 import NumberFormat from 'react-number-format'
 import Carousels from './Carousels'
 import SocketApi from '../../../../Services/SocketApi'
+import Const from '../../../../Config/Const'
 import logo from '../../../assets/img/brand/Punch_Logo.png'
 import pLogo from '../../../assets/img/brand/Punch_P_Logo.png'
 import { translate } from 'react-i18next'
@@ -15,7 +16,7 @@ class BiddingProductItem extends Component {
     super(props)
     let product = this.props.product
     let bidPrice: 0
-    if (product.status === 'bidding' && product.round && product.round.bid_price > 0) {
+    if (product.status === Const.PRODUCT_STATUS.BIDDING && product.round && product.round.bid_price > 0) {
       bidPrice = product.round.bid_price + product.step_price
     } else {
       bidPrice = product.start_price
@@ -32,14 +33,17 @@ class BiddingProductItem extends Component {
   }
   _updateBidMsg (data, product) {
     if (data.productId === this.props.product.id) {
-      this.setState({placingBid: false})
+      let self = this
+      setTimeout(() => {
+        self.setState({placingBid: false})
+      }, 500)
     }
   }
   componentWillReceiveProps (props) {
     let product = props.product
     let bidPrice = this.state.bidPrice
     if (!product) return
-    if (product.status === 'bidding' && product.round && product.round.bid_price > 0) {
+    if (product.status === Const.PRODUCT_STATUS.BIDDING && product.round && product.round.bid_price > 0) {
       bidPrice = product.round.bid_price + product.step_price
     } else {
       bidPrice = product.start_price
@@ -298,7 +302,7 @@ class BiddingProductItem extends Component {
         topColor = 'success'
         isBidDisable = true
       }
-      if (product.status === 'bidding') {
+      if (product.status === Const.PRODUCT_STATUS.BIDDING) {
         productInfo = renderProductInfo()
         otherInfo = (<Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1'>
           {product.round ? (<CountdownTimer mini autostart end={product.round.end_at} prefix={roundPrefix} />)
@@ -309,7 +313,7 @@ class BiddingProductItem extends Component {
             {this._renderCurrency(this.state.bidPrice) }
           </Button>
         </Col>)
-      } else if (product.status === 'waiting') {
+      } else if (product.status === Const.PRODUCT_STATUS.WAITING) {
         productInfo = renderProductInfo()
         otherInfo = (
           <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({isOpen: !this.state.isOpen})}>
@@ -317,7 +321,7 @@ class BiddingProductItem extends Component {
             <Badge color='info' className='pt-2'> <h5> {this._renderCurrency(product.start_price)} </h5></Badge>
           </Col>
         )
-      } else if (product.status === 'finished') {
+      } else if (product.status === Const.PRODUCT_STATUS.FINISHED) {
         productInfo = renderProductInfo('auto', false)
         otherInfo = (
           <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({isOpen: !this.state.isOpen})}>
@@ -341,10 +345,10 @@ class BiddingProductItem extends Component {
     let product = this.props.product
     let bidPanel
     switch (product.status) {
-      case 'bidding':
+      case Const.PRODUCT_STATUS.BIDDING:
         bidPanel = this._renderBidding(product)
         break
-      case 'finished':
+      case Const.PRODUCT_STATUS.FINISHED:
         bidPanel = this._renderFinished(product)
         break
       default:

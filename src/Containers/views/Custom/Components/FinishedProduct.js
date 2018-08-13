@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import BaseProducts from './BaseProducts'
 import ProductActions from '../../../../Redux/ProductRedux'
 import {translate} from 'react-i18next'
+import Const from '../../../../Config/Const'
 class FinishedProduct extends Component {
   constructor (props) {
     super(props)
@@ -23,7 +24,7 @@ class FinishedProduct extends Component {
   }
   render () {
     return (
-      <BaseProducts title={this.props.t('sold_products')} filterStatus={['finished']} colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} />
+      <BaseProducts title={this.props.t('sold_products')} filterStatus={[Const.PRODUCT_STATUS.FINISHED]} colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} />
     )
   }
 }

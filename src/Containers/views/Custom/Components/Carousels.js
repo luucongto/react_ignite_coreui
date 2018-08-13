@@ -46,10 +46,10 @@ class Carousels extends Component {
           className='carousel-item'
           onExiting={this.onExiting}
           onExited={this.onExited}
-          key={item.src}
+          key={item.id}
         >
-          <img className='d-block w-100' src={item.src} />
-          <CarouselCaption className='text-danger' captionText={item.caption} />
+          <img className='d-block w-100' style={{height: 'calc(100% - 40px)'}} src={item.src} />
+          <CarouselCaption className='text-dark carousel-caption' style={{bottom: -9, paddingTop: 0, paddingBottom: 0}} captionText={item.caption} />
         </CarouselItem>
       )
     })

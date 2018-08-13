@@ -139,7 +139,7 @@ class AdminExport extends Component {
   render () {
     return (
       <div className='animated fadeIn pl-0 pr-0'>
-        {this.props.user.isAdmin ? this._render()
+        {this.props.user.isAdmin || this.props.user.isSeller ? this._render()
         : (<h3> Unauthorized </h3>)}
       </div>
     )

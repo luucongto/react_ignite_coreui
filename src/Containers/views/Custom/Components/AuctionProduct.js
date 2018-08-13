@@ -5,6 +5,7 @@ import ProductActions from '../../../../Redux/ProductRedux'
 import Utils from '../../../../Utils/Utils'
 import underscore from 'underscore'
 import {translate} from 'react-i18next'
+import Const from '../../../../Config/Const'
 class AuctionProduct extends Component {
   constructor (props) {
     super(props)
@@ -14,11 +15,11 @@ class AuctionProduct extends Component {
     }
   }
   componentDidMount () {
-    this.setState({productIds: underscore.pluck(Object.values(this.props.products).filter(product => product.status === 'bidding'), 'id')})
+    this.setState({productIds: underscore.pluck(Object.values(this.props.products).filter(product => product.status === Const.PRODUCT_STATUS.BIDDING), 'id')})
   }
   componentWillReceiveProps (props) {
     let curProductIds = Utils.clone(this.state.productIds)
-    let newProductIds = underscore.pluck(Object.values(props.products).filter(product => product.status === 'bidding'), 'id')
+    let newProductIds = underscore.pluck(Object.values(props.products).filter(product => product.status === Const.PRODUCT_STATUS.BIDDING), 'id')
     let productIds = underscore.uniq(curProductIds.concat(newProductIds))
     this.setState({hasMore: Object.values(this.props.products) !== Object.values(props.products), productIds})
   }
@@ -39,8 +40,8 @@ class AuctionProduct extends Component {
     })
     return (
       <div className='animated fadeIn pl-0 pr-0'>
-        <BaseProducts title={this.props.t('auctioning_products')} filterStatus={['bidding', 'finished']} order='start_at' colOpen='12' colCollapse='6' products={products} />
-        {/* <BaseProducts title='Today Sold Products' filterStatus={['finished']} order='updatedAt' today colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} /> */}
+        <BaseProducts title={this.props.t('auctioning_products')} filterStatus={[Const.PRODUCT_STATUS.BIDDING, Const.PRODUCT_STATUS.FINISHED]} order='start_at' colOpen='12' colCollapse='6' products={products} />
+        {/* <BaseProducts title='Today Sold Products' filterStatus={[Const.PRODUCT_STATUS.FINISHED]} order='updatedAt' today colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} /> */}
 
       </div>
     )
