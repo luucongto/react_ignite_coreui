@@ -85,7 +85,7 @@ class DefaultHeader extends Component {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
     let lang = 'en'
-    if (this.props.i18n.lang === 'vi') {
+    if (this.props.i18n.language === 'vi') {
       lang = 'vi'
     }
     return (
