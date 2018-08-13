@@ -6,6 +6,7 @@
     "take_first_bid": "Let's take the first bid!!!",
     "bid_btn": "BID",
     "btn_add": "ADD",
+    "btn_update": "UPDATE",
     "round": "Round",
     "minutes": "Minutes",
     "seconds": "Seconds",
@@ -42,5 +43,6 @@
     "start" : "Start",
     "import_from_excel": "Import Products from Excel File",
     "import": "IMPORT",
-    "sample": "DOWNLOAD SAMPLE"
+    "sample": "DOWNLOAD SAMPLE",
+    "remove": "REMOVE PRODUCT"
 }

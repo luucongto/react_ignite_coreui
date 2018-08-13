@@ -79,7 +79,7 @@ class SellerManagement extends Component {
     SocketApi.on('seller_message', this._processServerMessage)
   }
   componentWillUnmount () {
-    SocketApi.removeAllListener('seller_message', this._processServerMessage)
+    SocketApi.removeAllListener('seller_message')
   }
   _renderCurrency (value) {
     return <NumberFormat value={value} displayType={'text'} thousandSeparator prefix={'đ'} />

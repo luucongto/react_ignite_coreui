@@ -50,9 +50,9 @@ class SellerProduct extends Component {
       images: this.state.images
     })
   }
-  destroy () {
+  remove () {
     SocketApi.emit('seller', {
-      command: 'destroy',
+      command: 'remove',
       id: this.props.product ? this.props.product.id : 0
     })
   }
@@ -123,8 +123,15 @@ class SellerProduct extends Component {
               </Row>
             </CardBody>
             <CardFooter>
-              <ConfirmButton color='success' onClick={() => this.action()} disabled={!btnAvai} > {this.props.product ? 'UPDATE' : 'ADD'} </ConfirmButton>
-              {/* {this.props.product ? <ConfirmButton color='danger' onClick={() => this.destroy()} > DESTROY </ConfirmButton> : ('')} */}
+              <Row>
+                <Col xl='auto'>
+                  <ConfirmButton color='success' onClick={() => this.action()} disabled={!btnAvai} > {this.props.t(this.props.product ? 'btn_update' : 'btn_add')} </ConfirmButton>
+                </Col>
+                <Col xl='auto'>
+                  {this.props.product ? <ConfirmButton color='danger' onClick={() => this.remove()} > {this.props.t('remove')} </ConfirmButton> : ('')}
+                </Col>
+              </Row>
+
             </CardFooter>
           </Collapse>
         </Card>

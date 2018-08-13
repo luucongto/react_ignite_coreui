@@ -6,6 +6,7 @@
   "take_first_bid":"Hãy là người trả giá đầu tiên !!!",
   "bid_btn":"ĐẶT",
   "btn_add":"THÊM VÀO",
+  "btn_update": "CẬP NHẬT",
   "round":"Vòng",
   "minutes":"Phút",
   "seconds":"Giây",
@@ -47,5 +48,6 @@
   "Export Excel":"xuất Excel",
   "import_from_excel": "Thêm sản phẩm từ file Excel",
   "import": "TẢI LÊN",
-  "sample": "TẢI FILE MẪU"
+  "sample": "TẢI FILE MẪU",
+  "remove": "XOÁ SẢN PHẨM"
 }
