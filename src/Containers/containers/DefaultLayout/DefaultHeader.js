@@ -84,6 +84,10 @@ class DefaultHeader extends Component {
       }}
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+    let lang = 'en'
+    if (this.props.i18n.lang === 'vi') {
+      lang = 'vi'
+    }
     return (
       <React.Fragment>
         <AppSidebarToggler className='d-lg-none' display='md' mobile />
@@ -117,7 +121,7 @@ class DefaultHeader extends Component {
         <Nav className='ml-1' navbar>
           <AppHeaderDropdown direction='down'>
             <DropdownToggle nav className='px-3'>
-              <strong><i className={`flag-icon flag-icon-${langs[this.props.i18n.language].icon}`} /></strong>
+              <strong><i className={`flag-icon flag-icon-${langs[lang].icon}`} /></strong>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               {Object.values(langs).map(lang => <DropdownItem onClick={() => this.props.i18n.changeLanguage(lang.code)}><i className={`flag-icon flag-icon-${lang.icon}`} />{lang.name}</DropdownItem>)}
