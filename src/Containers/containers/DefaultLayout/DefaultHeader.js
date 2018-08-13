@@ -124,7 +124,7 @@ class DefaultHeader extends Component {
               <strong><i className={`flag-icon flag-icon-${langs[lang].icon}`} /></strong>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
-              {Object.values(langs).map(lang => <DropdownItem onClick={() => this.props.i18n.changeLanguage(lang.code)}><i className={`flag-icon flag-icon-${lang.icon}`} />{lang.name}</DropdownItem>)}
+              {Object.values(langs).map(lang => <DropdownItem key={lang.code} onClick={() => this.props.i18n.changeLanguage(lang.code)}><i className={`flag-icon flag-icon-${lang.icon}`} />{lang.name}</DropdownItem>)}
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>

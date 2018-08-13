@@ -44,5 +44,8 @@
   "add_auction_product":"Thêm sản phẩm",
   "Sold After":"bán Sau",
   "Search":"Tìm kiếm",
-  "Export Excel":"xuất Excel"
+  "Export Excel":"xuất Excel",
+  "import_from_excel": "Thêm sản phẩm từ file Excel",
+  "import": "TẢI LÊN",
+  "sample": "TẢI FILE MẪU"
 }

@@ -39,5 +39,8 @@
     "round_time_1" : "Round Time 1",
     "round_time_2" : "Round Time 2",
     "round_time_3" : "Round Time 3",
-    "start" : "Start"
+    "start" : "Start",
+    "import_from_excel": "Import Products from Excel File",
+    "import": "IMPORT",
+    "sample": "DOWNLOAD SAMPLE"
 }

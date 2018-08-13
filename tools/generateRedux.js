@@ -44,9 +44,9 @@ export const reducer = createReducer(INITIAL_STATE, {
 
 let tempSaga =
 `import { call, put } from 'redux-saga/effects'
-import  ${changeCase.pascalCase(name)}Actions from '../Redux/ ${changeCase.pascalCase(name)}Redux'
+import ${changeCase.pascalCase(name)}Actions from '../Redux/${changeCase.pascalCase(name)}Redux'
 
-export function *  ${changeCase.camelCase(name)} (api, {params}) {
+export function * ${changeCase.camelCase(name)} (api, {params}) {
   try {
     const res = yield call(api, params)
     if (res.success) { 
@@ -59,7 +59,84 @@ export function *  ${changeCase.camelCase(name)} (api, {params}) {
   }
 }
 `
+
+// insert into index.saga
+const readline = require('readline')
+let appendSagas = () => {
+  return new Promise((resolve, reject) => {
+    const rl = readline.createInterface({
+      input: fs.createReadStream('./src/Sagas/index.js'),
+      crlfDelay: Infinity
+    })
+    const TypesLine = '/* ------------- Types ------------- */'
+    const SagasLine = '/* ------------- Sagas ------------- */'
+    let connect = '// tool generated sagas'
+    let newFileStrs = []
+    let inserted = false
+    rl.on('line', (line) => {
+      if (line === TypesLine) {
+        inserted = true
+        newFileStrs.push(line)
+        newFileStrs.push(`import { ${changeCase.pascalCase(name)}Types } from '../Redux/${changeCase.pascalCase(name)}Redux'`)
+      } else if (line === SagasLine) {
+        newFileStrs.push(line)
+        inserted = true
+        newFileStrs.push(`import { ${changeCase.camelCase(name)} } from './${changeCase.pascalCase(name)}Saga'`)
+      } else if (line.trim() === connect) {
+        newFileStrs.push(line)
+        inserted = true
+        newFileStrs.push(`    takeLatest(${changeCase.pascalCase(name)}Types.${changeCase.snakeCase(name).toUpperCase()}_REQUEST, ${changeCase.camelCase(name)}, api.${changeCase.camelCase(name)}),`)
+      } else {
+        newFileStrs.push(line)
+      }
+    })
+    rl.on('close', function () {
+      resolve({
+        success: inserted,
+        newFileStrs
+      })
+    })
+  })
+}
+
+let appendReducers = () => {
+  return new Promise((resolve, reject) => {
+    const rl = readline.createInterface({
+      input: fs.createReadStream('./src/Redux/index.js'),
+      crlfDelay: Infinity
+    })
+    const reducerLine = 'const appReducer = combineReducers({'
+    let newFileStrs = []
+    let inserted = false
+    rl.on('line', (line) => {
+      if (line.trim() === reducerLine) {
+        newFileStrs.push(line)
+        inserted = true
+        newFileStrs.push(`    ${changeCase.camelCase(name)}: require('./${changeCase.pascalCase(name)}Redux').reducer,`)
+      } else {
+        newFileStrs.push(line)
+      }
+    })
+    rl.on('close', function () {
+      resolve({
+        success: inserted,
+        newFileStrs
+      })
+    })
+  })
+}
+
 try {
+  appendReducers().then(reducers => {
+    if (reducers.success) {
+      fs.writeFileSync(`./src/Redux/index.js`, reducers.newFileStrs.join('\n') + '\n')
+    }
+  })
+  appendSagas().then(sagas => {
+    if (sagas.success) {
+      fs.writeFileSync(`./src/Sagas/index.js`, sagas.newFileStrs.join('\n') + '\n')
+    }
+  })
   fs.writeFileSync(`./src/Redux/${changeCase.pascalCase(name)}Redux.js`, temp)
   fs.writeFileSync(`./src/Sagas/${changeCase.pascalCase(name)}Saga.js`, tempSaga)
   console.log(`DONE:`, `./src/Redux/${changeCase.pascalCase(name)}Redux.js`, `./src/Sagas/${changeCase.pascalCase(name)}Sagas.js`)

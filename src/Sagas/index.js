@@ -1,6 +1,7 @@
 import { takeLatest, all } from 'redux-saga/effects'
 import api from '../Services/Api'
 /* ------------- Types ------------- */
+import { SellerTypes } from '../Redux/SellerRedux'
 
 import { StartupTypes } from '../Redux/StartupRedux'
 import { LoginTypes } from '../Redux/LoginRedux'
@@ -10,6 +11,7 @@ import { NoticeTypes } from '../Redux/NoticeRedux'
 import { ProductTypes } from '../Redux/ProductRedux'
 import {SoldProductTypes} from '../Redux/SoldProductRedux'
 /* ------------- Sagas ------------- */
+import { seller } from './SellerSaga'
 
 import { startup } from './StartupSagas'
 import { login, logout } from './LoginSagas'
@@ -30,6 +32,8 @@ export default function * root () {
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup, api),
 
+    // tool generated sagas
+    takeLatest(SellerTypes.SELLER_REQUEST, seller, api.seller),
     // Login
     takeLatest(LoginTypes.LOGIN_REQUEST, login, api.login),
     takeLatest(LoginTypes.LOGOUT_REQUEST, logout, api.logout),
@@ -37,6 +41,6 @@ export default function * root () {
     takeLatest(ServerSettingTypes.SERVER_SETTING_REQUEST, serverSetting, api.serverSetting),
     takeLatest(NoticeTypes.NOTICE_REQUEST, notice, api.notice),
     takeLatest(ProductTypes.PRODUCT_REQUEST, product, api.product),
-    takeLatest(SoldProductTypes.SOLD_PRODUCT_REQUEST, soldProduct, api.soldProduct),
+    takeLatest(SoldProductTypes.SOLD_PRODUCT_REQUEST, soldProduct, api.soldProduct)
   ])
 }

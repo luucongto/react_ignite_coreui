@@ -25,6 +25,7 @@ class API {
     this.notice = this.notice.bind(this)
     this.product = this.product.bind(this)
     this.soldProduct = this.soldProduct.bind(this)
+    this.seller = this.seller.bind(this)
   }
 
   authenticated (loginToken) {
@@ -103,7 +104,18 @@ class API {
   }
   soldProduct (params) {
     if (params.command === 'getAdmin') {
-      return this.api.get('product/admin', params).then(result => {
+      return this.api.get('product/seller', params).then(result => {
+        return result ? result.data : null
+      })
+    }
+  }
+  seller (params) {
+    if (params.command === 'import') {
+      console.log(params)
+      let data = new FormData()
+      data.append('file', params.file)
+      data.append('name', 'test')
+      return this.api.post('product/import', data).then(result => {
         return result ? result.data : null
       })
     }
