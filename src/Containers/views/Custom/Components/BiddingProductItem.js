@@ -302,13 +302,16 @@ class BiddingProductItem extends Component {
         topColor = 'success'
         isBidDisable = true
       }
-      if (product.status === Const.PRODUCT_STATUS.BIDDING) {
+      if (product.status === Const.PRODUCT_STATUS.BIDDING || product.status === Const.PRODUCT_STATUS.AUCTIONING) {
         productInfo = renderProductInfo()
-        otherInfo = (<Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1'>
+        otherInfo = (<Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' >
           {product.round ? (<CountdownTimer mini autostart end={product.round.end_at} prefix={roundPrefix} />)
             : (<CountdownTimer mini autostart={false} duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />)}
           <Badge color={'light'} className='pt-2' ><h5 className={'text-' + topColor}>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</h5></Badge>
-          <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={() => this.placeBid()} disabled={isBidDisable} >
+          <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={(event) => {
+            event.stopPropagation()
+            this.placeBid()
+          }} disabled={isBidDisable} >
             <i className={`fa ${this.state.placingBid ? 'mr-1 fa-spinner fa-spin' : 'mr-1 fa-shopping-basket'}`} />
             {this._renderCurrency(this.state.bidPrice) }
           </Button>
@@ -332,7 +335,7 @@ class BiddingProductItem extends Component {
       }
     }
     return (
-      <CardHeader>
+      <CardHeader onClick={() => this.setState({isOpen: !this.state.isOpen})}>
         <Row>
           {productInfo}
           {otherInfo}
@@ -345,6 +348,7 @@ class BiddingProductItem extends Component {
     let product = this.props.product
     let bidPanel
     switch (product.status) {
+      case Const.PRODUCT_STATUS.AUCTIONING:
       case Const.PRODUCT_STATUS.BIDDING:
         bidPanel = this._renderBidding(product)
         break

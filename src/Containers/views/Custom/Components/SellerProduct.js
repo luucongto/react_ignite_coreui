@@ -26,6 +26,7 @@ class SellerProduct extends Component {
       round_time_1: product.round_time_1 || 30,
       round_time_2: product.round_time_2 || 30,
       round_time_3: product.round_time_3 || 30,
+      auto_start: product.auto_start || false,
       images: images
     }
     return state
@@ -47,6 +48,7 @@ class SellerProduct extends Component {
       round_time_1: this.state.round_time_1,
       round_time_2: this.state.round_time_2,
       round_time_3: this.state.round_time_3,
+      auto_start: this.state.auto_start,
       images: this.state.images
     })
   }
@@ -65,7 +67,8 @@ class SellerProduct extends Component {
       {title: this.props.t('round_time_1'), value: this.state.round_time_1, type: 'number', onChange: event => this.setState({round_time_1: event.target.value})},
       {title: this.props.t('round_time_2'), value: this.state.round_time_2, type: 'number', onChange: event => this.setState({round_time_2: event.target.value})},
       {title: this.props.t('round_time_3'), value: this.state.round_time_3, type: 'number', onChange: event => this.setState({round_time_3: event.target.value})},
-      {title: this.props.t('start'), value: moment(this.state.start_at * 1000).format('YYYY-MM-DDTHH:mm'), type: 'datetime-local', onChange: event => this.setState({start_at: Math.floor(new Date(event.target.value).getTime() / 1000)})}
+      {title: this.props.t('start'), value: moment(this.state.start_at * 1000).format('YYYY-MM-DDTHH:mm'), type: 'datetime-local', onChange: event => this.setState({start_at: Math.floor(new Date(event.target.value).getTime() / 1000)})},
+      {title: this.props.t('auto_start'), value: this.state.auto_start, type: 'checkbox', onChange: event => this.setState({auto_start: event.target.checked})}
     ]
     let self = this
     this.state.images.forEach((image, index) => {
@@ -111,10 +114,10 @@ class SellerProduct extends Component {
                   return (
                     <Col md={form.col || '4'} xs='12' key={form.title}>
                       <FormGroup row>
-                        <Col md='3'>
+                        <Col md='5'>
                           <Label htmlFor={form.title}>{form.title}</Label>
                         </Col>
-                        <Col xs='12' md='9'>
+                        <Col xs='12' md='7'>
                           <Input type={form.type} id={form.title} name={form.title} maxLength={255} value={form.value} onChange={form.onChange} />
                         </Col>
                       </FormGroup>

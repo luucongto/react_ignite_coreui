@@ -6,9 +6,10 @@ module.exports = {
     'BTC': {value: 'BTC', label: 'BTC', assets: ['ETH', 'LTC', 'BNB', 'NEO', 'BCC', 'GAS', 'HSR', 'MCO', 'WTC', 'LRC', 'QTUM', 'YOYO', 'OMG', 'ZRX', 'STRAT', 'SNGLS', 'BQX', 'KNC', 'FUN', 'SNM', 'IOTA', 'LINK', 'XVG', 'SALT', 'MDA', 'MTL', 'SUB', 'EOS', 'SNT', 'ETC', 'MTH', 'ENG', 'DNT', 'ZEC', 'BNT', 'AST', 'DASH', 'OAX', 'ICN', 'BTG', 'EVX', 'REQ', 'VIB', 'TRX', 'POWR', 'ARK', 'XRP', 'MOD', 'ENJ', 'STORJ', 'VET', 'KMD', 'RCN', 'NULS', 'RDN', 'XMR', 'DLT', 'AMB', 'BAT', 'BCPT', 'ARN', 'GVT', 'CDT', 'GXS', 'POE', 'QSP', 'BTS', 'XZC', 'LSK', 'TNT', 'FUEL', 'MANA', 'BCD', 'DGD', 'ADX', 'ADA', 'PPT', 'CMT', 'XLM', 'CND', 'LEND', 'WABI', 'TNB', 'WAVES', 'GTO', 'ICX', 'OST', 'ELF', 'AION', 'NEBL', 'BRD', 'EDO', 'WINGS', 'NAV', 'LUN', 'TRIG', 'APPC', 'VIBE', 'RLC', 'INS', 'PIVX', 'IOST', 'CHAT', 'STEEM', 'NANO', 'VIA', 'BLZ', 'AE', 'RPX', 'NCASH', 'POA', 'ZIL', 'ONT', 'STORM', 'XEM', 'WAN', 'WPR', 'QLC', 'SYS', 'GRS', 'CLOAK', 'GNT', 'LOOM', 'BCN', 'REP', 'TUSD', 'ZEN', 'SKY', 'CVC', 'THETA', 'IOTX', 'QKC', 'AGI', 'NXS', 'DATA', 'SC', 'NPXS', 'KEY', 'NAS', 'MFT', 'DENT', 'ARDR']}
   },
   PRODUCT_STATUS: {
-    REMOVED: 0,
     WAITING: 1,
-    BIDDING: 2,
-    FINISHED: 3
+    AUCTIONING: 2,
+    BIDDING: 3,
+    FINISHED: 4,
+    REMOVED: 5
   }
 }

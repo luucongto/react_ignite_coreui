@@ -147,6 +147,7 @@ class SellerManagement extends Component {
         </Row>
         <InfiniteScrollList ref='scrollList'
           items={this.state.products}
+          endText={this.props.t('read_em_all')}
           renderItem={(product, index) => <SellerProduct
             key={product.id}
             header={(<Row>
@@ -177,6 +178,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.login.data,
     fetching: state.seller.fetching,
+    error: state.seller.error,
     sellerProducts: state.seller.data
   }
 }

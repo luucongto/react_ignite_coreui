@@ -15,11 +15,11 @@ class AuctionProduct extends Component {
     }
   }
   componentDidMount () {
-    this.setState({productIds: underscore.pluck(Object.values(this.props.products).filter(product => product.status === Const.PRODUCT_STATUS.BIDDING), 'id')})
+    this.setState({productIds: underscore.pluck(Object.values(this.props.products).filter(product => product.status === Const.PRODUCT_STATUS.BIDDING || product.status === Const.PRODUCT_STATUS.AUCTIONING), 'id')})
   }
   componentWillReceiveProps (props) {
     let curProductIds = Utils.clone(this.state.productIds)
-    let newProductIds = underscore.pluck(Object.values(props.products).filter(product => product.status === Const.PRODUCT_STATUS.BIDDING), 'id')
+    let newProductIds = underscore.pluck(Object.values(props.products).filter(product => product.status === Const.PRODUCT_STATUS.BIDDING || product.status === Const.PRODUCT_STATUS.AUCTIONING), 'id')
     let productIds = underscore.uniq(curProductIds.concat(newProductIds))
     this.setState({hasMore: Object.values(this.props.products) !== Object.values(props.products), productIds})
   }
@@ -40,7 +40,7 @@ class AuctionProduct extends Component {
     })
     return (
       <div className='animated fadeIn pl-0 pr-0'>
-        <BaseProducts title={this.props.t('auctioning_products')} filterStatus={[Const.PRODUCT_STATUS.BIDDING, Const.PRODUCT_STATUS.FINISHED]} order='start_at' colOpen='12' colCollapse='6' products={products} />
+        <BaseProducts title={this.props.t('auctioning_products')} filterStatus={[Const.PRODUCT_STATUS.BIDDING, Const.PRODUCT_STATUS.AUCTIONING, Const.PRODUCT_STATUS.FINISHED]} order='start_at' colOpen='12' colCollapse='6' products={products} />
         {/* <BaseProducts title='Today Sold Products' filterStatus={[Const.PRODUCT_STATUS.FINISHED]} order='updatedAt' today colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} /> */}
 
       </div>
