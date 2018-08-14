@@ -131,7 +131,7 @@ class DefaultLayout extends Component {
                   return route.component ? (<PrivateRoute key={idx} {...route} />) : (null)
                 }
                 )}
-                <Redirect from='/' to='/trade' />
+                <Redirect from='/' to='/notices' />
               </Switch>
             </Container>
           </main>
