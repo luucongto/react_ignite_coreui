@@ -7,7 +7,7 @@ export function * login (loginAPI, {params}) {
     if (res && res.success) {
       yield put(LoginActions.loginSuccess(res))
     } else {
-      yield put(LoginActions.loginFailure(res.msg))
+      yield put(LoginActions.loginFailure(res))
     }
   } catch (error) {
     yield put(LoginActions.loginFailure(error.message))

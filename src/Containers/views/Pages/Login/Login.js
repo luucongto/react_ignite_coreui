@@ -6,6 +6,7 @@ import { Button, Card, CardBody, Col, Container, Input, InputGroup, InputGroupAd
 import LoginActions from '../../../../Redux/LoginRedux'
 import logo from '../../../assets/img/brand/Punch_Logo.png'
 import sygnet from '../../../assets/img/brand/Punch_P_Logo.png'
+import Alert from 'react-s-alert'
 class Login extends Component {
   constructor (props) {
     super(props)
@@ -24,11 +25,17 @@ class Login extends Component {
     if (props.user) {
       this.props.history.push('/')
     }
+    if (props.error) {
+      Alert.error(this.props.t(props.error), {
+        position: 'bottom-right',
+        effect: 'bouncyflip'
+      })
+    }
   }
-  logout = () => {
+  logout () {
     this.setState({isAuthenticated: false, token: '', user: null})
   }
-  googleResponse = (response) => {
+  googleResponse (response) {
     if (response.accessToken) {
       const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken}, null, 2)], {type: 'application/json'})
       // let params = {
@@ -117,6 +124,7 @@ class Login extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.login.data,
+    error: state.login.error,
     fetching: state.login.fetching
   }
 }
