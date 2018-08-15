@@ -63,7 +63,7 @@ class DefaultHeader extends Component {
   }
   _displayServerMessage (data) {
     if (data.type === 'error') {
-      Alert.error(data.msg, {
+      Alert.error(this.props.t(data.msg, data.msgParams), {
         position: 'bottom-right',
         effect: 'bouncyflip'
       })

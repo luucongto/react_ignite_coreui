@@ -14,7 +14,7 @@ class AccountInfo extends Component {
   }
   componentWillReceiveProps (props) {
     if (props.error) {
-      Alert.error(props.error, {
+      Alert.error(this.props.t(props.error), {
         position: 'bottom-right',
         effect: 'bouncyflip'
       })

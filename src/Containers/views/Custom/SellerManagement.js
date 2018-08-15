@@ -68,7 +68,7 @@ class SellerManagement extends Component {
       self.setState({products})
     }
     if (data.msg) {
-      Alert.info(data.msg, {
+      Alert.info(this.props.t(data.msg, data.msgParams), {
         position: 'bottom-right',
         effect: 'bouncyflip'
       })
@@ -95,13 +95,13 @@ class SellerManagement extends Component {
   }
   componentWillReceiveProps (props) {
     if (props.error) {
-      Alert.error(props.error, {
+      Alert.error(this.props.t(props.error), {
         position: 'bottom-right',
         effect: 'bouncyflip'
       })
     }
     if (props.sellerProducts) {
-      Alert.info(`Imported ${props.sellerProducts.length} products`, {
+      Alert.info(this.props.t('imported_products', {num: props.sellerProducts.length}), {
         position: 'bottom-right',
         effect: 'bouncyflip'
       })

@@ -49,7 +49,14 @@
   "Search":"Tìm kiếm",
   "Export Excel":"Xuất Excel",
   "import_from_excel": "Thêm sản phẩm từ file Excel",
+  "imported_products": "Đã nhập {{num} sản phẩm",
   "import": "TẢI LÊN",
   "sample": "TẢI FILE MẪU",
-  "remove": "XOÁ SẢN PHẨM"
+  "remove": "XOÁ SẢN PHẨM",
+  "Unauthorized": "Không có quyền",
+  "Product is not valid!!!": "Sản phẩm không hợp lệ!!!",
+  "Product has been sold!!!": "Sản phẩm đã được bán!!!",
+  "you_bid_too_much": "Số tiền quá lớn! Lớn nhất đ{{max}}!",
+  "update_product_success": "Cập nhật thành công sản phẩm ID {{id}}!",
+  "Unauthorized!!! Product cannot be edited!!!": "Không có quyền!!! Sản phẩm không thể sửa thông tin!!!"
 }

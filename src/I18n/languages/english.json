@@ -45,6 +45,9 @@
     "auto_start": "Auto Start CountDown",
     "read_em_all": "You've read all of them!!!",
     "import_from_excel": "Import Products from Excel File",
+    "imported_products": "Import {{num} products",
+    "you_bid_too_much": "You bidded too much! Maximum đ{{max}}!",
+    "update_product_success": "Updated Product:{{id}}!",
     "import": "IMPORT",
     "sample": "DOWNLOAD SAMPLE",
     "remove": "REMOVE PRODUCT"
