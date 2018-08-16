@@ -1,5 +1,6 @@
 import ApiConfig from '../Config/ApiConfig'
 import io from 'socket.io-client'
+
 class SocketApi {
   constructor () {
     this.socket = null
@@ -15,7 +16,10 @@ class SocketApi {
     let self = this
     if (this.socket) this.socket.disconnect()
     if (loginToken === 'empty') return
-    this.socket = io(ApiConfig.baseURL, {query: `auth_token=${loginToken}`})
+    this.socket = io(ApiConfig.baseURL, {query: `auth_token=${loginToken}`
+    // , transports: ['websocket']
+    // , upgrade: false
+    })
     this.socket.on('server_setting', data => {
       self.serverTime = data.time
       self.serverRealApi = data.type

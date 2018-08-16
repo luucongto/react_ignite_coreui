@@ -11,6 +11,7 @@ class Login extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      fetching: false,
       username: '',
       password: '',
       isAuthenticated: false,
@@ -23,9 +24,11 @@ class Login extends Component {
 
   componentWillReceiveProps (props) {
     if (props.user) {
+      this.setState({fetching: false})
       this.props.history.push('/')
     }
     if (props.error) {
+      this.setState({fetching: false})
       Alert.error(this.props.t(props.error), {
         position: 'bottom-right',
         effect: 'bouncyflip'
@@ -49,6 +52,7 @@ class Login extends Component {
     }
   }
   _login () {
+    this.setState({fetching: true})
     this.props.login({
       type: 'local',
       username: this.state.username,
@@ -72,7 +76,7 @@ class Login extends Component {
           </Row>
           <Row className='justify-content-center'>
             {
-              this.props.fetching ? (<Progress value='100' color='success' animated />)
+              this.state.fetching ? (<Progress value='100' color='success' animated />)
             : <Col md='6'>
               <Card className='p-4'>
                 <CardBody>

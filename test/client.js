@@ -27,7 +27,7 @@ class Client {
   _setupSocket () {
     let self = this
     this.client.on('auction', data => {
-      self.data = data.filter(product => product.status === Const.PRODUCT_STATUS.BIDDING)
+      self.data = data.filter(product => product.status === Const.PRODUCT_STATUS.BIDDING || product.status === Const.PRODUCT_STATUS.AUCTIONING)
     })
   }
   run () {
