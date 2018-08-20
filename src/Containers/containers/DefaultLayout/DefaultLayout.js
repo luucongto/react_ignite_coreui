@@ -30,6 +30,10 @@ class DefaultLayout extends Component {
     this.state = {
       navigation: {items}
     }
+    let self = this
+    this.props.i18n.on('languageChanged', function (lng) {
+      self.setState({navigation: {items: self._getSideNav(self.props)}})
+    })
   }
   _getSideNav (props) {
     const i18n = this.props.i18n
