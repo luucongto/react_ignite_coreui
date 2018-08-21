@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Badge, Card, CardBody, CardHeader, Col, Row, ListGroup, ListGroupItem, Input, Collapse, FormGroup, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
+import { Button, Badge, Card, CardBody, CardHeader, Col, Row, ListGroup, ListGroupItem, Input, Collapse, FormGroup, InputGroup, InputGroupAddon, InputGroupText, ListGroupItemText } from 'reactstrap'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import ConfirmButton from './ConfirmButton'
@@ -192,6 +192,11 @@ class BiddingProductItem extends Component {
               <Row>
                 <Col> {this.props.t('start_price')} <h3> {this._renderCurrency(product.start_price)}</h3></Col>
                 <Col> {this.props.t('minimum_step')}<h3> {this._renderCurrency(product.step_price)}</h3></Col>
+              </Row>
+            </ListGroupItem>
+            <ListGroupItem color='light'>
+              <Row>
+                {product.images.map(image => <ListGroupItemText key={image.id} className='mb-0'> {image.caption} </ListGroupItemText>)}
               </Row>
             </ListGroupItem>
 
