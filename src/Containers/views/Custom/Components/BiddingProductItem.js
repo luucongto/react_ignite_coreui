@@ -5,7 +5,7 @@ import moment from 'moment'
 import ConfirmButton from './ConfirmButton'
 import CountdownTimer from './CountdownTimer'
 import NumberFormat from 'react-number-format'
-import Carousels from './Carousels'
+import Carousels from './CarouselsThumb'
 import SocketApi from '../../../../Services/SocketApi'
 import Const from '../../../../Config/Const'
 import logo from '../../../assets/img/brand/Punch_Logo.png'
@@ -99,7 +99,7 @@ class BiddingProductItem extends Component {
     }
     return (
       <Col xl={customCol} className='mb-3'>
-        <Carousels items={items} />
+        <Carousels items={items} renderCaption={product.status === Const.PRODUCT_STATUS.AUCTIONING || product.status === Const.PRODUCT_STATUS.BIDDING} />
       </Col>
     )
   }
