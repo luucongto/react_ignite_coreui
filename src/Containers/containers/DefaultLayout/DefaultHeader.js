@@ -62,6 +62,9 @@ class DefaultHeader extends Component {
     this.refresh()
   }
   _displayServerMessage (data) {
+    if (data.msg === 'Please relogin. Your token is expired!!') {
+      this.props.logout()
+    }
     if (data.type === 'error') {
       Alert.error(this.props.t(data.msg, data.msgParams), {
         position: 'bottom-right',
