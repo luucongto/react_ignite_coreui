@@ -9,9 +9,9 @@ import rootSaga from '../Sagas'
 export default () => {
   /* ------------- Assemble The Reducers ------------- */
   const appReducer = combineReducers({
+    accountInfo: require('./AccountInfoRedux').reducer,
     seller: require('./SellerRedux').reducer,
     login: require('./LoginRedux').reducer,
-    accountInfo: require('./AccountInfoRedux').reducer,
     bidder: require('./BidderRedux').reducer,
     serverSetting: require('./ServerSettingRedux').reducer,
     product: require('./ProductRedux').reducer,

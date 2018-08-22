@@ -15,7 +15,7 @@ import { seller } from './SellerSaga'
 
 import { startup } from './StartupSagas'
 import { login, logout } from './LoginSagas'
-import { accountInfo } from './AccountInfoSagas'
+import { accountInfo } from './AccountInfoSaga'
 import { serverSetting } from './ServerSettingSagas'
 import { notice } from './NoticeSaga'
 import { product } from './ProductSaga'
@@ -33,11 +33,11 @@ export default function * root () {
     takeLatest(StartupTypes.STARTUP, startup, api),
 
     // tool generated sagas
+    takeLatest(AccountInfoTypes.ACCOUNT_INFO_REQUEST, accountInfo, api.accountInfo),
     takeLatest(SellerTypes.SELLER_REQUEST, seller, api.seller),
     // Login
     takeLatest(LoginTypes.LOGIN_REQUEST, login, api.login),
     takeLatest(LoginTypes.LOGOUT_REQUEST, logout, api.logout),
-    takeLatest(AccountInfoTypes.ACCOUNT_INFO_REQUEST, accountInfo, api.accountInfo),
     takeLatest(ServerSettingTypes.SERVER_SETTING_REQUEST, serverSetting, api.serverSetting),
     takeLatest(NoticeTypes.NOTICE_REQUEST, notice, api.notice),
     takeLatest(ProductTypes.PRODUCT_REQUEST, product, api.product),

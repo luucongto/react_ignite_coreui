@@ -59,7 +59,12 @@ class API {
     })
   }
 
-  accountInfo () {
+  accountInfo (params) {
+    if (params && params.command === 'update') {
+      return this.api.post('account/setting', params).then(result => {
+        return result ? result.data : null
+      })
+    }
     return this.api.get('account/all').then(result => {
       return result ? result.data : null
     })
