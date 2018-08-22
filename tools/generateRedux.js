@@ -45,10 +45,14 @@ export const reducer = createReducer(INITIAL_STATE, {
 let tempSaga =
 `import { call, put } from 'redux-saga/effects'
 import ${changeCase.pascalCase(name)}Actions from '../Redux/${changeCase.pascalCase(name)}Redux'
-
+import LoginActions from '../Redux/LoginRedux'
 export function * ${changeCase.camelCase(name)} (api, {params}) {
   try {
     const res = yield call(api, params)
+    if (res === 'Unauthorized') {
+      yield put(LoginActions.loginFailure())
+      return
+    }
     if (res.success) { 
       yield put(${changeCase.pascalCase(name)}Actions.${changeCase.camelCase(name)}Success(res.data)) 
     } else {

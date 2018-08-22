@@ -67,6 +67,8 @@ class API {
     }
     return this.api.get('account/all').then(result => {
       return result ? result.data : null
+    }).catch(error => {
+      return {error: 'unauthorized'}
     })
   }
 
