@@ -58,7 +58,7 @@ class AccountInfo extends Component {
       return ('')
     }
     return (
-      <BaseProducts title={this.props.t('sold_products')} filterStatus={Const.PRODUCT_STATUS.FINISHED} colLength={4} products={this.props.accountInfo.products} />
+      <BaseProducts title={this.props.t('sold_products')} filterStatus={[Const.PRODUCT_STATUS.FINISHED]} colLength={4} products={this.props.accountInfo.products} />
     )
   }
 
