@@ -50,5 +50,9 @@
     "update_product_success": "Updated Product:{{id}}!",
     "import": "IMPORT",
     "sample": "DOWNLOAD SAMPLE",
-    "remove": "REMOVE PRODUCT"
+    "remove": "REMOVE PRODUCT",
+    "noChange": "No Change",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "changePassword": "Change Password"
 }

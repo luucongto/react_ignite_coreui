@@ -82,20 +82,20 @@ class AccountInfo extends Component {
                   <Row>
                     <Col xl='6'>
                       <FormGroup row>
-                        <Col md='4'>
+                        <Col md='auto'>
                           <Label htmlFor='password-input'>{this.props.t('password')}</Label>
                         </Col>
-                        <Col xs='12' md='8'>
+                        <Col xs='12' md='7'>
                           <Input type='password' id='password-input' name='password-input' placeholder={this.props.t('noChange')} autoComplete='new-password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} />
                         </Col>
                       </FormGroup>
                     </Col>
                     <Col xl='6'>
                       <FormGroup row>
-                        <Col md='4'>
+                        <Col md='auto'>
                           <Label htmlFor='password-input'>{this.props.t('confirmPassword')}</Label>
                         </Col>
-                        <Col xs='12' md='8'>
+                        <Col xs='12' md='7'>
                           <Input type='password' id='confirm-password-input' name='confirm-password-input' placeholder={this.props.t('noChange')} autoComplete='new-password' value={this.state.confirmPassword} onChange={(event) => this.setState({confirmPassword: event.target.value})} />
                         </Col>
                       </FormGroup>
