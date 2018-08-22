@@ -20,8 +20,14 @@ class Login extends Component {
     }
     this.googleResponse = this.googleResponse.bind(this)
     this.logout = this.logout.bind(this)
+    this._handleKeyPress = this._handleKeyPress.bind(this)
   }
 
+  _handleKeyPress (e) {
+    if (e.key === 'Enter') {
+      this._login()
+    }
+  }
   componentWillReceiveProps (props) {
     if (props.user) {
       this.setState({fetching: false})
@@ -96,7 +102,7 @@ class Login extends Component {
                         <i className='icon-lock' />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input type='password' placeholder='Password' onChange={event => this.setState({password: event.target.value})} value={this.state.password} />
+                    <Input type='password' placeholder='Password' onChange={event => this.setState({password: event.target.value})} value={this.state.password} onKeyPress={this._handleKeyPress} />
                   </InputGroup>
                   <Row>
                     <Col xs='12' lg='auto'>
