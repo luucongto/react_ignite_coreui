@@ -220,9 +220,9 @@ class BiddingProductItem extends Component {
           </Col>
           <Col xl='6' xs='12' >
             <Row className='text-center just-center circle-ribbon'>
-              <Col xl='8' lg='6' xs='10' className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66}}>
-                <span id='content-red'>{this._getBidder(product.winner_id).name}</span>
-              </Col>
+              <div className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66, width: 165}}>
+                {this._getBidder(product.winner_id).name}
+              </div>
               <Col xl='12' className='text-white' style={{fontSize: '1.5em'}}>
                 {this._renderCurrency(product.win_price || 0)}
               </Col>
@@ -241,9 +241,9 @@ class BiddingProductItem extends Component {
         <Col xl='12' >
           {product.winner_id ? <Col className='sold-ribbon' /> : ('')}
           <Row className='text-center just-center circle-ribbon'>
-            <Col xl='8' lg='6' xs='10' className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66}}>
-              <span id='content-red'>{this._getBidder(product.winner_id).name}</span>
-            </Col>
+              <div className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66, width: 165}}>
+                {this._getBidder(product.winner_id).name}
+              </div>
             <Col xl='12' className='text-white' style={{fontSize: '1.5em'}}>
               {this._renderCurrency(product.win_price || 0)}
             </Col>
