@@ -62,5 +62,8 @@
   "noChange": "Không thay đổi",
   "password": "Mật khẩu",
   "confirmPassword": "Xác nhận mật khẩu",
-  "changePassword": "Đổi Mật Khẩu"
+  "changePassword": "Đổi Mật Khẩu",
+  "chat_title": "Hệ thống chat",
+  "chat_sub": "Chào mừng đến với PAOS",
+  "chat_send_placeholder": "Admin có thể gửi tin nhắn"
 }

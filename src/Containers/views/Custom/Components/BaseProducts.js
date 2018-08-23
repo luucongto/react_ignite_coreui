@@ -6,6 +6,7 @@ import Utils from '../../../../Utils/Utils'
 import underscore from 'underscore'
 import PropTypes from 'prop-types'
 import {translate} from 'react-i18next'
+import ChatWidget from '../../Chat/ChatWidget'
 class BaseProducts extends Component {
   constructor (props) {
     super(props)
@@ -75,6 +76,7 @@ class BaseProducts extends Component {
     let self = this
     return (
       <Col xl='12' xs='12'>
+        <ChatWidget />
         <Row>
           <Col xl='12' className='text-center' style={{zIndex: 1}} >
             <div className='ribbon'>

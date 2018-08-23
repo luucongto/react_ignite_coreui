@@ -28,6 +28,7 @@
     "ramda": "0.25.0",
     "react": "16.4.0",
     "react-chartjs-2": "2.7.2",
+    "react-chat-widget": "^2.1.4-1",
     "react-data-export": "^0.4.2",
     "react-dom": "16.4.0",
     "react-google-button": "^0.5.3",

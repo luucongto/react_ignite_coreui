@@ -54,5 +54,8 @@
     "noChange": "No Change",
     "password": "Password",
     "confirmPassword": "Confirm Password",
-    "changePassword": "Change Password"
+    "changePassword": "Change Password",
+    "chat_title": "Chat System",
+    "chat_sub": "Welcome to PAOS",
+    "chat_send_placeholder": "Only Admin can send message"
 }
