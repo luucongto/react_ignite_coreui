@@ -88,8 +88,9 @@ class Notices extends Component {
           {this.props.notices && this.props.notices.length
           ? <InfiniteScrollList
             items={this.props.notices}
+            endText={this.props.t('read_em_all')}
             renderItem={(notice, index) =>
-              <Col lg='12' xl='6' key={index}>
+              <Col lg='12' xl='12' key={index}>
                 <Card>
                   <CardHeader onClick={() => this.toggle(index)}>
                     <Badge color='info'>{moment(notice.start_at * 1000).format('YYYY/MM/DD HH:mm')} </Badge> {notice.title}
