@@ -135,7 +135,7 @@ class BiddingProductItem extends Component {
                 value={this.state.bidPrice}
                 disabled={this.state.placingBid}
                 onChange={(event) => {
-                  let bidPrice = parseInt(event.target.value)
+                  let bidPrice = parseInt(event.target.value) || 0
                   this.setState({bidPrice})
                 }} />
             </Col>

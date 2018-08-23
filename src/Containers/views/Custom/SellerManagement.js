@@ -39,6 +39,7 @@ class SellerManagement extends Component {
     this.state = {
       opening: -1,
       file: null,
+      displayProducts: [],
       products: []
     }
     this.toggle = this.toggle.bind(this)
@@ -51,12 +52,12 @@ class SellerManagement extends Component {
   _processServerMessage (data) {
     let self = this
     if (data.success && data.products) {
-      self.setState({products: data.products})
+      self.setState({products: data.products, displayProducts: data.products})
     }
     if (data.success && data.product) {
       let products = Utils.clone(this.state.products)
       products = products.map(product => product.id !== data.product.id ? product : data.product)
-      self.setState({products})
+      self.setState({products, displayProducts: products})
     }
     if (data.success && data.destroy) {
       let products = Utils.clone(this.state.products)
@@ -65,7 +66,7 @@ class SellerManagement extends Component {
       if (index >= 0) {
         products.splice(index, 1)
       }
-      self.setState({products})
+      self.setState({products, displayProducts: products})
     }
     if (data.msg) {
       Alert.info(this.props.t(data.msg, data.msgParams), {
@@ -114,6 +115,14 @@ class SellerManagement extends Component {
       file: this.state.file
     })
   }
+  _search (value) {
+    let products = Utils.clone(this.state.products)
+    if (value) {
+      let id = parseInt(value, 10)
+      products = products.filter(product => product.id === id || product.ams_code.toLowerCase().indexOf(value.toLowerCase()) > -1)
+    }
+    this.setState({displayProducts: products})
+  }
   _render () {
     return (
       <div className='animated fadeIn pl-0 pr-0'>
@@ -145,8 +154,17 @@ class SellerManagement extends Component {
         <Row>
           <SellerProduct header={this.props.t('add_auction_product')} index={-2} toggle={this.toggle} opening={this.state.opening === -2} />
         </Row>
+        <Row>
+          <Col>
+            <FormGroup row>
+              <Col xs='12' md='auto'>
+                <Input type='text' onChange={(event) => this._search(event.target.value)} placeholder='Id or AMS Code'/>
+              </Col>
+            </FormGroup>
+          </Col>
+        </Row>
         <InfiniteScrollList ref='scrollList'
-          items={this.state.products}
+          items={this.state.displayProducts}
           endText={this.props.t('read_em_all')}
           renderItem={(product, index) => <SellerProduct
             key={product.id}
