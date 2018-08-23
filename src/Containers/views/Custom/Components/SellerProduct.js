@@ -58,6 +58,12 @@ class SellerProduct extends Component {
       id: this.props.product ? this.props.product.id : 0
     })
   }
+  showProduct () {
+    SocketApi.emit('seller', {
+      command: 'show',
+      id: this.props.product ? this.props.product.id : 0
+    })
+  }
   render () {
     let formData = [
       {title: this.props.t('name'), value: this.state.name, type: 'text', onChange: event => this.setState({name: event.target.value})},
@@ -132,7 +138,7 @@ class SellerProduct extends Component {
                   <ConfirmButton color='success' onClick={() => this.action()} disabled={!btnAvai} > {this.props.t(this.props.product ? 'btn_update' : 'btn_add')} </ConfirmButton>
                 </Col>
                 <Col xl='auto'>
-                  {this.props.product ? <ConfirmButton color='danger' onClick={() => this.remove()} > {this.props.t('remove')} </ConfirmButton> : ('')}
+                  {this.props.product && this.props.product.status === 0 ? <ConfirmButton color='danger' onClick={() => this.showProduct()} > {this.props.t('btn_show_product')} </ConfirmButton> : (this.props.product ? <ConfirmButton color='danger' onClick={() => this.remove()} > {this.props.t('remove')} </ConfirmButton> : (''))}
                 </Col>
               </Row>
 

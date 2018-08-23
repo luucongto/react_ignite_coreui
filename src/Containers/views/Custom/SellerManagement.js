@@ -158,7 +158,9 @@ class SellerManagement extends Component {
                 <Badge color='primary'>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:mm')}</Badge>
                 <Badge color='success'>{this._renderCurrency(product.start_price)}</Badge>
                 <Badge color='success'>+{this._renderCurrency(product.step_price)}</Badge>
+                <Badge color={product.status ? 'success' : 'dark'}>{product.status ? 'WAITING' : 'HIDDEN'}</Badge>
                 <Badge color='light'>{product.name}</Badge>
+
               </Col>
             </Row>)}
             product={product}
