@@ -99,7 +99,7 @@ class BiddingProductItem extends Component {
     }
     return (
       <Col xl={customCol} className='mb-3'>
-        <Carousels items={items} renderCaption={product.status === Const.PRODUCT_STATUS.AUCTIONING || product.status === Const.PRODUCT_STATUS.BIDDING} />
+        <Carousels items={items} renderCaption={product.status === Const.PRODUCT_STATUS.AUCTIONING || product.status === Const.PRODUCT_STATUS.BIDDING || product.status === Const.PRODUCT_STATUS.FINISHED} />
       </Col>
     )
   }
@@ -242,8 +242,8 @@ class BiddingProductItem extends Component {
           {product.winner_id ? <Col className='sold-ribbon' /> : ('')}
           <Row className='text-center just-center circle-ribbon'>
             <div className='text-white' style={{paddingTop: '2em', fontSize: '1.5em', height: 66, width: 145}}>
-                {this._getBidder(product.winner_id).name}
-              </div>
+              {this._getBidder(product.winner_id).name}
+            </div>
             <Col xl='12' className='text-white' style={{fontSize: '1.5em'}}>
               {this._renderCurrency(product.win_price || 0)}
             </Col>

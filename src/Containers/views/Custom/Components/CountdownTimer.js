@@ -51,7 +51,7 @@ class CountdownTimer extends Component {
       return (
         <div style={{width: 90}}>
           <Badge color='info' className='pt-2'><h5>{this.pad(this.props.prefix.value)}</h5></Badge>
-          <Badge color={diff > 60 ? 'success' : (diff > 10 ? 'warning' : 'danger')} className='pt-2 ml-2'><h5>{m}:{s}</h5></Badge>
+          <Badge color={diff > 60 ? 'success' : (diff > 10 ? 'warning' : 'danger')} className={'pt-2 ml-2'}><h5 className={diff < 5 ? 'fa-blink' : ''} >{m}:{s}</h5></Badge>
         </div>
       )
     }
@@ -65,11 +65,11 @@ class CountdownTimer extends Component {
         ) : ('')
         }
         <div className={this.props.autostart ? 'active mr-1' : 'mr-1'}>
-          <span className='minutes'>{m}</span>
+          <span className={'minutes' + (diff < 5 ? ' fa-blink' : '')}>{m}</span>
           <div className='smalltext'>{this.props.t('minutes')}</div>
         </div>
         <div className={this.props.autostart ? 'active' : ''}>
-          <span className='seconds'>{s}</span>
+          <span className={'seconds' + (diff < 5 ? ' fa-blink' : '')}>{s}</span>
           <div className='smalltext'>{this.props.t('seconds')}</div>
         </div>
       </div>
