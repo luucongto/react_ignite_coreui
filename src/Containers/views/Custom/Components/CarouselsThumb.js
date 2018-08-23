@@ -42,16 +42,16 @@ class CarouselsThumb extends Component {
   render () {
     let slides2
     if (this.props.renderCaption) {
-      slides2 = this.props.items.map((item) => {
-        return <div>
+      slides2 = this.props.items.map((item, index) => {
+        return <div key={index}>
           <img src={item.src} />
           <p className='legend'>{item.caption}</p>
         </div>
       })
     } else {
       let items = underscore.uniq(this.props.items.map(item => item.src))
-      slides2 = items.map((item) => {
-        return <div>
+      slides2 = items.map((item, index) => {
+        return <div key={index}>
           <img src={item} />
         </div>
       })

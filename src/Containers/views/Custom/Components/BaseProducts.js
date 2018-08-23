@@ -6,7 +6,7 @@ import Utils from '../../../../Utils/Utils'
 import underscore from 'underscore'
 import PropTypes from 'prop-types'
 import {translate} from 'react-i18next'
-import ChatWidget from '../../Chat/ChatWidget'
+
 class BaseProducts extends Component {
   constructor (props) {
     super(props)
@@ -76,7 +76,7 @@ class BaseProducts extends Component {
     let self = this
     return (
       <Col xl='12' xs='12'>
-        <ChatWidget />
+        
         <Row>
           <Col xl='12' className='text-center' style={{zIndex: 1}} >
             <div className='ribbon'>
@@ -104,6 +104,8 @@ class BaseProducts extends Component {
         <InfiniteScrollList ref='scrollList'
           items={this.state.products}
           fetchMore={this.props.fetchMore}
+          hideLoading
+          endText={this.props.t('read_em_all')}
           renderItem={(product, index) => <BiddingProductItem colCollapse={this.props.colCollapse} colOpen={this.props.colOpen} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
         />
       </Col>

@@ -13,6 +13,7 @@ import SocketApi from '../../../Services/SocketApi'
 import moment from 'moment'
 import Alert from 'react-s-alert'
 import {translate} from 'react-i18next'
+import ChatWidget from '../../views/Chat/ChatWidget'
 const propTypes = {
   children: PropTypes.node
 }
@@ -93,6 +94,7 @@ class DefaultHeader extends Component {
     }
     return (
       <React.Fragment>
+        <ChatWidget />
         <AppSidebarToggler className='d-lg-none' display='md' mobile />
         <AppNavbarBrand
           full={{ src: logo, width: 89, height: 34, alt: 'Punch Logo' }}

@@ -72,7 +72,7 @@ class InfiniteScrollList extends Component {
       <Row>
         {this._renderList(this.state.items)}
         <Col xl='12' className='text-center mb-3'>
-          {loadpanel}
+          {!this.props.hideLoading ? loadpanel : ''}
         </Col>
       </Row>
     )

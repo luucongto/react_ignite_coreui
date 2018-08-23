@@ -37,7 +37,7 @@ class ChatWidget extends Component {
   }
   _addMessage (data) {
     this.messageTimes[data.created_at] = data.created_at
-    if (data.user_id === this.props.user.id) {
+    if (!this.props.user || data.user_id === this.props.user.id) {
       return
     }
     // addResponseMessage(`${this.props.users[data.user_id].name || ''}: ${data.message}`)
