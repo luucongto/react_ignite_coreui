@@ -61,7 +61,7 @@ class Admin extends Component {
             </Row>
           </CardBody>
           <CardFooter>
-            <Button color='success' onClick={() => this.addAnnounceMsg()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Add Announcement Message </Button>
+            <Button outline color='success' onClick={() => this.addAnnounceMsg()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Add Announcement Message </Button>
           </CardFooter>
         </Card>
       </Col>
@@ -79,7 +79,7 @@ class Admin extends Component {
               <Row className='mb-2'>
                 <Col xl='10'> Auto Start Auction Item </Col>
                 <Col xl='2' className='text-right'>
-                  <Button size='sm' color='info' onClick={() => this.setState({auto_start: !this.state.auto_start})} >
+                  <Button outline size='sm' color='info' onClick={() => this.setState({auto_start: !this.state.auto_start})} >
                     <i className={this.state.auto_start ? 'mr-1 fa fa-check-square-o' : 'mr-1 fa fa-square-o'} />
                   </Button>
                 </Col>
@@ -94,7 +94,7 @@ class Admin extends Component {
               </Row>
             </CardBody>
             <CardFooter>
-              <Button color='success' onClick={() => this.updateApi()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Update and Restart Server </Button>
+              <Button outline color='success' onClick={() => this.updateApi()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Update and Restart Server </Button>
             </CardFooter>
           </Card>
 

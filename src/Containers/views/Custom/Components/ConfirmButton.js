@@ -31,17 +31,17 @@ class ConfirmButton extends Component {
     if (this.state.isConfirming) {
       return (
         <div className={this.props.className || ''}>
-          <Button size={this.props.size || 'sm'} active color='danger' disabled={this.props.disabled} onClick={() => this.cancel()}>
+          <Button outline size={this.props.size || 'sm'} active color='danger' disabled={this.props.disabled} onClick={() => this.cancel()}>
             <i className='fa fa-ban' />
           </Button>
-          <Button className='ml-2' size={this.props.size || 'sm'} active color='success' disabled={this.props.disabled} onClick={() => this.click()}>
+          <Button outline className='ml-2' size={this.props.size || 'sm'} active color='success' disabled={this.props.disabled} onClick={() => this.click()}>
             <i className='fa fa-check' />
           </Button>
         </div>
       )
     } else {
       return (
-        <Button className={this.props.className || ''} size={this.props.size || 'sm'} disabled={this.props.disabled} color={this.props.color || 'success'} onClick={() => this.click()}>
+        <Button outline className={this.props.className || ''} size={this.props.size || 'sm'} disabled={this.props.disabled} color={this.props.color || 'success'} onClick={() => this.click()}>
           {this.props.children}
         </Button>
       )

@@ -179,7 +179,7 @@ class BiddingProductItem extends Component {
           {/* manual bid */}
           <Row className='just-center mt-3'>
             <Col xl='auto' xs='auto' className='ml-0 mr-1 pl-0 pr-0 float-right'>
-              <Button color='danger' onClick={() => this.setState({bidPrice: this.state.bidPrice - product.step_price})} > <i className='fa fa-minus' /> </Button>
+              <Button outline color='danger' onClick={() => this.setState({bidPrice: this.state.bidPrice - product.step_price})} > <i className='fa fa-minus' /> </Button>
             </Col>
             <Col xs='auto' xl='4' lg='4' className='ml-0 mr-1 pl-0 pr-0'>
               <Input
@@ -195,7 +195,7 @@ class BiddingProductItem extends Component {
                 }} />
             </Col>
             <Col xl='auto' xs='auto' className='ml-0 mr-0 pl-0 pr-0'>
-              <Button color='success' onClick={() => this.setState({bidPrice: this.state.bidPrice + product.step_price})} > <i className='fa fa-plus' /> </Button>
+              <Button outline color='success' onClick={() => this.setState({bidPrice: this.state.bidPrice + product.step_price})} > <i className='fa fa-plus' /> </Button>
             </Col>
             <Col xl='auto' xs='auto'>
               <ConfirmButton size='l' color='success' onClick={() => this.placeBid()} disabled={this.state.placingBid} ><i className={`fa ${this.state.placingBid ? 'fa-spinner fa-spin' : 'fa-shopping-basket'}`} /> {this.props.t('bid_btn')} </ConfirmButton>
@@ -374,7 +374,7 @@ class BiddingProductItem extends Component {
           {product.round ? (<CountdownTimer mini autostart end={product.round.end_at} prefix={roundPrefix} />)
             : (<CountdownTimer mini autostart={false} duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />)}
           <Badge color={'light'} className='pt-2' ><h5 className={'text-' + topColor}>{this._renderCurrency(product.round ? product.round.bid_price : product.start_price)}</h5></Badge>
-          <Button className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={(event) => {
+          <Button outline className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={(event) => {
             event.stopPropagation()
             this.placeBid()
           }} disabled={isBidDisable} >

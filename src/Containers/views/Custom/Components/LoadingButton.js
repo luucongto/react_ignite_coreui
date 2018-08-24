@@ -31,23 +31,23 @@ class LoadingButton extends Component {
   render (){
     if(this.state.buttonState === 'loading'){
       return (
-        <Button className={this.props.className || ''} size={this.props.size || 'sm'} active color={this.props.color || 'success'}>
+        <Button outline className={this.props.className || ''} size={this.props.size || 'sm'} active color={this.props.color || 'success'}>
           <i className='fa fa-spinner fa-spin' />
         </Button>
       )
     } else if (this.state.buttonState === 'success') {
       return (
-        <Button className={this.props.className || ''} size={this.props.size || 'sm'} active color={'success'}>
+        <Button outline className={this.props.className || ''} size={this.props.size || 'sm'} active color={'success'}>
           <i className='fa fa-check' />
         </Button>)
     } else if(this.state.buttonState === 'error'){
       return (
-        <Button className={this.props.className || ''} size={this.props.size || 'sm'} active color={'danger'}>
+        <Button outline className={this.props.className || ''} size={this.props.size || 'sm'} active color={'danger'}>
           <i className='fa fa-exclamation-circle' />
         </Button>
       )
     } else {
-      return (<Button className={this.props.className || ''} size={this.props.size || 'sm'} active color={this.props.color || 'success'} onClick={() => this.handleClick()}>
+      return (<Button outline className={this.props.className || ''} size={this.props.size || 'sm'} active color={this.props.color || 'success'} onClick={() => this.handleClick()}>
         {this.props.children}
       </Button>)
     }

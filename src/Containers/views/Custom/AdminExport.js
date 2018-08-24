@@ -117,12 +117,12 @@ class AdminExport extends Component {
                   <Input type='datetime-local' id='date-input' name='datetime-local' placeholder='date' onChange={(event => this.setState({updated_at: Math.floor(new Date(event.target.value).getTime() / 1000)}))} />
                 </Col>
                 <Col xs='12' md='auto'>
-                  <Button color='success' onClick={() => this.search()} > {this.props.t('Search')} </Button>
+                  <Button outline color='success' onClick={() => this.search()} > {this.props.t('Search')} </Button>
                 </Col>
               </FormGroup>
             </Col>
             {this.state.productData.length ? (<Col xl='auto'>
-              <ExcelFile element={<Button color='success' >{this.props.t('Export Excel')}</Button>}>
+              <ExcelFile element={<Button outline color='success' >{this.props.t('Export Excel')}</Button>}>
                 <ExcelSheet dataSet={this.state.productData} name='Products' />
                 <ExcelSheet dataSet={this.state.winnerData} name='Winners' />
               </ExcelFile>

@@ -64,7 +64,7 @@ class InfiniteScrollList extends Component {
     if (this.state.fetchScroll) {
       loadpanel = <Progress value='100' animated />
     } else if (this.state.hasMore) {
-      loadpanel = <Button size='l' color='info' onClick={() => this._fetchMoreData()}> Load More </Button>
+      loadpanel = <Button outline size='l' color='info' onClick={() => this._fetchMoreData()}> Load More </Button>
     } else if (this.props.endText) {
       loadpanel = <strong> {this.props.endText} </strong>
     }

@@ -69,7 +69,7 @@ class Notices extends Component {
             </FormGroup>
             <FormGroup row>
               <Col md='12'>
-                <Button color='success' onClick={() => this.addNotice()} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> {this.props.t('btn_add')} </Button>
+                <Button outline color='success' onClick={() => this.addNotice()} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> {this.props.t('btn_add')} </Button>
               </Col>
 
             </FormGroup>

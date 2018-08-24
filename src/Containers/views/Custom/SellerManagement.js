@@ -133,16 +133,16 @@ class SellerManagement extends Component {
                 {this.props.fetching ? 'Importing...'
               : <Row>
                 <Col xs='12' md='auto'>
-                  <ExcelFile element={<Button color='success' >{this.props.t('sample')}</Button>}>
+                  <ExcelFile element={<Button outline color='success' >{this.props.t('sample')}</Button>}>
                     <ExcelSheet dataSet={SAMPLE.products} name='products' />
                     <ExcelSheet dataSet={SAMPLE.product_images} name='product_images' />
                   </ExcelFile>
-                  <Button className='ml-3' color='success' onClick={() => this._import()} disabled={!this.state.file}> {this.props.t('import')} </Button>
+                  <Button outline className='ml-3' color='success' onClick={() => this._import()} disabled={!this.state.file}> {this.props.t('import')} </Button>
                 </Col>
                 <Col xs='12' md='auto'>
 
                   <Input type='file'onChange={this._handleFileUpload} accept='.xls,.xlsx' style={{position: 'absolute', opacity: 0}} />
-                  <Button className='mr-3' color='success' onClick={() => this._import()}><i className='fa fa-cloud-upload' /> {this.state.file ? this.state.file.name : this.props.t('import_from_excel')} </Button>
+                  <Button outline className='mr-3' color='success' onClick={() => this._import()}><i className='fa fa-cloud-upload' /> {this.state.file ? this.state.file.name : this.props.t('import_from_excel')} </Button>
                 </Col>
 
               </Row>
