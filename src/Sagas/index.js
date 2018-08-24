@@ -1,6 +1,7 @@
 import { takeLatest, all } from 'redux-saga/effects'
 import api from '../Services/Api'
 /* ------------- Types ------------- */
+import { AutoBidTypes } from '../Redux/AutoBidRedux'
 import { AnnouncementTypes } from '../Redux/AnnouncementRedux'
 import { SellerTypes } from '../Redux/SellerRedux'
 
@@ -12,6 +13,7 @@ import { NoticeTypes } from '../Redux/NoticeRedux'
 import { ProductTypes } from '../Redux/ProductRedux'
 import {SoldProductTypes} from '../Redux/SoldProductRedux'
 /* ------------- Sagas ------------- */
+import { autoBid } from './AutoBidSaga'
 import { announcement } from './AnnouncementSaga'
 import { seller } from './SellerSaga'
 
@@ -35,6 +37,7 @@ export default function * root () {
     takeLatest(StartupTypes.STARTUP, startup, api),
 
     // tool generated sagas
+    takeLatest(AutoBidTypes.AUTO_BID_REQUEST, autoBid, api.autoBid),
     takeLatest(AnnouncementTypes.ANNOUNCEMENT_REQUEST, announcement, api.announcement),
     takeLatest(AccountInfoTypes.ACCOUNT_INFO_REQUEST, accountInfo, api.accountInfo),
     takeLatest(SellerTypes.SELLER_REQUEST, seller, api.seller),

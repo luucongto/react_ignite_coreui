@@ -9,6 +9,7 @@ import sygnet from '../../assets/img/brand/Punch_P_Logo.png'
 import LoginActions from '../../../Redux/LoginRedux'
 import ProductAction from '../../../Redux/ProductRedux'
 import BidderAction from '../../../Redux/BidderRedux'
+import AutoBidActions from '../../../Redux/AutoBidRedux'
 import SocketApi from '../../../Services/SocketApi'
 import moment from 'moment'
 import Alert from 'react-s-alert'
@@ -58,6 +59,9 @@ class DefaultHeader extends Component {
     })
     SocketApi.on('users', data => {
       self.props.updateBidders(data)
+    })
+    SocketApi.on('autoBids', data => {
+      self.props.updateAutoBids(data)
     })
     SocketApi.on('server_message', this._displayServerMessage)
     this.refresh()
@@ -153,6 +157,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: (username, password) => dispatch(LoginActions.logoutRequest()),
     updateBidders: (bidders) => dispatch(BidderAction.bidderSuccess(bidders)),
+    updateAutoBids: (bids) => dispatch(AutoBidActions.autoBidSuccess(bids)),
     updateProducts: (products) => dispatch(ProductAction.productSuccess(products))
   }
 }

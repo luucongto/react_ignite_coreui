@@ -1,4 +1,4 @@
-import Const from '../src/Config/Const'
+
 const {SocketApiClass} = require('../src/Services/SocketApi')
 
 class Client {
@@ -8,13 +8,15 @@ class Client {
     this.client.setup(token)
     this.data = []
     console.log('Setup client: ', index)
-    this._setupSocket()
     this.run()
+  }
+  updateData(data){
+    this.data = data
   }
   placeBid () {
     let self = this
     if (!self.data.length) return
-    let product = self.data[Math.floor(Math.random() * self.data.length)]
+    let product = self.data[Math.round(Math.random() * self.data.length)]
     if (product.round && product.round.bid_price && product.round.bid_price + product.step_price > product.start_price * 20) {
       return
     }
@@ -24,12 +26,7 @@ class Client {
       bid_price: product.round && product.round.bid_price ? product.round.bid_price + product.step_price : product.start_price
     })
   }
-  _setupSocket () {
-    let self = this
-    this.client.on('auction', data => {
-      self.data = data.filter(product => product.status === Const.PRODUCT_STATUS.BIDDING || product.status === Const.PRODUCT_STATUS.AUCTIONING)
-    })
-  }
+  
   run () {
     let self = this
     let timeout = parseInt(Math.random() * 20000)

@@ -58,5 +58,7 @@
     "changePassword": "Change Password",
     "chat_title": "Chat System",
     "chat_sub": "Welcome to PAOS",
-    "chat_send_placeholder": "Only Admin can send message"
+    "chat_send_placeholder": "Only Admin can send message",
+    "auto_bid_placeholder": "Enter maximum price you can buy this product",
+    "auto_bid_btn": "AUTO BID"
 }

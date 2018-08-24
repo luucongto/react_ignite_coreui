@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Badge, Card, CardBody, CardHeader, Col, Row, ListGroup, ListGroupItem, Input, Collapse, FormGroup, InputGroup, InputGroupAddon, InputGroupText, ListGroupItemText } from 'reactstrap'
+import { UncontrolledTooltip, Button, Badge, Card, CardBody, CardHeader, Col, Row, ListGroup, ListGroupItem, Input, Collapse, FormGroup, InputGroup, InputGroupAddon, InputGroupText, ListGroupItemText } from 'reactstrap'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import ConfirmButton from './ConfirmButton'
@@ -15,7 +15,11 @@ class BiddingProductItem extends Component {
   constructor (props) {
     super(props)
     let product = this.props.product
-    let bidPrice: 0
+    let bidPrice = 0
+    let autoBidPrice = 0
+    if(props.autoBids && props.autoBids[product.id]){
+      autoBidPrice = props.autoBids[product.id].price
+    }
     if (product.status === Const.PRODUCT_STATUS.BIDDING && product.round && product.round.bid_price > 0) {
       bidPrice = product.round.bid_price + product.step_price
     } else {
@@ -24,14 +28,18 @@ class BiddingProductItem extends Component {
     moment.relativeTimeThreshold('s', 60)
     this.state = {
       bidPrice: bidPrice,
+      autoBidPrice: autoBidPrice,
       placingBid: false,
+      placingAutoBid: false,
       isOpen: false
     }
     this._getBidder = this._getBidder.bind(this)
     this._updateBidMsg = this._updateBidMsg.bind(this)
+    this._updateAutoBidMsg = this._updateAutoBidMsg.bind(this)
     SocketApi.on('bid_message', this._updateBidMsg)
+    SocketApi.on('auto_bid_message', this._updateAutoBidMsg)
   }
-  _updateBidMsg (data, product) {
+  _updateBidMsg (data) {
     if (data.productId === this.props.product.id) {
       let self = this
       setTimeout(() => {
@@ -39,16 +47,30 @@ class BiddingProductItem extends Component {
       }, 500)
     }
   }
+  _updateAutoBidMsg (data) {
+    console.log(data)
+    if (data.productId === this.props.product.id) {
+      let self = this
+      setTimeout(() => {
+        self.setState({placingAutoBid: false})
+      }, 500)
+    }
+  }
+
   componentWillReceiveProps (props) {
     let product = props.product
     let bidPrice = this.state.bidPrice
+    let autoBidPrice = this.state.autoBidPrice
     if (!product) return
     if (product.status === Const.PRODUCT_STATUS.BIDDING && product.round && product.round.bid_price > 0) {
       bidPrice = product.round.bid_price + product.step_price
     } else {
       bidPrice = product.start_price
     }
-    this.setState({bidPrice})
+    if(props.autoBids && props.autoBids[product.id]){
+      autoBidPrice = props.autoBids[product.id].price
+    }
+    this.setState({bidPrice, autoBidPrice})
   }
   _renderInputItem (prependText, middle, append) {
     return (
@@ -84,6 +106,38 @@ class BiddingProductItem extends Component {
     })
   }
 
+  placeAutoBid () {
+    if (this.state.placingAutoBid) return
+    this.setState({placingAutoBid: true})
+    SocketApi.emit('auction', {
+      command: 'placeAutoBid',
+      product_id: this.props.product.id,
+      auto_bid_price: parseInt(this.state.autoBidPrice)
+    })
+  }
+  _renderAutobid(product, center=true){
+    return (
+      <Row className={center ? 'just-center mt-3': ''}>
+        <Col xs='auto' xl='auto' className='mb-1'>
+          <UncontrolledTooltip placement="top" target="autoBidPrice">
+            {this.props.t('auto_bid_placeholder')}
+          </UncontrolledTooltip>
+          <Input
+            type='number'
+            id='autoBidPrice'
+            required
+            value={this.state.autoBidPrice}
+            onChange={(event) => {
+              let autoBidPrice = parseInt(event.target.value) || 0
+              this.setState({autoBidPrice})
+            }} />
+        </Col>
+        <Col xl='auto' xs='auto'>
+          <ConfirmButton size='l' color='danger' disabled={this.state.placingAutoBid} onClick={() => this.placeAutoBid()}><i className={`fa ${this.state.placingAutoBid ? 'fa-spinner fa-spin' : 'fa-shopping-basket'}`} /> {this.props.t('auto_bid_btn')} </ConfirmButton>
+        </Col>
+      </Row>
+    )
+  }
   _renderProductDetail (product, customCol = '6') {
     let items = [
     ]
@@ -122,6 +176,7 @@ class BiddingProductItem extends Component {
               </div>
             </Col>
           </Row>
+          {/* manual bid */}
           <Row className='just-center mt-3'>
             <Col xl='auto' xs='auto' className='ml-0 mr-1 pl-0 pr-0 float-right'>
               <Button color='danger' onClick={() => this.setState({bidPrice: this.state.bidPrice - product.step_price})} > <i className='fa fa-minus' /> </Button>
@@ -151,6 +206,8 @@ class BiddingProductItem extends Component {
               <h3>{this.props.t('seller')} <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3>
             </Col>
           </Row>
+          {/* autobid */}
+          {this._renderAutobid(product)}
         </Col>
 
         <Col xl={this.props.colOpen === '12' ? '4' : '6'}>
@@ -178,6 +235,10 @@ class BiddingProductItem extends Component {
         {this._renderProductDetail(product, 8)}
         <Col xl={this.props.colOpen === '12' ? '4' : '4'}>
           <ListGroup>
+          <ListGroupItem color='danger'>
+            {/* autobid */}
+            {this._renderAutobid(product, false)}
+          </ListGroupItem>
             <ListGroupItem color='danger'>
               <Row>
                 <Col> {this.props.t('seller')} <h3> <img src={this._getBidder(product.seller_id).image_url} className='bidder_avatar' /> {this._getBidder(product.seller_id).name}</h3></Col>
@@ -382,7 +443,8 @@ class BiddingProductItem extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.login.data,
-    users: state.bidder.data
+    users: state.bidder.data,
+    autoBids: state.autoBid.data
   }
 }
 

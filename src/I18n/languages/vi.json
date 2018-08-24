@@ -66,5 +66,7 @@
   "changePassword": "Đổi Mật Khẩu",
   "chat_title": "Hệ thống chat",
   "chat_sub": "Chào mừng đến với PAOS",
-  "chat_send_placeholder": "Admin có thể gửi tin nhắn"
+  "chat_send_placeholder": "Admin có thể gửi tin nhắn",
+  "auto_bid_placeholder": "Nhập giá tối đa mà bạn có thể chi cho sản phẩm này",
+  "auto_bid_btn": "TỰ ĐỘNG BID"
 }
