@@ -94,7 +94,6 @@ class DefaultHeader extends Component {
     }
     return (
       <React.Fragment>
-        <ChatWidget />
         <AppSidebarToggler className='d-lg-none' display='md' mobile />
         <AppNavbarBrand
           full={{ src: logo, width: 89, height: 34, alt: 'Punch Logo' }}

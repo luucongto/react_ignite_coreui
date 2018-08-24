@@ -78,6 +78,11 @@ class API {
         return result ? result.data : null
       })
     }
+    if(params.command === 'announce'){
+      return this.api.post('admin/announce', params).then(result => {
+        return result ? result.data : null
+      })
+    }
     if (params.command === 'post') {
       return this.api.post('admin/apisetting', params).then(result => {
         return result ? result.data : null

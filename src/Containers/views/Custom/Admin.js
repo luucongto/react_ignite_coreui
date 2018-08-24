@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
-import { Button, Col, Row, Card, CardHeader, CardBody, Input, CardFooter } from 'reactstrap'
+import { Button, Col, Row, Card, CardHeader, CardBody, Input, CardFooter, FormGroup, Label } from 'reactstrap'
 import { connect } from 'react-redux'
-import { AppSwitch } from '@coreui/react'
 import ServerSettingActions from '../../../Redux/ServerSettingRedux'
 import AdminExport from './AdminExport'
-
+import {translate} from 'react-i18next'
 class Admin extends Component {
   constructor (props) {
     super(props)
     this.state = {
       max_bid: 10000000000,
       auto_start: true,
-      multi_auction_same_time: 1
+      multi_auction_same_time: 1,
+      message: '',
+      displayTo: 0
+
     }
     this.props.request({command: 'get'})
   }
@@ -29,6 +31,41 @@ class Admin extends Component {
   }
   updateApi () {
     this.props.request({command: 'post', auto_start: this.state.auto_start ? 1 : 0, multi_auction_same_time: this.state.multi_auction_same_time, max_bid: this.state.max_bid})
+  }
+  addAnnounceMsg () {
+    this.props.request({command: 'announce', message: this.state.message, displayTo: this.state.displayTo})
+  }
+  _renderAnnouncement () {
+    return (
+      <Col xl='6' xs='12'>
+        <Card>
+          <CardHeader>
+            Announcement
+          </CardHeader>
+          <CardBody>
+            <Row className='mb-2' >
+              <Col xl='auto'> Message</Col>
+              <Col xl='8'> <Input type='text' value={this.state.message} limit={255} onChange={(event) => this.setState({message: event.target.value})} /> </Col>
+            </Row>
+            <Row>
+              <Col xl='auto'>
+                <FormGroup row>
+                  <Col md='auto'>
+                    <Label htmlFor='date-input'>{this.props.t('Show Until')}</Label>
+                  </Col>
+                  <Col xs='12' md='auto'>
+                    <Input type='datetime-local' id='date-input' name='datetime-local' placeholder='date' onChange={(event => this.setState({displayTo: Math.floor(new Date(event.target.value).getTime() / 1000)}))} />
+                  </Col>
+                </FormGroup>
+              </Col>
+            </Row>
+          </CardBody>
+          <CardFooter>
+            <Button color='success' onClick={() => this.addAnnounceMsg()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Add Announcement Message </Button>
+          </CardFooter>
+        </Card>
+      </Col>
+    )
   }
   _render () {
     return (
@@ -60,10 +97,11 @@ class Admin extends Component {
               <Button color='success' onClick={() => this.updateApi()} disabled={this.props.fetching} > <i className={this.props.fetching ? 'fa fa-spinner fa-spin' : 'fa fa-dot-circle-o'} /> Update and Restart Server </Button>
             </CardFooter>
           </Card>
-          
+
         </Col>
+        {this._renderAnnouncement()}
         <Col xl='12'>
-        <AdminExport />
+          <AdminExport />
         </Col>
       </Row>
     )
@@ -91,4 +129,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Admin)
+export default translate('translations')(connect(mapStateToProps, mapDispatchToProps)(Admin))

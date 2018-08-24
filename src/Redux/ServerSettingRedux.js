@@ -26,7 +26,11 @@ export const INITIAL_STATE = Immutable({
 
 export const serverSettingRequest = state => state.merge({ fetching: true, error: null, data: null })
 
-export const serverSettingSuccess = (state, { data }) => state.merge({ fetching: false, error: null, data })
+export const serverSettingSuccess = (state, { data }) => {
+  if(data)
+    return state.merge({ fetching: false, error: null, data })
+  return state.merge({ fetching: false, error: null })  
+}
 
 export const serverSettingFailure = (state, { error }) => state.merge({ fetching: false, error, data: null })
 
