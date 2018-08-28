@@ -115,7 +115,8 @@ class BiddingProductItem extends Component {
       auto_bid_price: parseInt(this.state.autoBidPrice)
     })
   }
-  _renderAutobid(product, center=true){
+  _renderAutobid (product, center = true) {
+    let currentPrice = product.round ? product.round.bid_price : product.start_price
     return (
       <Row className={center ? 'just-center mt-3': ''}>
         <Col xs='auto' xl='auto' className='mb-1'>
@@ -126,6 +127,8 @@ class BiddingProductItem extends Component {
             type='number'
             id='autoBidPrice'
             required
+            valid={this.state.autoBidPrice >= currentPrice}
+            invalid={this.state.autoBidPrice < currentPrice}
             value={this.state.autoBidPrice}
             onChange={(event) => {
               let autoBidPrice = parseInt(event.target.value) || 0
@@ -235,7 +238,7 @@ class BiddingProductItem extends Component {
         {this._renderProductDetail(product, 8)}
         <Col xl={this.props.colOpen === '12' ? '4' : '4'}>
           <ListGroup>
-          <ListGroupItem color='danger'>
+          <ListGroupItem color='info'>
             {/* autobid */}
             {this._renderAutobid(product, false)}
           </ListGroupItem>
