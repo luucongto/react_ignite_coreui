@@ -11,6 +11,8 @@ import NumberFormat from 'react-number-format'
 import {translate} from 'react-i18next'
 import SellerActions from '../../../Redux/SellerRedux'
 import ReactExport from 'react-data-export'
+import underscore from 'underscore'
+
 const ExcelFile = ReactExport.ExcelFile
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
 const SAMPLE = {
@@ -52,6 +54,7 @@ class SellerManagement extends Component {
   _processServerMessage (data) {
     let self = this
     if (data.success && data.products) {
+      data.products = underscore.sortBy(data.products, 'start_at')
       self.setState({products: data.products, displayProducts: data.products})
     }
     if (data.success && data.product) {
