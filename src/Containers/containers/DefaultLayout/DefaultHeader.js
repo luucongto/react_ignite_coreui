@@ -76,10 +76,10 @@ class DefaultHeader extends Component {
         effect: 'bouncyflip'
       })
     } else if (data.type === 'info') {
-        // Alert.info(data.msg, {
-        //   position: 'bottom-right',
-        //   effect: 'bouncyflip'
-        // })
+      Alert.info(this.props.t(data.msg, data.msgParams), {
+        position: 'bottom-right',
+        effect: 'bouncyflip'
+      })
     }
   }
   render () {

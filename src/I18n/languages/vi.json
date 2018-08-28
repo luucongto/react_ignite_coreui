@@ -68,5 +68,8 @@
   "chat_sub": "Chào mừng đến với PAOS",
   "chat_send_placeholder": "Admin có thể gửi tin nhắn",
   "auto_bid_placeholder": "Nhập giá tối đa mà bạn có thể chi cho sản phẩm này",
-  "auto_bid_btn": "TỰ ĐỘNG BID"
+  "auto_bid_btn": "TỰ ĐỘNG BID",
+  "auto_bid_working": "TỰ ĐỘNG",
+  "autobid_is_placed": "Đã cài đặt tự động bid",
+  "you_should_autobid_at_least": "Bạn cần đặt giá tối thiểu đ{{value}}"
 }

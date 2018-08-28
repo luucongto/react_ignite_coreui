@@ -60,5 +60,8 @@
     "chat_sub": "Welcome to PAOS",
     "chat_send_placeholder": "Only Admin can send message",
     "auto_bid_placeholder": "Enter maximum price you can buy this product",
-    "auto_bid_btn": "AUTO BID"
+    "auto_bid_btn": "AUTO BID",
+    "auto_bid_working": "AUTO",
+    "autobid_is_placed": "Autobid is placed",
+    "you_should_autobid_at_least": "You should set at least đ{{value}}"
 }
