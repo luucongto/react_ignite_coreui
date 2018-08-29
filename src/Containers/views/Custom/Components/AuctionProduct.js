@@ -11,7 +11,6 @@ class AuctionProduct extends Component {
     super(props)
     this.state = {
       productIds: [],
-      page: -1
     }
   }
   componentDidMount () {
@@ -23,14 +22,7 @@ class AuctionProduct extends Component {
     let productIds = underscore.uniq(curProductIds.concat(newProductIds))
     this.setState({hasMore: Object.values(this.props.products) !== Object.values(props.products), productIds})
   }
-  fetchMore (page) {
-    this.props.get(page)
-    let hasMore = this.state.page < page
-    this.setState({page})
-    return {
-      hasMore
-    }
-  }
+  
   render () {
     let products = {}
     Object.values(this.props.products).forEach(product => {
@@ -41,8 +33,6 @@ class AuctionProduct extends Component {
     return (
       <div className='animated fadeIn pl-0 pr-0'>
         <BaseProducts title={this.props.t('auctioning_products')} filterStatus={[Const.PRODUCT_STATUS.BIDDING, Const.PRODUCT_STATUS.AUCTIONING, Const.PRODUCT_STATUS.FINISHED]} order='start_at' colOpen='12' colCollapse='6' products={products} />
-        {/* <BaseProducts title='Today Sold Products' filterStatus={[Const.PRODUCT_STATUS.FINISHED]} order='updatedAt' today colOpen='4' colCollapse='4' products={this.props.products} fetchMore={(page) => this.fetchMore(page)} /> */}
-
       </div>
     )
   }

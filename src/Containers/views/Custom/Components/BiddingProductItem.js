@@ -28,10 +28,11 @@ class BiddingProductItem extends Component {
     moment.relativeTimeThreshold('s', 60)
     this.state = {
       bidPrice: bidPrice,
+      editingAutoBid: false,
       autoBidPrice: autoBidPrice,
       placingBid: false,
       placingAutoBid: false,
-      isOpen: false
+      currentProductId: 0
     }
     this._getBidder = this._getBidder.bind(this)
     this._updateBidMsg = this._updateBidMsg.bind(this)
@@ -67,10 +68,12 @@ class BiddingProductItem extends Component {
     } else {
       bidPrice = product.start_price
     }
-    if(props.autoBids && props.autoBids[product.id]){
+    if(!this.state.editingAutoBid && props.autoBids && props.autoBids[product.id]){
       autoBidPrice = props.autoBids[product.id].price
     }
-    this.setState({bidPrice, autoBidPrice})
+    // let currentProductId = this.state.currentProductId
+    // if(currentProductId === 0) currentProductId = product.id
+    this.setState({bidPrice, autoBidPrice })
   }
   _renderInputItem (prependText, middle, append) {
     return (
@@ -108,7 +111,7 @@ class BiddingProductItem extends Component {
 
   placeAutoBid () {
     if (this.state.placingAutoBid) return
-    this.setState({placingAutoBid: true})
+    this.setState({placingAutoBid: true, editingAutoBid: false})
     SocketApi.emit('auction', {
       command: 'placeAutoBid',
       product_id: this.props.product.id,
@@ -132,7 +135,7 @@ class BiddingProductItem extends Component {
             value={this.state.autoBidPrice}
             onChange={(event) => {
               let autoBidPrice = parseInt(event.target.value) || 0
-              this.setState({autoBidPrice})
+              this.setState({autoBidPrice, editingAutoBid: true})
             }} />
         </Col>
         <Col xl='auto' xs='auto'>
@@ -358,7 +361,7 @@ class BiddingProductItem extends Component {
     let topColor = 'danger'
     let renderProductInfo = (col = 'auto', tagH5 = true) => {
       return (
-        <Col xl={col} xs={col} onClick={() => this.setState({isOpen: !this.state.isOpen})} className='pl-1 pr-1'>
+        <Col xl={col} xs={col} onClick={() => this.setState({currentProductId: this.state.currentProductId ? 0 : product.id})} className='pl-1 pr-1'>
           <Badge className={`ml-2 ${tagH5 ? 'pt-2' : ''}`} color={this._color(product.category)} > {tagH5 ? (<h5> {product.category} </h5>) : product.category}</Badge>
           <Badge className={`ml-2 mr-2 ${tagH5 ? 'pt-2' : ''}`} color={'dark'} > {tagH5 ? (<h5> {product.ams_code} </h5>) : product.ams_code}</Badge>
           <Badge className={`mr-2 ${tagH5 ? 'pt-2' : ''}`} color={'light'} > {tagH5 ? (<h5> {product.name} </h5>) : product.name}</Badge>
@@ -366,7 +369,7 @@ class BiddingProductItem extends Component {
       )
     }
     productInfo = renderProductInfo(12)
-    if (!this.state.isOpen) {
+    if (!this.state.currentProductId) {
       if (product.round && product.round.bidder === this.props.user.id) {
         topColor = 'success'
         isBidDisable = true
@@ -391,7 +394,7 @@ class BiddingProductItem extends Component {
       } else if (product.status === Const.PRODUCT_STATUS.WAITING) {
         productInfo = renderProductInfo()
         otherInfo = (
-          <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({isOpen: !this.state.isOpen})}>
+          <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({currentProductId: !this.state.currentProductId})}>
             <Badge color='success' className='mr-2 pt-2' ><h5>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:mm')}</h5></Badge>
             {this.state.autoBidPrice ? <Badge color='success' className='pt-2'> <h5>{this.props.t('auto_bid_working')} {this._renderCurrency(this.state.autoBidPrice)} </h5></Badge> : <Badge color='info' className='mr-2 pt-2'> <h5> {this._renderCurrency(product.start_price)} </h5></Badge>}
           </Col>
@@ -399,7 +402,7 @@ class BiddingProductItem extends Component {
       } else if (product.status === Const.PRODUCT_STATUS.FINISHED) {
         productInfo = renderProductInfo('auto', false)
         otherInfo = (
-          <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({isOpen: !this.state.isOpen})}>
+          <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({currentProductId: !this.state.currentProductId})}>
             <Badge color={product.winner_id === this.props.user.id ? 'success' : 'danger'}>{this._getBidder(product.winner_id).name } </Badge>
             <Badge color='danger'>{this._renderCurrency(product.win_price || 0)}</Badge>
           </Col>
@@ -407,7 +410,7 @@ class BiddingProductItem extends Component {
       }
     }
     return (
-      <CardHeader onClick={() => this.setState({isOpen: !this.state.isOpen})}>
+      <CardHeader onClick={() => this.setState({currentProductId: this.state.currentProductId ? 0 : product.id})}>
         <Row>
           {productInfo}
           {otherInfo}
@@ -431,10 +434,10 @@ class BiddingProductItem extends Component {
         bidPanel = this._renderWaiting(product)
     }
     return (
-      <Col xl={this.state.isOpen ? this.props.colOpen || '6' : this.props.colCollapse || 6} className='animated fadeIn fadeOut'>
+      <Col xl={this.state.currentProductId ? this.props.colOpen || '6' : this.props.colCollapse || 6} className='animated fadeIn fadeOut'>
         <Card>
           {this._renderHeader(product)}
-          <Collapse isOpen={this.state.isOpen} data-parent='#accordion' id='collapseOne' aria-labelledby='headingOne'>
+          <Collapse isOpen={this.state.currentProductId === product.id} data-parent='#accordion' id='collapseOne' aria-labelledby='headingOne'>
             <CardBody>
               {
                 bidPanel

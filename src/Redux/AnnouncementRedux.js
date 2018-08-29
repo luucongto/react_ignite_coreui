@@ -30,7 +30,7 @@ export const announcementSuccess = (state, { data }) => {
   data.forEach(element => {
     state = state.setIn(['data', element.id], element)
   })
-
+  state = state.setIn(['fetching'], false)
   return state
 }
 

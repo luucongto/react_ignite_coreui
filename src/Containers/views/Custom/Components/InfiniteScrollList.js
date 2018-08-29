@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Row, Col, Progress, Button } from 'reactstrap'
 import PropTypes from 'prop-types'
+import underscore from 'underscore'
+
 let LIMITAPAGE = 20
 class InfiniteScrollList extends Component {
   constructor (props) {
@@ -23,7 +25,9 @@ class InfiniteScrollList extends Component {
   }
   componentWillReceiveProps (props) {
     if (this.props.fetchMore) {
-      this.setState({items: props.items})
+      let currentIds = underscore.pluck(this.state.items, 'id').sort()
+      let newIds = underscore.pluck(props.items, 'id').sort()
+      this.setState({items: props.items, hasMore: newIds.length - currentIds.length === LIMITAPAGE && newIds.toString() !== currentIds.toString()})
     } else {
       this._fetchMoreData(true)
     }
@@ -45,34 +49,36 @@ class InfiniteScrollList extends Component {
   }
   _fetchMoreData (init = false) {
     if (this.state.fetchScroll) return
+    let page = init ? 0 : this.state.page
     this.setState({fetchScroll: true})
-
-    if (this.props.fetchMore) {
-      let {hasMore} = this.props.fetchMore(Math.floor(this.state.items.length / LIMITAPAGE))
-      this.setState({fetchScroll: false, hasMore: hasMore})
-    } else {
-      clearTimeout(this.fetchTimeoutHandle)
-      this.fetchTimeoutHandle = setTimeout(() => {
-        let items = this.props.items.slice(0, init ? LIMITAPAGE : this.state.items.length + LIMITAPAGE)
-        let hasMore = (init ? LIMITAPAGE : this.state.items.length + LIMITAPAGE) <= this.props.items.length
-        this.setState({fetchScroll: false, items: items, hasMore: hasMore})
-      }, 300)
-    }
+    clearTimeout(this.fetchTimeoutHandle)
+    this.fetchTimeoutHandle = setTimeout(() => {
+      if (this.props.fetchMore) {
+        this.props.fetchMore(page)
+        this.setState({fetchScroll: false, page: page + 1})
+      } else {
+        page++
+        let items = this.props.items.slice(0, page * LIMITAPAGE)
+        let hasMore = items.length < this.props.items.length
+        this.setState({fetchScroll: false, items: items, hasMore: hasMore, page: page})
+      }
+    }, 300)
   }
   render () {
     let loadpanel
     if (this.state.fetchScroll) {
-      loadpanel = <Progress value='100' animated />
-    } else if (this.state.hasMore) {
-      loadpanel = <Button outline size='l' color='info' onClick={() => this._fetchMoreData()}> Load More </Button>
-    } else if (this.props.endText) {
+      loadpanel = <Progress value='100' color='success' animated />
+    } else if (!this.state.hasMore && this.props.endText) {
       loadpanel = <strong> {this.props.endText} </strong>
     }
     return (
       <Row>
         {this._renderList(this.state.items)}
         <Col xl='12' className='text-center mb-3'>
-          {!this.props.hideLoading ? loadpanel : ''}
+          {loadpanel}
+        </Col>
+        <Col xl='12' className='text-center mb-3'>
+          {this.state.fetchScroll || !this.state.hasMore ? ('') : <Button outline size='l' color='info' onClick={() => this._fetchMoreData()}> Load More </Button>}
         </Col>
       </Row>
     )

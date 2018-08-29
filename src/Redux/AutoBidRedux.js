@@ -30,6 +30,7 @@ export const autoBidSuccess = (state, { data }) => {
   data.forEach(element => {
     state = state.setIn(['data', element.product_id], element)
   })
+  state = state.setIn(['fetching'], false)
   return state
 }
 

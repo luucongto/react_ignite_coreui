@@ -103,8 +103,9 @@ class BaseProducts extends Component {
 
         <InfiniteScrollList ref='scrollList'
           items={this.state.products}
+          hasMore={this.props.hasMore}
+          fetching={this.props.fetching}
           fetchMore={this.props.fetchMore}
-          hideLoading
           endText={this.props.t('read_em_all')}
           renderItem={(product, index) => <BiddingProductItem colCollapse={this.props.colCollapse} colOpen={this.props.colOpen} product={product} key={index} placeBid={(params) => this.placeBid(params)} />}
         />
