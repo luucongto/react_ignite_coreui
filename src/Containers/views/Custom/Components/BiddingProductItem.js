@@ -379,7 +379,7 @@ class BiddingProductItem extends Component {
             : (<CountdownTimer mini autostart={false} duration={parseInt(product['round_time_1'])} prefix={roundPrefix} />)}
             
           <Badge color={'light'} className='pt-2' ><h5 className={'text-' + topColor}>{this._renderCurrency(currentPrice)}</h5></Badge>
-          {this.state.autoBidPrice >= currentPrice ? <Badge color='success' className='pt-3'>{this.props.t('auto_bid_working')} </Badge> : ('')}
+          {this.state.autoBidPrice >= currentPrice ? <Badge color='success' className='pt-3'>{this.props.t('auto_bid_working')} {this._renderCurrency(this.state.autoBidPrice)} </Badge> : ('')}
           <Button outline className='ml-3' color={isBidDisable ? 'secondary' : 'success'} onClick={(event) => {
             event.stopPropagation()
             this.placeBid()
@@ -393,8 +393,7 @@ class BiddingProductItem extends Component {
         otherInfo = (
           <Col style={{width: 270, display: 'flex', justifyContent: 'flex-end'}} className='pr-1 pl-1' onClick={() => this.setState({isOpen: !this.state.isOpen})}>
             <Badge color='success' className='mr-2 pt-2' ><h5>{moment(product.start_at * 1000).format('YYYY/MM/DD HH:mm')}</h5></Badge>
-            <Badge color='info' className='mr-2 pt-2'> <h5> {this._renderCurrency(product.start_price)} </h5></Badge>
-            {this.state.autoBidPrice ? <Badge color='success' className='pt-2'> <h5>{this.props.t('auto_bid_working')} </h5></Badge> : ('')}
+            {this.state.autoBidPrice ? <Badge color='success' className='pt-2'> <h5>{this.props.t('auto_bid_working')} {this._renderCurrency(this.state.autoBidPrice)} </h5></Badge> : <Badge color='info' className='mr-2 pt-2'> <h5> {this._renderCurrency(product.start_price)} </h5></Badge>}
           </Col>
         )
       } else if (product.status === Const.PRODUCT_STATUS.FINISHED) {
