@@ -23,7 +23,6 @@ import DefaultFooter from './DefaultFooter'
 import DefaultHeader from './DefaultHeader'
 import PrivateRoute from '../../../Navigation/PrivateRoute'
 import {translate} from 'react-i18next'
-import Announcement from '../../views/Announcement/Announcement'
 
 class DefaultLayout extends Component {
   constructor (props) {
@@ -137,9 +136,8 @@ class DefaultLayout extends Component {
                   return route.component ? (<PrivateRoute key={idx} {...route} />) : (null)
                 }
                 )}
-                <Redirect from='/' to='/notices' />
+                <Redirect from='/' to='/dashboard' />
               </Switch>
-              <Announcement />
             </Container>
           </main>
           <AppAside fixed hidden>

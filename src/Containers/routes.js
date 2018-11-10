@@ -174,41 +174,6 @@ const Widgets = Loadable({
 })
 
 // Custom
-const AccountInfo = Loadable({
-  loader: () => import('./views/Custom/AccountInfo'),
-  loading: Loading
-})
-const Trade = Loadable({
-  loader: () => import('./views/Custom/Trade'),
-  loading: Loading
-})
-const Wait = Loadable({
-  loader: () => import('./views/Custom/Wait'),
-  loading: Loading
-})
-const Finished = Loadable({
-  loader: () => import('./views/Custom/Finished'),
-  loading: Loading
-})
-
-const Admin = Loadable({
-  loader: () => import('./views/Custom/Admin'),
-  loading: Loading
-})
-
-const Notices = Loadable({
-  loader: () => import('./views/Custom/Notices'),
-  loading: Loading
-})
-
-const SellerManagement = Loadable({
-  loader: () => import('./views/Custom/SellerManagement'),
-  loading: Loading
-})
-const SellerSoldManagement = Loadable({
-  loader: () => import('./views/Custom/SellerSoldManagement'),
-  loading: Loading
-})
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
@@ -248,15 +213,7 @@ const routes = [
   { path: '/notifications/badges', name: 'Badges', component: Badges },
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
-  { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/accountInfo', name: i18n.t('account'), component: AccountInfo },
-  { path: '/trade', name: i18n.t('auctioning_products'), component: Trade },
-  { path: '/wait', name: i18n.t('incoming_products'), component: Wait },
-  { path: '/finished', name: i18n.t('sold_products'), component: Finished },
-  { path: '/admin', name: i18n.t('Admin'), component: Admin },
-  { path: '/notices', name: i18n.t('notices'), component: Notices },
-  { path: '/seller/manage', name: i18n.t('seller_management'), component: SellerManagement },
-  { path: '/seller/sold', name: i18n.t('sold_management'), component: SellerSoldManagement }
+  { path: '/charts', name: 'Charts', component: Charts }
 
 ]
 

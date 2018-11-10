@@ -20,16 +20,28 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  data: null,
+  data: {},
   error: null,
-  fetching: false,
+  fetching: false
 })
 
 /* ------------- Reducers ------------- */
 
 export const ${changeCase.camelCase(name)}Request = state => state.merge({ fetching: true, error: null, data: null })
 
-export const ${changeCase.camelCase(name)}Success = (state, { data }) => state.merge({ fetching: false, error: null, data })
+export const ${changeCase.camelCase(name)}Success = (state, { data }) => {
+  data.forEach(element => {
+    if (element.option && element.option === 'delete') {
+      let newData = Object.assign({}, state.data)
+      delete newData[element.id]
+      state = state.setIn(['data'], newData)
+    } else {
+      state = state.setIn(['data', element.id], element)
+    }
+  })
+  state = state.setIn(['fetching'], false)
+  return state
+}
 
 export const ${changeCase.camelCase(name)}Failure = (state, { error }) => state.merge({ fetching: false, error, data: null })
 
