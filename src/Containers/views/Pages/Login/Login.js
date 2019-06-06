@@ -4,8 +4,8 @@ import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Button, Card, CardBody, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Progress, Row } from 'reactstrap'
 import LoginActions from '../../../../Redux/LoginRedux'
-import logo from '../../../assets/img/brand/Punch_Logo.png'
-import sygnet from '../../../assets/img/brand/Punch_P_Logo.png'
+import logo from '../../../assets/img/brand/logo.svg'
+import sygnet from '../../../assets/img/brand/sygnet.svg'
 import Alert from 'react-s-alert'
 class Login extends Component {
   constructor (props) {
@@ -73,10 +73,10 @@ class Login extends Component {
           <Row className='justify-content-center mb-3'>
             <Col md='6' className='just-center text-center'>
               {/* <AppNavbarBrand
-                full={{ src: sygnet, width: 300, height: 300, alt: 'Punch Logo' }} /> */}
-              {window.innerWidth < 500
-                ? <img src={sygnet} width='200' height='200' alt='Punch Logo' />
-              : <img src={logo} width='500' height='200' alt='Punch Logo' />
+                full={{ src: sygnet, width: 300, height: 300, alt: 'Logo' }} /> */}
+              {window.innerWidth < 700
+                ? <img src={sygnet} width='200' height='200' alt='Logo' />
+              : <img src={logo} width='500' height='200' alt='Logo' />
               }
             </Col>
           </Row>

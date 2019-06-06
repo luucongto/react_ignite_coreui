@@ -4,10 +4,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react'
-import logo from '../../assets/img/brand/logo.png'
-import sygnet from '../../assets/img/brand/Punch_P_Logo.png'
+import logo from '../../assets/img/brand/logo.svg'
+import sygnet from '../../assets/img/brand/square_logo.png'
 import LoginActions from '../../../Redux/LoginRedux'
-import SocketApi from '../../../Services/SocketApi'
 import moment from 'moment'
 import Alert from 'react-s-alert'
 import {translate} from 'react-i18next'
@@ -39,8 +38,8 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className='d-lg-none' display='md' mobile />
         <AppNavbarBrand
-          full={{ src: logo, width: 89, height: 34, alt: 'Punch Logo' }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: 'Punch Logo' }}
+          full={{ src: logo, width: 89, height: 34, alt: 'Logo' }}
+          minimized={{ src: sygnet, width: 30, height: 30, alt: 'Logo' }}
         />
         <AppSidebarToggler className='d-md-down-none' display='lg' />
         {this.props.user && this.props.user.isAdmin ? (<Nav navbar className='d-md-down-none'>

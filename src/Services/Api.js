@@ -1,6 +1,5 @@
 import apisauce from 'apisauce'
 import ApiConfig from '../Config/ApiConfig'
-import SocketApi from './SocketApi'
 class API {
   constructor (loginToken, baseURL = ApiConfig.baseURL) {
     this.api = apisauce.create({
@@ -25,7 +24,6 @@ class API {
   authenticated (loginToken) {
     this.loginToken = loginToken
     this.api.setHeader('Authorization', 'jwt ' + loginToken)
-    SocketApi.setup(loginToken)
   }
 
   login (params) {
