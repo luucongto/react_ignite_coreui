@@ -1,5 +1,5 @@
 const AppConfig = {
-  appName: 'Punch Auction House'
+  appName: 'New Project'
 }
 
 export default AppConfig
