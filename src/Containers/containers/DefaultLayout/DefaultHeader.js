@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react'
 import logo from '../../assets/img/brand/logo.svg'
-import sygnet from '../../assets/img/brand/square_logo.png'
+import sygnet from '../../assets/img/brand/sygnet.svg'
 import LoginActions from '../../../Redux/LoginRedux'
 import moment from 'moment'
 import Alert from 'react-s-alert'
