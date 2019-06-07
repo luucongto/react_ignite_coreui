@@ -23,14 +23,15 @@ class API {
 
   authenticated (loginToken) {
     this.loginToken = loginToken
-    this.api.setHeader('Authorization', 'jwt ' + loginToken)
+    this.api.setHeader('Authorization', loginToken)
   }
 
   login (params) {
     if (params.type === 'local') {
       return this.api.post('login', params).then(data => {
         let result = data.data
-        if (result.success && result.token) this.authenticated(result.token)
+        result.success = result.status === 'success'
+        if (result.success) this.authenticated(result.access_token)
         return result
       })
     }

@@ -62,6 +62,7 @@ class Login extends Component {
     this.props.login({
       type: 'local',
       username: this.state.username,
+      email: this.state.username,
       password: this.state.password
     })
   }
