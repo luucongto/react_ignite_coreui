@@ -31,7 +31,7 @@ class Login extends Component {
   componentWillReceiveProps (props) {
     if (props.user) {
       this.setState({fetching: false})
-      this.props.history.push('/')
+      this.props.history.push('/dashboard')
     }
     if (props.error) {
       this.setState({fetching: false})

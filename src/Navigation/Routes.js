@@ -5,7 +5,7 @@ import Loading from './Loading'
 import Login from '../Containers/views/Pages/Login/Login'
 import Register from '../Containers/views/Pages/Register/Register'
 import DefaultLayout from '../Containers/containers/DefaultLayout/DefaultLayout'
-
+import LandingPage from  '../Containers/views/Pages/LandingPage/LandingPage'
 const AsyncNextPage = Loadable({
   loader: () => import('../Routes/NextPage'),
   loading: Loading
@@ -38,6 +38,11 @@ const routes = [
   },
   {
     path: '/',
+    name: 'Home',
+    component: LandingPage,
+  },
+  {
+    path: '/dashboard',
     name: 'Home',
     component: DefaultLayout,
   },
