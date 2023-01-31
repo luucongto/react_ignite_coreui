@@ -30,7 +30,7 @@ class API {
     if (params.type === 'local') {
       return this.api.post('login', params).then(data => {
         let result = data.data
-        result.success = result.status === 'success'
+        result.success = result.data || result.status === 'success'
         if (result.success) this.authenticated(result.access_token)
         return result
       })

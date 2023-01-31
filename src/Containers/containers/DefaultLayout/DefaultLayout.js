@@ -60,52 +60,8 @@ class DefaultLayout extends Component {
       name: i18n.t('info'),
       url: '/accountInfo',
       icon: 'icon-pencil'
-    },
-    {
-      title: true,
-      name: i18n.t('auction_house'),
-      wrapper: {
-        element: '',
-        attributes: {}
-      }
-    },
-    {
-      name: i18n.t('auctioning_products'),
-      url: '/trade',
-      icon: 'icon-basket'
-    },
-    {
-      name: i18n.t('incoming_products'),
-      url: '/wait',
-      icon: 'icon-cursor'
-    },
-    {
-      name: i18n.t('sold_products'),
-      url: '/finished',
-      icon: 'icon-basket-loaded'
-    }]
-    if (props.user && props.user.isSeller) {
-      items = items.concat([
-        {
-          title: true,
-          name: this.props.t('seller_house'),
-          wrapper: {
-            element: '',
-            attributes: {}
-          }
-        },
-        {
-          name: this.props.t('seller_management'),
-          url: '/seller/manage',
-          icon: 'icon-calculator'
-        },
-        {
-          name: this.props.t('sold_management'),
-          url: '/seller/sold',
-          icon: 'icon-pie-chart'
-        }
-      ])
     }
+    ]
     return items
   }
   componentWillReceiveProps (props) {

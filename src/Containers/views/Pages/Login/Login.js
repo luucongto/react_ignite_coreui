@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { GoogleLogin } from 'react-google-login'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Button, Card, CardBody, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Progress, Row } from 'reactstrap'
@@ -34,11 +33,12 @@ class Login extends Component {
       this.props.history.push('/dashboard')
     }
     if (props.error) {
+      console.log(props.error)
       this.setState({fetching: false})
-      Alert.error(this.props.t(props.error), {
-        position: 'bottom-right',
-        effect: 'bouncyflip'
-      })
+      // Alert.error(this.props.t(props.error), {
+        // position: 'bottom-right',
+        // effect: 'bouncyflip'
+      // })
     }
   }
   logout () {
@@ -108,16 +108,6 @@ class Login extends Component {
                   <Row>
                     <Col xs='12' lg='auto'>
                       <Button color='primary' className='px-4 loginBtn' onClick={() => this._login()}>{this.props.t('login')}</Button>
-                    </Col>
-                    <Col xs='12' lg='auto'>
-                      <GoogleLogin
-                        className='loginBtn loginBtn--google '
-                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                        onSuccess={this.googleResponse}
-                        onFailure={this.googleResponse}
-                        >
-                        <strong> {this.props.t('login_with_google')} </strong>
-                      </GoogleLogin>
                     </Col>
                   </Row>
 

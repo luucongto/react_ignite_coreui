@@ -25,26 +25,16 @@ const routes = [
     exact: true
   },
   {
-    title: 'Register',
-    path: '/register',
-    component: Register,
-    exact: true
-  },
-  {
-    title: 'NextPage',
-    path: '/next-page',
-    component: AsyncNextPage,
-    exact: true
-  },
-  {
     path: '/',
     name: 'Home',
     component: LandingPage,
+    exact: true
   },
   {
     path: '/dashboard',
-    name: 'Home',
+    name: 'Dashboard',
     component: DefaultLayout,
+    exact: true
   },
 ]
 
