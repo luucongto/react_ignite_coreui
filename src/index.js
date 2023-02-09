@@ -1,37 +1,19 @@
-// import 'normalize.css'
-import './index.css'
-
+import 'react-app-polyfill/stable'
+import 'core-js'
 import React from 'react'
-import { render } from 'react-snapshot'
-import registerServiceWorker from './registerServiceWorker'
-import DevConfig from './Config/DevConfig'
+import { createRoot } from 'react-dom/client'
 import App from './App'
+import reportWebVitals from './reportWebVitals'
+import { Provider } from 'react-redux'
+import store from './store'
 
-require('dotenv').load()
+createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+)
 
-console.log('process.env' && process.env)
-/**
- * Why did you update is a function that monkey patches React and
- * notifies you in the console when potentially unnecessary re-renders occur.
- */
-if (DevConfig.__DEV__ && DevConfig.whyDidYouUpdateLogging) {
-  import('why-did-you-update')
-    .then(({ whyDidYouUpdate }) => {
-      whyDidYouUpdate(React, { groupByComponent: true, collapseComponentGroups: false })
-    })
-    .catch(error => {
-      console.log('why-did-you-update ERROR', error)
-    })
-}
-
-const rootEl = document.getElementById('root')
-render(<App />, rootEl)
-
-if (module.hot) {
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default
-    render(<NextApp />, rootEl)
-  })
-}
-
-registerServiceWorker()
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals()
