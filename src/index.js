@@ -5,11 +5,18 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
-import store from './store'
+import reduxStore from './Redux'
+import { PersistGate } from 'redux-persist/es/integration/react'
 
+const { persistor, store } = reduxStore()
+const onBeforeLift = () => {
+  // take some action before the gate lifts
+}
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <App />
+    <PersistGate loading={<h3>Loading...</h3>} onBeforeLift={onBeforeLift} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>,
 )
 

@@ -1,7 +1,20 @@
 import React, { Component, Suspense } from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
+import '/node_modules/flag-icons/css/flag-icons.min.css'
+import 'react-s-alert/dist/s-alert-default.css'
+import 'react-s-alert/dist/s-alert-css-effects/slide.css'
+// mandatory
 
+// optional - you can choose the effect you want
+import 'react-s-alert/dist/s-alert-css-effects/scale.css'
+import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css'
+import 'react-s-alert/dist/s-alert-css-effects/flip.css'
+import 'react-s-alert/dist/s-alert-css-effects/genie.css'
+import 'react-s-alert/dist/s-alert-css-effects/jelly.css'
+import 'react-s-alert/dist/s-alert-css-effects/stackslide.css'
+import Alert from 'react-s-alert'
+import LandingPage from './views/pages/LandingPage/LandingPage'
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -27,9 +40,11 @@ class App extends Component {
             <Route exact path="/register" name="Register Page" element={<Register />} />
             <Route exact path="/404" name="Page 404" element={<Page404 />} />
             <Route exact path="/500" name="Page 500" element={<Page500 />} />
-            <Route path="*" name="Home" element={<DefaultLayout />} />
+            <Route exact path="/" name="Home" element={<LandingPage />} />
+            <Route path="/dashboard" name="Home" element={<DefaultLayout />} />
           </Routes>
         </Suspense>
+        <Alert stack={{ limit: 3 }} />
       </HashRouter>
     )
   }
