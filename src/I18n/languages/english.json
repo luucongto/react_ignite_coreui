@@ -31,7 +31,7 @@
   "invalid_email": "Invalid Email",
   "password_not_match": "Password not match",
   "user_exists": "User Existed",
-  "order_created": "Order Created: NO.",
+  "order_created": "Order Created: NO.{{orderNo}}",
   "detail_order": "Detail Order",
   "list_order": "List Order",
   "create_order": "Create Order",

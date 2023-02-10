@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 
-import routes from '../routes'
+import { PRIVATE_ROUTES_LOCATION, routes } from '../routes'
 
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 
@@ -14,18 +14,23 @@ const AppBreadcrumb = () => {
   }
 
   const getBreadcrumbs = (location) => {
+    console.log('localtion', location)
     const breadcrumbs = []
-    location.split('/').reduce((prev, curr, index, array) => {
-      const currentPathname = `${prev}/${curr}`
-      const routeName = getRouteName(currentPathname, routes)
-      routeName &&
-        breadcrumbs.push({
-          pathname: currentPathname,
-          name: routeName,
-          active: index + 1 === array.length ? true : false,
-        })
-      return currentPathname
-    })
+    location
+      .replace(PRIVATE_ROUTES_LOCATION, '')
+      .split('/')
+      .reduce((prev, curr, index, array) => {
+        const currentPathname = `${prev}/${curr}`
+        const routeName = getRouteName(currentPathname, routes)
+        routeName &&
+          breadcrumbs.push({
+            pathname: PRIVATE_ROUTES_LOCATION + currentPathname,
+            name: routeName,
+            active: index + 1 === array.length ? true : false,
+          })
+        return currentPathname
+      })
+    console.log('breadcrumbs', breadcrumbs)
     return breadcrumbs
   }
 
@@ -33,7 +38,7 @@ const AppBreadcrumb = () => {
 
   return (
     <CBreadcrumb className="m-0 ms-2">
-      <CBreadcrumbItem href="/">Home</CBreadcrumbItem>
+      <CBreadcrumbItem href={'#' + PRIVATE_ROUTES_LOCATION}>Home</CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
         return (
           <CBreadcrumbItem

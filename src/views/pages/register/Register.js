@@ -24,7 +24,7 @@ const Register = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [repeatPassword, setRepeatpassword] = useState('')
+  const [repeatPassword, setRepeatPassword] = useState('')
   const [fetching, setFetching] = useState(false)
   const registerState = useSelector(registerSelector)
   const dispatch = useDispatch()
@@ -109,7 +109,7 @@ const Register = () => {
                       type="password"
                       placeholder={t('confirmPassword')}
                       autoComplete="new-password"
-                      onChange={(event) => setRepeatpassword(event.target.value)}
+                      onChange={(event) => setRepeatPassword(event.target.value)}
                       value={repeatPassword}
                       onKeyPress={_handleKeyPress}
                     />

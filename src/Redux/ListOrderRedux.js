@@ -12,11 +12,11 @@ const { Types, Creators } = createActions({
 
 export const ListOrderTypes = Types
 export default Creators
-
+export const ListOrderSelector = (state) => state.listOrder
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  data: {},
+  data: [],
   error: null,
   fetching: false,
 })

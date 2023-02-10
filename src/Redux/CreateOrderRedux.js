@@ -12,7 +12,7 @@ const { Types, Creators } = createActions({
 
 export const CreateOrderTypes = Types
 export default Creators
-
+export const CreateOrderSelector = (state) => state.createOrder
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
