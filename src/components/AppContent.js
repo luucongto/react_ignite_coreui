@@ -4,8 +4,12 @@ import { CContainer, CSpinner } from '@coreui/react'
 
 // routes config
 import routes from '../routes'
+import { loginTokenSelector } from 'src/Redux/LoginRedux'
+import { useSelector } from 'react-redux'
 
 const AppContent = () => {
+  const isAuthenticated = useSelector(loginTokenSelector)
+  console.log('isAuthenticated', isAuthenticated)
   return (
     <CContainer lg>
       <Suspense fallback={<CSpinner color="primary" />}>
@@ -18,12 +22,17 @@ const AppContent = () => {
                   path={route.path}
                   exact={route.exact}
                   name={route.name}
-                  element={<route.element />}
+                  element={
+                    isAuthenticated ? (
+                      <route.element />
+                    ) : (
+                      <Navigate to="/login" replace relative="route" />
+                    )
+                  }
                 />
               )
             )
           })}
-          <Route path="/" element={<Navigate to="dashboard" replace />} />
         </Routes>
       </Suspense>
     </CContainer>

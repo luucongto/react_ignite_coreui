@@ -20,7 +20,7 @@ export const INITIAL_STATE = Immutable({
   error: null,
   fetching: false,
 })
-
+export const registerSelector = (state) => state.register
 /* ------------- Reducers ------------- */
 
 export const registerRequest = (state) => state.merge({ fetching: true, error: null, data: null })

@@ -12,7 +12,7 @@ body,
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   position: absolute;
-  color: #09383E;
+  color: #09383e;
   top: 15px;
   left: 15px;
 }
@@ -29,7 +29,7 @@ body,
   background-position: bottom;
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
-  color: #09383E;
+  color: #09383e;
 }
 
 .content__wrapper {
@@ -53,13 +53,13 @@ body,
   opacity: 0.5;
 }
 
-.greeting::after{
+.greeting::after {
   content: '';
   width: 0.3rem;
   height: 0.3rem;
   border-radius: 50%;
   display: inline-block;
-  background-color: #0C383E;
+  background-color: #0c383e;
   position: relative;
   top: -0.65rem;
   left: -5.05rem;
@@ -91,7 +91,7 @@ body,
 }
 
 .ellipses__outer--thin::after {
-  content: "";
+  content: '';
   background-image: url('https://s29.postimg.org/5h0r4ftkn/ellipses_dial.png');
   background-repeat: no-repeat;
   background-position: center;
@@ -106,7 +106,7 @@ body,
 .ellipses__outer--thick {
   width: 69.5%;
   height: 69.5%;
-  border-color: #09383E transparent;
+  border-color: #09383e transparent;
   border-width: 2px;
   transform: rotate(-45deg);
   animation: ellipsesRotate 15s ease-in-out infinite;
@@ -116,7 +116,7 @@ body,
   width: 2.5rem;
   height: 2.5rem;
   border-width: 2px;
-  border-color: #09383E;
+  border-color: #09383e;
   top: 1.3rem;
   right: 6.75rem;
 }
@@ -127,33 +127,31 @@ body,
   height: 0.7rem;
   border-radius: 50%;
   display: inline-block;
-  background-color: #09383E;
+  background-color: #09383e;
   margin: 0 auto;
   left: 0;
   right: 0;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-
 }
 
-
 @keyframes ellipsesRotate {
-    0% {
-        transform: rotate(-45deg);
-    }
+  0% {
+    transform: rotate(-45deg);
+  }
 
-    100% {
-        transform: rotate(-405deg);
-    }
+  100% {
+    transform: rotate(-405deg);
+  }
 }
 
 @keyframes ellipsesOrbit {
-    0% {
-        transform: rotate(0);
-    }
+  0% {
+    transform: rotate(0);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }

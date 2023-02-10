@@ -1,22 +1,10 @@
-import { CContainer, CHeader, CHeaderNav } from '@coreui/react'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import LangSwitcher from 'src/components/header/LangSwitcher'
+import Header from '../Header'
 import React from 'react'
-
 const LandingPage = () => {
-  const { t } = useTranslation()
   return (
     <div>
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
-        <CHeader position="sticky" className="mb-4">
-          <CContainer fluid>
-            <CHeaderNav className="ms-3">
-              <Link to={'/login'}>{t('login')}</Link>
-              <LangSwitcher />
-            </CHeaderNav>
-          </CContainer>
-        </CHeader>
+        <Header />
         <div className="body flex-grow-1 px-3">
           <main className="main">
             <div className="container__item landing-page-container">

@@ -10,6 +10,7 @@ import {
   CHeaderToggler,
   CNavLink,
   CNavItem,
+  CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
@@ -17,11 +18,13 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
+import { useTranslation } from 'react-i18next'
+import { LoginTypes } from 'src/Redux/LoginRedux'
 
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
-
+  const { t } = useTranslation()
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
@@ -62,6 +65,17 @@ const AppHeader = () => {
             <CNavLink href="#">
               <CIcon icon={cilEnvelopeOpen} size="lg" />
             </CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CButton
+              onClick={() => {
+                dispatch({
+                  type: LoginTypes.LOGOUT_REQUEST,
+                })
+              }}
+            >
+              {t('logout')}
+            </CButton>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
