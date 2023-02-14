@@ -73,5 +73,6 @@
   "order_history_row_arrived": "Shipment Arrived",
   "order_history_row_delivery": "Shipment Delivery",
   "order_history_row_delivered": "Shipment Delivered",
-  "forgotPassword": "Forgot Password"
+  "forgotPassword": "Forgot Password",
+  "orders": "Orders"
 }

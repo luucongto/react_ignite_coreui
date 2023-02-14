@@ -71,5 +71,8 @@
   "order_history_row_in_transit": "Lô hàng Đang vận chuyển",
   "order_history_row_arrived": "Lô hàng đã đến",
   "order_history_row_delivery": "Giao Hàng",
-  "order_history_row_delivered": "Lô hàng đã giao"
+  "order_history_row_delivered": "Lô hàng đã giao",
+  "forgotPassword": "Quên Mật Khẩu",
+  "orders": "Đơn hàng",
+  "sign_in_to_your_account": "Đăng nhập vào tài khoản của bạn"
 }

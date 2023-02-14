@@ -20,7 +20,8 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
-    "test:debug": "react-scripts --inspect-brk test --runInBand"
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "deploy": "rsync -rav build/* ubuntu@lcexpress:~/fe/build/"
   },
   "dependencies": {
     "@coreui/chartjs": "^3.0.0",

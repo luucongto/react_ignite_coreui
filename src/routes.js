@@ -30,7 +30,7 @@ export const navs = [
 
 export const PRIVATE_ROUTES_LOCATION = '/home'
 export const routes = [
-  { path: '/', exact: true, name: i18n.t('order'), element: ListOrder },
+  { path: '/', exact: true, name: i18n.t('orders'), element: ListOrder },
   { path: '/orders', exact: true, name: i18n.t('order'), element: ListOrder },
   { path: '/orders/list', exact: true, name: i18n.t('list_order'), element: ListOrder },
   { path: '/orders/list/:id', exact: true, name: i18n.t('detail_order'), element: DetailOrder },

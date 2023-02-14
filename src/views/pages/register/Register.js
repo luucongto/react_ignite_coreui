@@ -12,7 +12,7 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilLockLocked } from '@coreui/icons'
 import { alertError, alertSuccess } from 'src/Utils/alert.error'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
